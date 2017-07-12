@@ -5,20 +5,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- bootstrap: -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 
+  <!-- so it can talk back: -->
   <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+
+  <!-- local files: -->
+  <link rel='stylesheet' href='style.css' />
+  <script type="text/javascript" src="brain.js" ></script>
 </head>
 
 <body>
 
-  <div class="container-fluid well" style="text-align:center">
-    <input autofocus id='input' type='text' oninput="converse()" />
+  <div class="vertical-center">
+    <div class="container-fluid well">
+      <input autofocus id='input' type='text' oninput="converse()" />
+    </div>
   </div>
-
-  <script type="text/javascript" src="brain.js" ></script>
 
 </body>
 </html>
