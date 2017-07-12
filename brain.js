@@ -25,4 +25,4 @@ function say(sentence) {
 
 window.addEventListener('offline', function(e) { say('You\'ve lost your internet connection.'); });
 
-window.addEventListener('online', function(e) { say('We\'re back online!'); });
+window.addEventListener('online', function(e) { say('We\'re back online now.'); });
