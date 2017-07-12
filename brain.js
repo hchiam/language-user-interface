@@ -16,10 +16,14 @@ function listen() {
 function speak(heard) {
   // TODO: add more functionality
   // TODO: make more modular
+
+  // remove trailing/leading spaces, set to lowercase, and remove punctuation
   heard = heard.trim().toLowerCase();
+  heard = heard.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/i,"");
+
   if (heard == "hello" || heard == "hi" || heard == "hey") {
     say(heard);
-  } else if (heard == "hello world") {
+  } else if (heard == "hello world" || heard == 'anyone home') {
     say('hi there');
   } else if (heard == "hi there") {
     say('right back at you');
