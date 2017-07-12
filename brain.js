@@ -22,3 +22,7 @@ function speak(heard) {
 function say(sentence) {
   responsiveVoice.speak(sentence, 'UK English Male');
 }
+
+window.addEventListener('offline', function(e) { say('You\'ve lost your internet connection.'); });
+
+window.addEventListener('online', function(e) { say('We\'re back online!'); });
