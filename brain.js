@@ -15,6 +15,10 @@ function listen() {
 
 function speak(heard) {
   // TODO: add more functionality
-  var say = "You said: " + heard;
-  responsiveVoice.speak(say, 'UK English Male');
+  var sentence = "You said: " + heard;
+  say(sentence);
+}
+
+function say(sentence) {
+  responsiveVoice.speak(sentence, 'UK English Male');
 }
