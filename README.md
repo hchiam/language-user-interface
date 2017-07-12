@@ -1,7 +1,5 @@
 # voiceUserInterface
-a test Voice User Interface (VUI)
-
-Think JARVIS.
+A test VUI that runs in your browser. Think JARVIS.
 
 # inspirations
 https://github.com/hchiam/please
