@@ -15,8 +15,24 @@ function listen() {
 
 function speak(heard) {
   // TODO: add more functionality
-  var sentence = "You said: " + heard;
-  say(sentence);
+  // TODO: make more modular
+  heard = heard.trim().toLowerCase();
+  if (heard == "hello" || heard == "hi" || heard == "hey") {
+    say(heard);
+  } else if (heard == "hello world") {
+    say('hi there');
+  } else if (heard == "hi there") {
+    say('right back at you');
+  } else if (heard == "is this thing on" || heard == "can you hear me" || heard == "does this thing work") {
+    say('yes');
+  } else if (heard == 'thanks' || heard == 'thank you') {
+    say("you're welcome")
+  } else if (heard == 'thank you so much' || heard == 'thank you very much') {
+    say("you're very welcome")
+  } else {
+    var sentence = "You said: " + heard;
+    say(sentence);
+  }
 }
 
 function say(sentence) {
