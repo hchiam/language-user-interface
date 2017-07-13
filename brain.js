@@ -1,5 +1,9 @@
 var delayedAction;
 
+// automatically notify of internet connection
+window.addEventListener('offline', function(e) { say("You've lost your internet connection."); });
+window.addEventListener('online', function(e) { say("We're back online now."); });
+
 function converse() {
   clearTimeout(delayedAction); // reset if still typing
   delayedAction = setTimeout(function(){
@@ -11,6 +15,10 @@ function converse() {
 function listen() {
   var heard = document.getElementById("input").value;
   return heard;
+}
+
+function say(sentence) {
+  responsiveVoice.speak(sentence, 'UK English Male');
 }
 
 function speak(heard) {
@@ -38,11 +46,3 @@ function speak(heard) {
     say(sentence);
   }
 }
-
-function say(sentence) {
-  responsiveVoice.speak(sentence, 'UK English Male');
-}
-
-window.addEventListener('offline', function(e) { say('You\'ve lost your internet connection.'); });
-
-window.addEventListener('online', function(e) { say('We\'re back online now.'); });
