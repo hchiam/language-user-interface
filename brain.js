@@ -45,21 +45,37 @@ function speak(heard) {
   heard = heard.trim().toLowerCase();
   heard = heard.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/i,"");
 
-  if (didHear(heard,['hi','hey','hello'])) {
-    say(heard);
-  } else if (didHear(heard,['hello world','anyone home','anyone there','anyone listening'])) {
-    say('hi there');
-  } else if (didHear(heard,["hi there",'hey there'])) {
-    say('right back at you');
-  } else if (didHear(heard,["is this thing on",'can you hear me',"does this thing work",'are you on right now'])) {
-    say('yes');
-  } else if (didHear(heard,['thanks','thank you'])) {
-    say("you're welcome")
-  } else if (didHear(heard,['thank you so much','thank you very much'])) {
-    say("you're very welcome")
-  } else {
+  var heardRecognized = false;
+
+  heardRecognized = heardPleasantries(heard);
+
+  if (!heardRecognized) {
     var sentence = "You said: " + heard + '...' + "Sorry, I currently don't have a pre-programmed response to that.";
     // need '...' to make an audible pause
     say(sentence);
   }
+}
+
+function heardPleasantries(heard) {
+  if (didHear(heard,['hi','hey','hello'])) {
+    say(heard);
+    return true;
+  } else if (didHear(heard,['hello world','anyone home','anyone there','anyone listening'])) {
+    say('hi there');
+    return true;
+  } else if (didHear(heard,["hi there",'hey there'])) {
+    say('right back at you');
+    return true;
+  } else if (didHear(heard,["is this thing on",'can you hear me',"does this thing work",'are you on right now'])) {
+    say('yes');
+    return true;
+  } else if (didHear(heard,['thanks','thank you'])) {
+    say("you're welcome");
+    return true;
+  } else if (didHear(heard,['thank you so much','thank you very much'])) {
+    say("you're very welcome");
+    return true;
+  }
+  // otherwise
+  return false;
 }
