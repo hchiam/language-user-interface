@@ -115,15 +115,25 @@ function heardPleasantries(heard) {
 }
 
 function heardSearch(heard) {
+
+  // check definition
   const signalPhrases = ["what's ", 'what is ', 'what are ', 'what was ', 'what were ',
                         "who's ", 'who is ', 'who are ', 'who was ', 'who were ',
-                        'search for ']
+                        'search for '];
   if (didHear(heard, signalPhrases, 'starts with')) {
     var words = removeSignalPhrase(heard,signalPhrases);
-    search(words);
+    searchDefinition(words);
     return true;
   }
-  // otherwise
+
+  // otherwise put the whole question into search engine
+  const signalGenericQuestion = ['what ', 'who ', 'where ', 'when ', 'why ', 'how ', 'which '];
+  if (didHear(heard, signalGenericQuestion, 'starts with')) {
+    searchQuestion(heard);
+    return true;
+  }
+
+  // otherwise prolly not a question
   return false;
 }
 
@@ -138,8 +148,7 @@ function removeSignalPhrase(heard, signalPhrases) {
   return words;
 }
 
-function search(words) {
-
+function searchDefinition(words) {
   // search wikipedia
 
   // var urlAPICall = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&exsentences=1&callback=?&titles=';
@@ -154,8 +163,16 @@ function search(words) {
     if (title.toLowerCase() != words) say("I'm not sure this is what you're looking for, but here's what I found.")
     say(summary); // alert(Object.values(data.query.pages)[0].extract)
   });
+}
 
+function searchQuestion(heard) {
   // TODO: search duckduckgo
+
+  // var urlAPICall = 'https://api.duckduckgo.com/?format=json&pretty=1&q=';
+  var urlAPICall = 'https://api.duckduckgo.com/?q=';
+  urlAPICall += heard;
+  say("I'm opening up a search results page for: " + heard);
+  window.open(urlAPICall);
 
   // var urlAPICall = 'http://api.duckduckgo.com/?format=jsonp&pretty=1&q=';
   // urlAPICall += words;
@@ -171,5 +188,4 @@ function search(words) {
   //   // if (title.toLowerCase() != words) say("I'm not sure this is what you're looking for, but here's what I found.")
   //   // say("duck duck go says: " + summary); // alert(Object.values(data.query.pages)[0].extract)
   // });
-
 }
