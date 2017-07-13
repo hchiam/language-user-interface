@@ -28,6 +28,15 @@ function say(sentence) {
   responsiveVoice.speak(sentence, 'UK English Male');
 }
 
+function didHear(heard, listOfChecks=[], checkType='exactly') {
+  for (var i in listOfChecks) {
+    if (checkType === 'exactly' && heard === listOfChecks[i]) { return true; }
+    else if (checkType === 'starts with' && heard.startsWith(listOfChecks[i])) { return true; }
+    else if (checkType === 'ends with' && heard.endsWith(listOfChecks[i])) { return true; }
+  }
+  return false;
+}
+
 function speak(heard) {
   // TODO: add more functionality
   // TODO: make more modular
@@ -53,13 +62,4 @@ function speak(heard) {
     // need '...' to make an audible pause
     say(sentence);
   }
-}
-
-function didHear(heard, listOfChecks=[], checkType='exactly') {
-  for (var i in listOfChecks) {
-    if (checkType === 'exactly' && heard === listOfChecks[i]) { return true; }
-    else if (checkType === 'starts with' && heard.startsWith(listOfChecks[i])) { return true; }
-    else if (checkType === 'ends with' && heard.endsWith(listOfChecks[i])) { return true; }
-  }
-  return false;
 }
