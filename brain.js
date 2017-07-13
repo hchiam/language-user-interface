@@ -49,7 +49,8 @@ function speak(heard) {
   } else if (didHear(heard,['thank you so much','thank you very much'])) {
     say("you're very welcome")
   } else {
-    var sentence = "You said: " + heard;
+    var sentence = "You said: " + heard + '...' + "Sorry, I currently don't have a pre-programmed response to that.";
+    // need '...' to make an audible pause
     say(sentence);
   }
 }
