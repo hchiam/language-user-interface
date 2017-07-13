@@ -160,8 +160,10 @@ function searchDefinition(words) {
     var pageInfo = Object.values(data.query.pages)[0];
     var summary = pageInfo.extract;
     var title = pageInfo.title;
-    if (title.toLowerCase() != words) say("I'm not sure this is what you're looking for, but here's what I found.")
-    say(summary); // alert(Object.values(data.query.pages)[0].extract)
+    if (summary) {
+      if (title.toLowerCase() != words) say("I'm not sure if you're looking for this, but here's what I found.")
+      say(summary); // alert(Object.values(data.query.pages)[0].extract)
+    }
   });
 }
 
