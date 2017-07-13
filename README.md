@@ -1,10 +1,10 @@
-# voiceUserInterface
-A test VUI that runs in your browser. Think JARVIS.
+# Language User Interface
+LUI runs in your browser. Think JARVIS.
 
-# try it out
+## Try it out:
 https://codepen.io/hchiam/pen/WOLOJG
 
-# inspirations
+## Inspirations:
 https://github.com/hchiam/please
 
 https://github.com/hchiam/programmingByVoice
