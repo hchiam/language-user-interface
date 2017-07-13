@@ -3,18 +3,18 @@ window.addEventListener('offline', function(e) { say("You've lost your internet 
 window.addEventListener('online', function(e) { say("We're back online now."); });
 
 function welcome() {
-  var today = new Date()
-  var currentHour = today.getHours()
-  if (currentHour < 12) {
-    // 00:00 - 11:59
-    say('Good morning. How may I help you?');
-  } else if (currentHour < 18) {
-    // 12:00 - 17:59
-    say('Good afternoon. How may I help you?');
-  } else {
-    // 18:00 - 23:59
-    say('Good evening. How may I help you?');
-  }
+  // var today = new Date()
+  // var currentHour = today.getHours()
+  // if (currentHour < 12) {
+  //   // 00:00 - 11:59
+  //   say('Good morning. How may I help you?');
+  // } else if (currentHour < 18) {
+  //   // 12:00 - 17:59
+  //   say('Good afternoon. How may I help you?');
+  // } else {
+  //   // 18:00 - 23:59
+  //   say('Good evening. How may I help you?');
+  // }
 }
 
 var delayedAction;
@@ -107,7 +107,6 @@ function heardSearch(heard) {
   if (didHear(heard, signalPhrases, 'starts with')) {
     var words = removeSignalPhrase(heard,signalPhrases);
     search(words);
-    say('you searched for: ' + words);
     return true;
   }
   // otherwise
@@ -129,17 +128,17 @@ function search(words) {
 
   // search wikipedia
 
-  // TODO: make work for multi-word entries by returning closest match
-
-  var wikipediaTitle = words.replace(' ','_');
-  wikipediaTitle = wikipediaTitle.charAt(0).toUpperCase() + wikipediaTitle.slice(1); // capitalize first letter
-  var urlAPICall = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&exsentences=1&callback=?&titles=';
-  urlAPICall += wikipediaTitle;
+  // var urlAPICall = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&exsentences=1&callback=?&titles=';
+  var urlAPICall = 'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exsentences=1&exintro&explaintext=&indexpageids=true&format=json&generator=search&gsrlimit=1&callback=?&gsrsearch=';
+  urlAPICall += words;
   // window.open(urlAPICall);
   $.getJSON(urlAPICall, function(data) {
     // wikipedia returns pages with page id's, so try to get the extract of the first one
-    summary = Object.values(data.query.pages)[0].extract;
-    say(summary);
+    var pageInfo = Object.values(data.query.pages)[0];
+    var summary = pageInfo.extract;
+    var title = pageInfo.title;
+    if (title.toLowerCase() != words) say("I'm not sure this is what you're looking for, but here's what I found.")
+    say(summary); // alert(Object.values(data.query.pages)[0].extract)
   });
 
   // TODO: search duckduckgo
