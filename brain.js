@@ -157,4 +157,19 @@ function search(words) {
 
   // TODO: search duckduckgo
 
+  // var urlAPICall = 'http://api.duckduckgo.com/?format=jsonp&pretty=1&q=';
+  // urlAPICall += words;
+  // // window.open(urlAPICall);
+  // alert('right above getJSON')
+  // $.getJSON(urlAPICall, function(data) {
+  //   alert('got in')
+  //   alert(data);
+  //   // wikipedia returns pages with page id's, so try to get the extract of the first one
+  //   // var page = Object.values(data.RelatedTopics)[0];
+  //   // var summary = page.text;
+  //   // var title = page.FirstURL.replace('https://duckduckgo.com/','').replace('_',' ');
+  //   // if (title.toLowerCase() != words) say("I'm not sure this is what you're looking for, but here's what I found.")
+  //   // say("duck duck go says: " + summary); // alert(Object.values(data.query.pages)[0].extract)
+  // });
+
 }
