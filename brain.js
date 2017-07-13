@@ -171,7 +171,7 @@ function searchQuestion(heard) {
   // var urlAPICall = 'https://api.duckduckgo.com/?format=json&pretty=1&q=';
   var urlAPICall = 'https://api.duckduckgo.com/?q=';
   urlAPICall += heard;
-  say("I'm now opening up a search results page for that.");
+  say("I'm now opening a search results page.");
   window.open(urlAPICall);
 
   // var urlAPICall = 'http://api.duckduckgo.com/?format=jsonp&pretty=1&q=';
