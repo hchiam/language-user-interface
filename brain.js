@@ -3,18 +3,18 @@ window.addEventListener('offline', function(e) { say("You've lost your internet 
 window.addEventListener('online', function(e) { say("We're back online now."); });
 
 function welcome() {
-  // var today = new Date()
-  // var currentHour = today.getHours()
-  // if (currentHour < 12) {
-  //   // 00:00 - 11:59
-  //   say('Good morning. How may I help you?');
-  // } else if (currentHour < 18) {
-  //   // 12:00 - 17:59
-  //   say('Good afternoon. How may I help you?');
-  // } else {
-  //   // 18:00 - 23:59
-  //   say('Good evening. How may I help you?');
-  // }
+  var today = new Date()
+  var currentHour = today.getHours()
+  if (currentHour < 12) {
+    // 00:00 - 11:59
+    say('Good morning. How may I help you?');
+  } else if (currentHour < 18) {
+    // 12:00 - 17:59
+    say('Good afternoon. How may I help you?');
+  } else {
+    // 18:00 - 23:59
+    say('Good evening. How may I help you?');
+  }
 }
 
 var delayedAction;
