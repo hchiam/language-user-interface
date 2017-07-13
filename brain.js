@@ -119,7 +119,7 @@ function heardSearch(heard) {
   // check definition
   const signalPhrases = ["what's ", 'what is ', 'what are ', 'what was ', 'what were ',
                         "who's ", 'who is ', 'who are ', 'who was ', 'who were ',
-                        'search for '];
+                        'search for ', 'tell me about '];
   if (didHear(heard, signalPhrases, 'starts with')) {
     var words = removeSignalPhrase(heard,signalPhrases);
     searchDefinition(words);
