@@ -10,7 +10,7 @@ function converse() {
     var heard = listen();
     if (heard) {
       speak(heard);
-      listenForNewSentence();
+      clearMessageHeardAlready();
     }
   }, 2000);
 }
@@ -20,7 +20,7 @@ function listen() {
   return heard;
 }
 
-function listenForNewSentence() {
+function clearMessageHeardAlready() {
   document.getElementById("input").value = '';
 }
 
