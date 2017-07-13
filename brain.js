@@ -8,13 +8,20 @@ function converse() {
   clearTimeout(delayedAction); // reset if still typing
   delayedAction = setTimeout(function(){
     var heard = listen();
-    if (heard) speak(heard);
+    if (heard) {
+      speak(heard);
+      listenForNewSentence();
+    }
   }, 2000);
 }
 
 function listen() {
   var heard = document.getElementById("input").value;
   return heard;
+}
+
+function listenForNewSentence() {
+  document.getElementById("input").value = '';
 }
 
 function say(sentence) {
