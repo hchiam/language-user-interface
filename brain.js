@@ -49,7 +49,7 @@ function speak(heard) {
     say(heard);
   } else if (didHear(heard,['hello world','anyone home','anyone there','anyone listening'])) {
     say('hi there');
-  } else if (didHear(heard,["hi there"])) {
+  } else if (didHear(heard,["hi there",'hey there'])) {
     say('right back at you');
   } else if (didHear(heard,["is this thing on",'can you hear me',"does this thing work",'are you on right now'])) {
     say('yes');
