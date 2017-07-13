@@ -20,6 +20,7 @@ function welcome() {
 var delayedAction;
 
 function converse() {
+  say(' '); // stop talking, so user can interrupt
   clearTimeout(delayedAction); // reset if still typing
   delayedAction = setTimeout(function(){
     var heard = listen();
@@ -62,6 +63,8 @@ function speak(heard) {
 
   var heardRecognized = false;
 
+  heardRecognized |= heardInterrupt(heard);
+
   heardRecognized |= heardPleasantries(heard);
 
   heardRecognized |= heardSearch(heard);
@@ -71,6 +74,14 @@ function speak(heard) {
     // need '...' to make an audible pause
     say(sentence);
   }
+}
+
+function heardInterrupt(heard) {
+  if (didHear(heard,['okay','ok','stop',"that's enough",'enough'])) {
+    say(' ');
+    return true;
+  }
+  return false;
 }
 
 function heardPleasantries(heard) {
@@ -85,6 +96,9 @@ function heardPleasantries(heard) {
     return true;
   } else if (didHear(heard,["is this thing on",'can you hear me',"does this thing work",'are you on right now'])) {
     say('yes');
+    return true;
+  } else if (didHear(heard,["let's begin","let's start","let's get started"])) {
+    say('Okay. What would you like to do?');
     return true;
   } else if (didHear(heard,['thanks','thank you'])) {
     say("you're welcome");
