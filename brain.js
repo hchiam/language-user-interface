@@ -47,7 +47,9 @@ function speak(heard) {
 
   var heardRecognized = false;
 
-  heardRecognized = heardPleasantries(heard);
+  heardRecognized |= heardPleasantries(heard);
+
+  heardRecognized |= heardSearch(heard);
 
   if (!heardRecognized) {
     var sentence = "You said: " + heard + '...' + "Sorry, I currently don't have a pre-programmed response to that.";
@@ -81,4 +83,30 @@ function heardPleasantries(heard) {
   }
   // otherwise
   return false;
+}
+
+function heardSearch(heard) {
+  const signalPhrases = ['what is the ', 'what are the ', 'what was the ', 'what were the ',
+                        'what is a ', 'what is ', 'what are ', 'what was ', 'what were ',
+                        'search for ']
+  if (didHear(heard, signalPhrases, 'starts with')) {
+    var words = removeSignalPhrase(heard,signalPhrases);
+    search(words);
+    say('you searched for: ' + words);
+    return true;
+  }
+  // otherwise
+  return false;
+}
+
+function removeSignalPhrase(heard, signalPhrases) {
+  var words = heard;
+  for (var i in signalPhrases) {
+    words = words.replace(signalPhrases[i],'');
+  }
+  return words;
+}
+
+function search(words) {
+  //
 }
