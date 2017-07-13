@@ -86,8 +86,8 @@ function heardPleasantries(heard) {
 }
 
 function heardSearch(heard) {
-  const signalPhrases = ['what is the ', 'what are the ', 'what was the ', 'what were the ',
-                        'what is a ', 'what is ', 'what are ', 'what was ', 'what were ',
+  const signalPhrases = ['what is ', 'what are ', 'what was ', 'what were ',
+                        'who is ', 'who are ', 'who was ', 'who were ',
                         'search for ']
   if (didHear(heard, signalPhrases, 'starts with')) {
     var words = removeSignalPhrase(heard,signalPhrases);
@@ -102,11 +102,15 @@ function heardSearch(heard) {
 function removeSignalPhrase(heard, signalPhrases) {
   var words = heard;
   for (var i in signalPhrases) {
-    words = words.replace(signalPhrases[i],'');
+    var toRemove = new RegExp('^'+signalPhrases[i]+'+');
+    words = words.replace(toRemove,'');
+    // remove initial 'a'
+    words = words.replace(/^a +/,'');
   }
   return words;
 }
 
 function search(words) {
-  //
+  // TODO: search wikipedia
+  // TODO: search duckduckgo
 }
