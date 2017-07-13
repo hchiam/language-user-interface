@@ -101,8 +101,8 @@ function heardPleasantries(heard) {
 }
 
 function heardSearch(heard) {
-  const signalPhrases = ['what is ', 'what are ', 'what was ', 'what were ',
-                        'who is ', 'who are ', 'who was ', 'who were ',
+  const signalPhrases = ["what's ", 'what is ', 'what are ', 'what was ', 'what were ',
+                        "who's ", 'who is ', 'who are ', 'who was ', 'who were ',
                         'search for ']
   if (didHear(heard, signalPhrases, 'starts with')) {
     var words = removeSignalPhrase(heard,signalPhrases);
@@ -126,6 +126,22 @@ function removeSignalPhrase(heard, signalPhrases) {
 }
 
 function search(words) {
-  // TODO: search wikipedia
+
+  // search wikipedia
+
+  // TODO: make work for multi-word entries by returning closest match
+
+  var wikipediaTitle = words.replace(' ','_');
+  wikipediaTitle = wikipediaTitle.charAt(0).toUpperCase() + wikipediaTitle.slice(1); // capitalize first letter
+  var urlAPICall = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&exsentences=1&callback=?&titles=';
+  urlAPICall += wikipediaTitle;
+  // window.open(urlAPICall);
+  $.getJSON(urlAPICall, function(data) {
+    // wikipedia returns pages with page id's, so try to get the extract of the first one
+    summary = Object.values(data.query.pages)[0].extract;
+    say(summary);
+  });
+
   // TODO: search duckduckgo
+
 }
