@@ -19,7 +19,7 @@ function speak(heard) {
 
   // remove trailing/leading spaces, set to lowercase, and remove punctuation
   heard = heard.trim().toLowerCase();
-  heard = heard.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/i,"");
+  heard = heard.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/i,"");
 
   if (heard == "hello" || heard == "hi" || heard == "hey") {
     say(heard);
