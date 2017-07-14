@@ -98,16 +98,13 @@ function heardInterrupt(heard) {
 }
 
 function heardPleasantries(heard) {
-  if (didHear(heard,['hi','hey','hello'])) {
-    say(heard);
+  if (didHear(heard,['hi','hey','hello'],'starts with')) {
+    say('hello');
     return true;
   } else if (didHear(heard,['hello world','anyone home','anyone there','anyone listening'])) {
     say('hi there');
     return true;
-  } else if (didHear(heard,["hi there",'hey there'])) {
-    say('right back at you');
-    return true;
-  } else if (didHear(heard,["is this thing on",'can you hear me',"does this thing work",'are you on right now'])) {
+  } else if (didHear(heard,["is this thing on",'can you hear me',"does this thing work",'are you on right now'],'starts with')) {
     say('yes');
     return true;
   } else if (didHear(heard,["let's begin","let's start","let's get started"])) {
