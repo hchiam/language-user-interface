@@ -38,6 +38,9 @@ function converse() {
 
 function listen() {
   var heard = document.getElementById("input").value;
+  // remove trailing/leading spaces, set to lowercase, and remove punctuation
+  heard = heard.trim().toLowerCase();
+  heard = heard.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/i,'');
   return heard;
 }
 
@@ -71,10 +74,6 @@ function didHear(heard, listOfChecks=[], checkType='exact match') {
 function speak(heard) {
   // TODO: add more functionality
   // TODO: make more modular
-
-  // remove trailing/leading spaces, set to lowercase, and remove punctuation
-  heard = heard.trim().toLowerCase();
-  heard = heard.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/i,'');
 
   var heardRecognized = false;
 
