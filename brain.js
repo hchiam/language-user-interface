@@ -116,13 +116,10 @@ function heardPleasantries(heard) {
 
 function heardSearch(heard) {
 
-  // check location
-  if (didHear(heard,['where am i','where are we'])) {
-    $.getJSON("http://ipinfo.io", function(response) {
-      say("My sensors are detecting that we're in " + response.city);
-    });
-    return true;
-  }
+  // first check special cases before more general cases
+  if (askingWho(heard)) return true;
+  if (askingLocation(heard)) return true;
+  if (askingTime(heard)) return true;
 
   // check definition search (more slightly more general)
   const signalPhrases = ["what's ", 'what is ', 'what are ', 'what was ', 'what were ',
@@ -142,6 +139,49 @@ function heardSearch(heard) {
   }
 
   // otherwise prolly not a question
+  return false;
+}
+
+function askingWho(heard) {
+  if (didHear(heard,['who are you','what are you'])) {
+    say("I am LUI. That's short for Language User Interface.");
+    return true;
+  } else if (heard === 'are you jarvis') {
+    say("Not exactly. I'm LUI. But I am a Language User Interface.");
+    return true;
+  } else if (heard === 'are you like jarvis') {
+    say("Sort of. I'm LUI. A Language User Interface.");
+    return true;
+  }
+  return false;
+}
+
+function askingLocation(heard) {
+  if (didHear(heard,['where am i','where are we'])) {
+    $.getJSON("http://ipinfo.io", function(response) {
+      say("My sensors are detecting that we're in " + response.city);
+    });
+    return true;
+  }
+  return false;
+}
+
+function askingTime(heard) {
+  // check time
+  if (didHear(heard,['what time is it','what time is it right now'])) {
+    var d = new Date();
+    var t = d.toLocaleTimeString();
+    say('It is ' + t);
+    return true;
+  }
+  // check date
+  if (didHear(heard,["what's today's date", "what's the date today",'what is the date today','what day is it today'])) {
+    var d = new Date();
+    var t = d.toDateString();
+    say('It is ' + t);
+    return true;
+  }
+  // otherwise
   return false;
 }
 
