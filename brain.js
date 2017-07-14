@@ -36,6 +36,10 @@ function converse() {
   }, 2000);
 }
 
+function say(sentence) {
+  responsiveVoice.speak(sentence, 'UK English Male');
+}
+
 function listen() {
   var heard = document.getElementById("input").value;
   // remove trailing/leading spaces, set to lowercase, and remove punctuation
@@ -54,12 +58,25 @@ function removeOKLouis(heard) {
   return heard;
 }
 
-function clearMessageHeardAlready() {
-  document.getElementById("input").value = '';
+function speak(heard) {
+  // TODO: add more functionality
+  // TODO: make more modular
+
+  var heardRecognized = false;
+
+  heardRecognized |= heardInterrupt(heard);
+  heardRecognized |= heardPleasantries(heard);
+  heardRecognized |= heardSearch(heard);
+
+  if (!heardRecognized) {
+    var sentence = "You said: " + heard + '...' + "Sorry, I currently don't have a pre-programmed response to that.";
+    // need '...' to make an audible pause
+    say(sentence);
+  }
 }
 
-function say(sentence) {
-  responsiveVoice.speak(sentence, 'UK English Male');
+function clearMessageHeardAlready() {
+  document.getElementById("input").value = '';
 }
 
 function didHear(heard, listOfChecks=[], checkType='exact match') {
@@ -79,23 +96,6 @@ function didHear(heard, listOfChecks=[], checkType='exact match') {
   }
   // otherwise
   return false;
-}
-
-function speak(heard) {
-  // TODO: add more functionality
-  // TODO: make more modular
-
-  var heardRecognized = false;
-
-  heardRecognized |= heardInterrupt(heard);
-  heardRecognized |= heardPleasantries(heard);
-  heardRecognized |= heardSearch(heard);
-
-  if (!heardRecognized) {
-    var sentence = "You said: " + heard + '...' + "Sorry, I currently don't have a pre-programmed response to that.";
-    // need '...' to make an audible pause
-    say(sentence);
-  }
 }
 
 function heardInterrupt(heard) {
@@ -136,7 +136,7 @@ function heardPleasantries(heard) {
 function heardSearch(heard) {
 
   // first check special cases before more general cases
-  if (askingWho(heard)) return true;
+  if (askingWhoAreYou(heard)) return true;
   if (askingLocation(heard)) return true;
   if (askingTime(heard)) return true;
   if (askingMath(heard)) return true;
@@ -162,7 +162,7 @@ function heardSearch(heard) {
   return false;
 }
 
-function askingWho(heard) {
+function askingWhoAreYou(heard) {
   if (didHear(heard,['who are you','what are you'])) {
     say("I am LUI. That's short for Language User Interface.");
     return true;
