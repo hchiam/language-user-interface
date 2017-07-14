@@ -245,7 +245,7 @@ function removeSignalPhrase(heard, signalPhrases) {
   for (var i in signalPhrases) {
     var toRemove = new RegExp('^'+signalPhrases[i]+'+');
     words = words.replace(toRemove,'');
-    // remove initial 'a'
+    // remove initial 'a' or 'an'
     words = words.replace(/^an? /,'');
   }
   return words;
