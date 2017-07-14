@@ -29,10 +29,8 @@ function converse() {
   clearTimeout(delayedAction); // let user continue what they're saying
   delayedAction = setTimeout(function(){
     var heard = listen();
-    if (heard) {
-      speak(heard);
-      clearMessageHeardAlready();
-    }
+    if (heard) speak(heard);
+    clearMessageHeardAlready();
   }, 2000);
 }
 
