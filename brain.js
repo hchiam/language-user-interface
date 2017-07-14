@@ -1,3 +1,8 @@
+/*
+Trying to understand this code?
+The function converse() would be a good place to start.
+*/
+
 // automatically notify of internet connection
 window.addEventListener('offline', function(e) { say("You've lost your internet connection."); });
 window.addEventListener('online', function(e) { say("We're back online now."); });
