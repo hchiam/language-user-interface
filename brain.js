@@ -169,7 +169,7 @@ function askingWho(heard) {
 function askingLocation(heard) {
   if (didHear(heard,['where am i','where are we'])) {
     $.getJSON("http://ipinfo.io", function(response) {
-      say("My sensors are detecting that we're in " + response.city);
+      say("My sensors are detecting that we're around " + response.city);
     });
     return true;
   }
