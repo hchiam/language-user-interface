@@ -77,6 +77,8 @@ function speak(heard) {
 
   var heardRecognized = false;
 
+  heard = removeOKLouis(heard);
+
   heardRecognized |= heardInterrupt(heard);
   heardRecognized |= heardPleasantries(heard);
   heardRecognized |= heardSearch(heard);
@@ -96,9 +98,18 @@ function heardInterrupt(heard) {
   return false;
 }
 
+function removeOKLouis(heard) {
+  heard = heard.replace(' louis ', ' lui ');
+  const toReplace = ['okay lui ', 'ok lui ', 'hi lui ', 'hey lui ', 'hello lui ', 'alright lui '];
+  for (var i in toReplace) {
+    if (heard.startsWith(toReplace[i])) return heard.replace(toReplace[i],'');
+  }
+  return heard;
+}
+
 function heardPleasantries(heard) {
-  if (didHear(heard,['hi','hey','hello'],'starts with')) {
-    say('hello');
+  if (didHear(heard,['hi','hey','hello'])) {
+    say(heard);
     return true;
   } else if (didHear(heard,['hello world','anyone home','anyone there','anyone listening'])) {
     say('hi there');
