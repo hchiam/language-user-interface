@@ -118,10 +118,9 @@ function heardSearch(heard) {
 
   // check location
   if (didHear(heard,['where am i','where are we'])) {
-    $.get("http://ipinfo.io", function(response) {
-      response.country
+    $.getJSON("http://ipinfo.io", function(response) {
       say("My sensors are detecting that we're in " + response.city);
-    }, "jsonp");
+    });
     return true;
   }
 
