@@ -99,7 +99,7 @@ function didHear(heard, listOfChecks=[], checkType='exact match') {
 }
 
 function heardInterrupt(heard) {
-  if (didHear(heard,['okay','ok','stop',"that's enough",'enough',''])) { // '' in case just spaces entered
+  if (didHear(heard,['okay','ok','stop',"that's enough",'enough','alright',''])) { // '' in case just spaces entered
     say(' ');
     return true;
   }
