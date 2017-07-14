@@ -25,8 +25,8 @@ function welcome() {
 var delayedAction;
 
 function converse() {
-  say(' '); // stop talking, so user can interrupt
-  clearTimeout(delayedAction); // reset if still typing
+  say(' '); // let user interrupt
+  clearTimeout(delayedAction); // let user continue what they're saying
   delayedAction = setTimeout(function(){
     var heard = listen();
     if (heard) {
