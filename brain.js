@@ -138,6 +138,7 @@ function heardSearch(heard) {
   if (askingLocation(heard)) return true;
   if (askingTime(heard)) return true;
   if (askingMath(heard)) return true;
+  if (askingWeather(heard)) return true;
 
   // check definition search (more slightly more general)
   const signalPhrases = ["what's ", 'what is ', 'what are ', 'what was ', 'what were ',
@@ -200,6 +201,31 @@ function askingTime(heard) {
     return true;
   }
   // otherwise
+  return false;
+}
+
+function askingWeather(heard) {
+  if (didHear(heard,["how's the weather","how's the weather today","what's the weather like today","what is the weather like today"])) {
+
+      // get approximate location from IP address
+      $.getJSON("http://ipinfo.io", function(response) {
+          var myLocation = response.city;
+
+          // get weather statement for that location
+          var urlAPICall = "https://query.yahooapis.com/v1/public/yql?q=select item.condition.text from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + myLocation + "')&format=json";
+          $.getJSON(urlAPICall, function(data) {
+
+              // respond with weather statement for that location
+              var response = data.query.results.channel.item.condition.text;
+              say("it's " + response + ' around ' + myLocation);
+              
+              // var wind = data.query.results.channel.wind;
+              // alert(data.query);
+              // say(wind.chill);
+          });
+      });
+      return true;
+  }
   return false;
 }
 
