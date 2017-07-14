@@ -79,9 +79,7 @@ function speak(heard) {
   var heardRecognized = false;
 
   heardRecognized |= heardInterrupt(heard);
-
   heardRecognized |= heardPleasantries(heard);
-
   heardRecognized |= heardSearch(heard);
 
   if (!heardRecognized) {
