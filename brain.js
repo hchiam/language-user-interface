@@ -116,7 +116,16 @@ function heardPleasantries(heard) {
 
 function heardSearch(heard) {
 
-  // check definition
+  // check location
+  if (didHear(heard,['where am i','where are we'])) {
+    $.get("http://ipinfo.io", function(response) {
+      response.country
+      say("My sensors are detecting that we're in " + response.city);
+    }, "jsonp");
+    return true;
+  }
+
+  // check definition search (more slightly more general)
   const signalPhrases = ["what's ", 'what is ', 'what are ', 'what was ', 'what were ',
                         "who's ", 'who is ', 'who are ', 'who was ', 'who were ',
                         'search for ', 'tell me about '];
@@ -126,7 +135,7 @@ function heardSearch(heard) {
     return true;
   }
 
-  // otherwise put the whole question into search engine
+  // otherwise put the whole question into search engine (most general search)
   const signalGenericQuestion = ['what ', 'who ', 'where ', 'when ', 'why ', 'how ', 'which '];
   if (didHear(heard, signalGenericQuestion, 'starts with')) {
     searchQuestion(heard);
