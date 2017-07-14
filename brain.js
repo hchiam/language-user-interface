@@ -41,6 +41,16 @@ function listen() {
   // remove trailing/leading spaces, set to lowercase, and remove punctuation
   heard = heard.trim().toLowerCase();
   heard = heard.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/i,'');
+  heard = removeOKLouis(heard);
+  return heard;
+}
+
+function removeOKLouis(heard) {
+  heard = heard.replace(' louis ', ' lui ');
+  const toReplace = ['okay lui ', 'ok lui ', 'hi lui ', 'hey lui ', 'hello lui ', 'alright lui '];
+  for (var i in toReplace) {
+    if (heard.startsWith(toReplace[i])) return heard.replace(toReplace[i],'');
+  }
   return heard;
 }
 
@@ -77,8 +87,6 @@ function speak(heard) {
 
   var heardRecognized = false;
 
-  heard = removeOKLouis(heard);
-
   heardRecognized |= heardInterrupt(heard);
   heardRecognized |= heardPleasantries(heard);
   heardRecognized |= heardSearch(heard);
@@ -96,15 +104,6 @@ function heardInterrupt(heard) {
     return true;
   }
   return false;
-}
-
-function removeOKLouis(heard) {
-  heard = heard.replace(' louis ', ' lui ');
-  const toReplace = ['okay lui ', 'ok lui ', 'hi lui ', 'hey lui ', 'hello lui ', 'alright lui '];
-  for (var i in toReplace) {
-    if (heard.startsWith(toReplace[i])) return heard.replace(toReplace[i],'');
-  }
-  return heard;
 }
 
 function heardPleasantries(heard) {
