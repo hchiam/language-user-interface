@@ -64,7 +64,7 @@ function speak(heard) {
 
   // remove trailing/leading spaces, set to lowercase, and remove punctuation
   heard = heard.trim().toLowerCase();
-  heard = heard.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/i,"");
+  heard = heard.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/i,'');
 
   var heardRecognized = false;
 
@@ -125,6 +125,7 @@ function heardSearch(heard) {
   if (askingWho(heard)) return true;
   if (askingLocation(heard)) return true;
   if (askingTime(heard)) return true;
+  if (askingMath(heard)) return true;
 
   // check definition search (more slightly more general)
   const signalPhrases = ["what's ", 'what is ', 'what are ', 'what was ', 'what were ',
@@ -188,6 +189,43 @@ function askingTime(heard) {
   }
   // otherwise
   return false;
+}
+
+function askingMath(heard) {
+  var possibleExpression = heard.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/i,''); // make safer
+  const mathWords = {'one':'1','two':'2','three':'3','four':'4','five':'5',
+                    'six':'6','seven':'7','eight':'8','nine':'9','zero':'0',
+                    'ten':'10',
+                    'eleven':'11','twelve':'12','thirteen':'13','fourteen':'14',
+                    'fifteen':'15','sixteen':'16','seventeen':'17','eighteen':'18',
+                    'nineteen':'19','twenty':'20','thirty':'30','fourty':'40',
+                    'fifty':'50','sixty':'60','eighty':'80','ninety':'90',
+                    //'hundred':'00','thousand':'000','million':'000000',
+                    'and':'',
+                    'point':'.','decimal':'.',
+                    'plus':'+', 'minus':'-', 'divided by':'/', 'times':'*', 'multiplied by':'*', 'to the power of':'^'};
+  for (var key in mathWords) {
+    var toReplaceAllInstances = new RegExp(key, "g");
+    possibleExpression = possibleExpression.replace(toReplaceAllInstances, mathWords[key]);
+  }
+  possibleExpression = possibleExpression.replace(/ /g,'');
+  if (safeForMath(possibleExpression)) {
+    possibleExpression = eval(possibleExpression);
+    say('the answer is: ' + possibleExpression.toString());
+    return true;
+  }
+  return false;
+}
+
+function safeForMath(expression) {
+  const mathy = '1234567890+-*/^';
+  for (var i in expression) {
+    var letter = expression[i];
+    if (!mathy.includes(letter)) {
+      return false;
+    }
+  }
+  return true;
 }
 
 function removeSignalPhrase(heard, signalPhrases) {
