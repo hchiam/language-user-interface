@@ -177,9 +177,11 @@ function askingWhoAreYou(heard) {
 
 function askingLocation(heard) {
   if (didHear(heard,['where am i','where are we'])) {
-    $.getJSON("http://ipinfo.io", function(response) {
-      say("My sensors are detecting that we're around " + response.city);
-    });
+    // // keep for reference:
+    // $.getJSON("http://ipinfo.io", function(response) {
+    //   say("My sensors are detecting that we're around " + response.city);
+    // });
+    say("My sensors are detecting that we're around " + getLocation());
     return true;
   }
   return false;
@@ -204,6 +206,19 @@ function askingTime(heard) {
   return false;
 }
 
+function getLocation() {
+  var location;
+  $.ajax({
+    url: 'http://ipinfo.io',
+    async: false, // need to set to synchronous so it waits for the answer!
+    dataType: 'json',
+    success: function (json) {
+      location = json.city + ', ' + json.region;
+    }
+  });
+  return location;
+}
+
 function askingWeather(heard) {
   if (didHear(heard,["how's the weather","how's the weather today","what's the weather like today","what is the weather like today"])) {
 
@@ -218,11 +233,12 @@ function askingWeather(heard) {
               // respond with weather statement for that location
               var response = data.query.results.channel.item.condition.text;
               say("it's " + response + ' around ' + myLocation);
-              
+
               // var wind = data.query.results.channel.wind;
               // alert(data.query);
               // say(wind.chill);
           });
+
       });
       return true;
   }
