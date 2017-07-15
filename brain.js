@@ -207,6 +207,7 @@ function askingTime(heard) {
 }
 
 function getLocation() {
+  // get approximate location from IP address
   var location;
   $.ajax({
     url: 'http://ipinfo.io',
@@ -221,26 +222,19 @@ function getLocation() {
 
 function askingWeather(heard) {
   if (didHear(heard,["how's the weather","how's the weather today","what's the weather like today","what is the weather like today"])) {
-
-      // get approximate location from IP address
-      $.getJSON("http://ipinfo.io", function(response) {
-          var myLocation = response.city;
-
-          // get weather statement for that location
-          var urlAPICall = "https://query.yahooapis.com/v1/public/yql?q=select item.condition.text from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + myLocation + "')&format=json";
-          $.getJSON(urlAPICall, function(data) {
-
-              // respond with weather statement for that location
-              var response = data.query.results.channel.item.condition.text;
-              say("it's " + response + ' around ' + myLocation);
-
-              // var wind = data.query.results.channel.wind;
-              // alert(data.query);
-              // say(wind.chill);
-          });
-
-      });
-      return true;
+    // get approximate location
+    var myLocation = getLocation();
+    // get weather statement for that location
+    var urlAPICall = "https://query.yahooapis.com/v1/public/yql?q=select item.condition.text from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + myLocation + "')&format=json";
+    $.getJSON(urlAPICall, function(data) {
+      // respond with weather statement for that location
+      var weatherDescription = data.query.results.channel.item.condition.text;
+      say("it's " + weatherDescription + ' around ' + myLocation);
+      // var wind = data.query.results.channel.wind;
+      // alert(data.query);
+      // say(wind.chill);
+    });
+    return true;
   }
   return false;
 }
