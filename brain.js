@@ -50,9 +50,7 @@ function listen() {
 function removeOKLouis(heard) {
   heard = heard.replace(' louis ', ' lui ');
   const toReplace = ['okay lui ', 'ok lui ', 'hi lui ', 'hey lui ', 'hello lui ', 'alright lui '];
-  for (var i in toReplace) {
-    if (heard.startsWith(toReplace[i])) return heard.replace(toReplace[i],'');
-  }
+  heard = removeSignalPhrases(heard, toReplace);
   return heard;
 }
 
@@ -145,7 +143,7 @@ function heardSearch(heard) {
                         "who's ", 'who is ', 'who are ', 'who was ', 'who were ',
                         'search for ', 'tell me about '];
   if (didHear(heard, signalPhrases, 'starts with')) {
-    var words = removeSignalPhrase(heard,signalPhrases);
+    var words = removeSignalPhrases(heard,signalPhrases);
     searchDefinition(words);
     return true;
   }
@@ -276,15 +274,17 @@ function safeForMath(expression) {
   return true;
 }
 
-function removeSignalPhrase(heard, signalPhrases) {
-  var words = heard;
+function removeSignalPhrases(heard, signalPhrases) {
+  // find first match for start of sentence, remove, and stop checking
   for (var i in signalPhrases) {
-    var toRemove = new RegExp('^'+signalPhrases[i]+'+');
-    words = words.replace(toRemove,'');
-    // remove initial 'a' or 'an'
-    words = words.replace(/^an? /,'');
+    if (heard.startsWith(signalPhrases[i])) {
+      heard = heard.replace(signalPhrases[i],'');
+      break;
+    }
   }
-  return words;
+  // remove initial 'a' or 'an' from the rest of the remaining sentence
+  heard = heard.replace(/^an? /,'');
+  return heard;
 }
 
 function searchDefinition(words) {
