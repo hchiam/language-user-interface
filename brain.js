@@ -22,9 +22,21 @@ function welcome() {
   }
 }
 
+var unfamiliarUser = setTimeout(function(){
+  introSelf();
+}, 9000);
+
+function introSelf() {
+  say('You seem unfamiliar with this interface.');
+  say('You can type a question in the textbox.')
+  say('Or, if you have speech recognition software, such as Mac Dictation,\
+       you can enter text verbally into the textbox.')
+}
+
 var delayedAction;
 
 function converse() {
+  // clearTimeout(unfamiliarUser); // user is using the interface
   say(' '); // let user interrupt
   clearTimeout(delayedAction); // let user continue what they're saying
   delayedAction = setTimeout(function(){
