@@ -27,9 +27,9 @@ var unfamiliarUser = setTimeout(function(){
 }, 9000);
 
 function introSelf() {
-  say('You seem unfamiliar with this interface.');
-  say('You can type a question in the textbox.')
-  say('Or, if you have speech recognition software, such as Mac Dictation,\
+  say('You seem unfamiliar with this interface. \
+       You can type a question in the textbox. \
+       Or, if you have speech recognition software, such as Mac Dictation, \
        you can enter text verbally into the textbox.')
 }
 
