@@ -118,6 +118,9 @@ function heardPleasantries(heard) {
   if (didHear(heard,['hi','hey','hello'])) {
     say(heard);
     return true;
+  } else if (heard === 'hi there') {
+    say('right back at you');
+    return true;
   } else if (didHear(heard,['hello world','anyone home','anyone there','anyone listening'])) {
     say('hi there');
     return true;
