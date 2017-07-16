@@ -161,13 +161,13 @@ function heardSearch(heard) {
 
 function askingWhoAreYou(heard) {
   if (didHear(heard,['who are you','what are you'])) {
-    say("I am LUI. That's short for Language User Interface.");
+    say("My name is LUI. That's short for Language User Interface.");
     return true;
   } else if (heard === 'are you jarvis') {
-    say("Not exactly. I'm LUI. But I am a Language User Interface.");
+    say("Not exactly. My name is LUI. But I am a Language User Interface.");
     return true;
   } else if (heard === 'are you like jarvis') {
-    say("Sort of. I'm LUI. A Language User Interface.");
+    say("Sort of. My name is LUI. A Language User Interface.");
     return true;
   }
   return false;
@@ -177,9 +177,9 @@ function askingLocation(heard) {
   if (didHear(heard,['where am i','where are we'])) {
     // // keep for reference:
     // $.getJSON("http://ipinfo.io", function(response) {
-    //   say("My sensors are detecting that we're around " + response.city);
+    //   say("I am detecting that we're around " + response.city);
     // });
-    say("My sensors are detecting that we're around " + getLocation());
+    getLocation();
     return true;
   }
   return false;
@@ -204,37 +204,91 @@ function askingTime(heard) {
   return false;
 }
 
-function getLocation() {
-  // get approximate location from IP address
-  var location;
-  $.ajax({
-    url: 'http://ipinfo.io',
-    async: false, // need to set to synchronous so it waits for the answer!
-    dataType: 'json',
-    success: function (json) {
-      location = json.city + ', ' + json.region;
-    }
-  });
-  return location;
+function getLocation(func) { // e.g.: getLocation passes myLocation to getWeather(myLocation)
+
+  var locationFull;
+
+  if (navigator.geolocation === undefined) {
+    alert("Sorry, I'm unable to use geolocation in this browser. Try another browser.")
+  } else {
+    say('please authorize geolocation');
+
+    // get location latitude and longitude
+    navigator.geolocation.getCurrentPosition(function(position) {
+        var lat = position.coords.latitude;
+        var long = position.coords.longitude;
+
+        // get location address
+        var urlAPICall = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + lat + ',' + long;
+        $.getJSON(urlAPICall, function(response){
+
+            if (response.status != 'OK') {
+              say("Sorry, I couldn't locate our current position.");
+            } else {
+
+                // set up for getting the parts we want
+                var resultObject = response.results[0].address_components;
+                var locationFull = '';
+                var city, adminAreaLvl1, country;
+
+                // get the parts we want
+                for (var i in resultObject) {
+                  // put together full location description
+                  locationFull += resultObject[i].long_name + ',';
+                  // check location component types
+                  var types = resultObject[i].types;
+                  for (var j in types) {
+                    // get specific location components
+                    if (types[j] === 'locality') {
+                      city = resultObject[i].long_name;
+                    } else if (types[j] === 'administrative_area_level_1') {
+                      adminAreaLvl1 = resultObject[i].long_name;
+                    } else if (types[j] === 'country') {
+                      country = resultObject[i].long_name;
+                    }
+                  }
+                }
+                // put the pieces together
+                myLocation = city + ' ' + adminAreaLvl1; // + ' ' + country;
+                // could do: myLocation = locationFull;
+
+                // just say location, or pass location to another function (i.e. callback)
+                if (func) {
+                  func(myLocation); // e.g.: pass myLocation to function getWeather(myLocation)
+                } else {
+                  say("we're at " + locationFull);
+                }
+
+            }
+
+        });
+
+    });
+
+  }
+
 }
 
 function askingWeather(heard) {
   if (didHear(heard,["how's the weather","how's the weather today","what's the weather like today","what is the weather like today"])) {
-    // get approximate location
-    var myLocation = getLocation();
-    // get weather statement for that location
-    var urlAPICall = "https://query.yahooapis.com/v1/public/yql?q=select item.condition.text from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + myLocation + "')&format=json";
-    $.getJSON(urlAPICall, function(data) {
-      // respond with weather statement for that location
-      var weatherDescription = data.query.results.channel.item.condition.text;
-      say("it's " + weatherDescription + ' around ' + myLocation);
-      // var wind = data.query.results.channel.wind;
-      // alert(data.query);
-      // say(wind.chill);
-    });
+    // getLocation will pass myLocation to the function getWeather(myLocation)
+    getLocation(getWeather);
     return true;
   }
   return false;
+}
+
+function getWeather(myLocation) {
+  // get weather statement for that location
+  var urlAPICall = "https://query.yahooapis.com/v1/public/yql?q=select item.condition.text from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + myLocation + "')&format=json";
+  $.getJSON(urlAPICall, function(data) {
+    // respond with weather statement for that location
+    var weatherDescription = data.query.results.channel.item.condition.text;
+    say("it's " + weatherDescription + ' around ' + myLocation);
+    // var wind = data.query.results.channel.wind;
+    // alert(data.query);
+    // say(wind.chill);
+  });
 }
 
 function askingMath(heard) {
