@@ -250,13 +250,14 @@ function getLocation(func) { // e.g.: getLocation passes myLocation to getWeathe
                 }
                 // put the pieces together
                 myLocation = city + ' ' + adminAreaLvl1; // + ' ' + country;
-                // could do: myLocation = locationFull;
+                // myLocation = locationFull; // TODO could ask for this
 
                 // just say location, or pass location to another function (i.e. callback)
                 if (func) {
                   func(myLocation); // e.g.: pass myLocation to function getWeather(myLocation)
                 } else {
-                  say("we're at " + locationFull);
+                  say("we're in " + myLocation);
+                  // say("we're at " + locationFull);
                 }
 
             }
