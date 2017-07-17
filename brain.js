@@ -31,7 +31,7 @@ function introSelf() {
        You can type a question in the textbox. \
        Or, if you have speech recognition software, such as Mac Dictation, \
        you can enter text verbally into the textbox. \
-       For example, you can ask me: 'Where are the nearest restaurants?'.");
+       For example, you can ask me: 'Where are the closest restaurants?'.");
 }
 
 var delayedAction;
@@ -322,24 +322,25 @@ function askingDirections(heard) {
    */
 
   // check and format
-  const signalPhrases = ['get directions to ', 'get directions for ',
-                         'how do i get to ', 'how do i go to ',
-                         'how do we get to ', 'how do we go to '];
-  const toRemove = ['a ', 'the nearest '];
-  if (didHear(heard, signalPhrases, 'starts with')) {
-    heard = removeSignalPhrases(heard, signalPhrases);
-    heard = removeSignalPhrases(heard, toRemove);
-    var searchFor = heard.replace(' ','+');
-
-    // go to map
-    // https://www.google.com/maps/dir/here/{searchFor}
-    var urlAPICall = 'https://www.google.com/maps/dir/here/';
-    urlAPICall += searchFor;
-    say("I'm now opening a Google maps results page.");
-    window.open(urlAPICall);
-    return true;
+  const regex = [
+                  /^get directions (to|for) (a|the nearest|the closest)? (.+)/,
+                  /^how (can|do) (i|we) (get|go) to (a|the nearest|the closest)? (.+)/
+                ];
+  var matchFound = [];
+  var searchFor;
+  for (var i in regex) {
+    matchFound[i] = heard.match(regex[i])
+    if (matchFound[i]) {
+      searchFor = matchFound[i][matchFound[i].length-1];
+      // go to map
+      // https://www.google.com/maps/dir/here/{searchFor}
+      var urlAPICall = 'https://www.google.com/maps/dir/here/';
+      urlAPICall += searchFor.replace(' ','+');
+      say("I'm now opening a Google maps results page for the closest " + searchFor);
+      window.open(urlAPICall);
+      return true;
+    }
   }
-
   // otherwise
   return false;
 }
@@ -485,7 +486,7 @@ function searchLocation(heard) {
 
     // where is/are (the nearest) ...
     // https://www.google.com/maps/search/?api=1&query=seattle
-    regex = new RegExp('^where (is|are) (the nearest )?(.+)');
+    regex = new RegExp('^where (is|are) (the nearest |the closest )?(.+)');
     matches = regex.test(heard);
     if (matches) {
       // going to put this into the url:
