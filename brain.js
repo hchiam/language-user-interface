@@ -313,7 +313,8 @@ function getWeather(myLocation) {
 }
 
 function askingMath(heard) {
-  var possibleExpression = heard.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/i,''); // make safer
+  var possibleExpression = heard.replace('what is ').replace("what's ");
+  possibleExpression = possibleExpression.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/i,''); // make safer
   const mathWords = {'one':'1','two':'2','three':'3','four':'4','five':'5',
                     'six':'6','seven':'7','eight':'8','nine':'9','zero':'0',
                     'ten':'10',
@@ -329,6 +330,9 @@ function askingMath(heard) {
     var toReplaceAllInstances = new RegExp(key, "g");
     possibleExpression = possibleExpression.replace(toReplaceAllInstances, mathWords[key]);
   }
+  // TODO: split by spaces and check if pairs of current-adjacent words are integers or one of them equals 'and', then combine
+  // TODO: if the second of the adjacent words is 'and', then add if the one after 'and' is also integer
+  // TODO: if '#0' numbers then check if next word is also integer, then add values
   possibleExpression = possibleExpression.replace(/ /g,'');
   if (safeForMath(possibleExpression)) {
     possibleExpression = eval(possibleExpression);
