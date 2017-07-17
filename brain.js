@@ -154,6 +154,7 @@ function heardSearch(heard) {
   if (askingTime(heard)) return true;
   if (askingMath(heard)) return true;
   if (askingWeather(heard)) return true;
+  if (askingDirections(heard)) return true;
   if (askingReminder(heard)) return true;
 
   if (didHear(heard, ['where is ', "where's ", 'where are '], 'starts with')) {
@@ -315,6 +316,34 @@ function getWeather(myLocation) {
   });
 }
 
+function askingDirections(heard) {
+  /* example: how do i get to the nearest pizza shop
+   * goes to: https://www.google.com/maps/dir/here/pizza+shop
+   */
+
+  // check and format
+  const signalPhrases = ['get directions to ', 'get directions for ',
+                         'how do i get to ', 'how do i go to ',
+                         'how do we get to ', 'how do we go to '];
+  const toRemove = ['a ', 'the nearest '];
+  if (didHear(heard, signalPhrases, 'starts with')) {
+    heard = removeSignalPhrases(heard, signalPhrases);
+    heard = removeSignalPhrases(heard, toRemove);
+    var searchFor = heard.replace(' ','+');
+
+    // go to map
+    // https://www.google.com/maps/dir/here/{searchFor}
+    var urlAPICall = 'https://www.google.com/maps/dir/here/';
+    urlAPICall += searchFor;
+    say("I'm now opening a Google maps results page.");
+    window.open(urlAPICall);
+    return true;
+  }
+
+  // otherwise
+  return false;
+}
+
 function askingReminder(heard) {
   // check if asking for a reminder
   const signalPhrases = ['remind me ', 'tell me '];
@@ -329,6 +358,7 @@ function askingReminder(heard) {
 
     // get what and when to remind
     var regex = new RegExp("^(.+) in (.+) (minutes?|hours?|seconds?)$");
+    // TODO: add "^(.+) at (.+) (o'clock)?$"
     matches = regex.test(heard);
     var remindWhat, remindWhen, timeUnits;
     if (matches) {
@@ -471,12 +501,6 @@ function searchLocation(heard) {
     urlAPICall += searchWords;
     say("I'm now opening a Google maps results page.");
     window.open(urlAPICall);
-
-    // $.getJSON(urlAPICall, function(data) {
-    //   var weatherDescription = data.query.results.channel.item.condition.text;
-    //   say("it's " + weatherDescription + ' around ' + myLocation);
-    // });
-
     return true;
   }
   // otherwise
