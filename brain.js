@@ -148,7 +148,7 @@ function heardSearch(heard) {
 
   // first check special cases before more general cases
   if (askingWhoAreYou(heard)) return true;
-  if (askingLocation(heard)) return true;
+  if (askingMyLocation(heard)) return true;
   if (askingTime(heard)) return true;
   if (askingMath(heard)) return true;
   if (askingWeather(heard)) return true;
@@ -188,7 +188,7 @@ function askingWhoAreYou(heard) {
   return false;
 }
 
-function askingLocation(heard) {
+function askingMyLocation(heard) {
   if (didHear(heard,['where am i','where are we'])) {
     // // keep for reference:
     // $.getJSON("http://ipinfo.io", function(response) {
