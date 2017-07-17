@@ -153,6 +153,11 @@ function heardSearch(heard) {
   if (askingMath(heard)) return true;
   if (askingWeather(heard)) return true;
 
+  if (didHear(heard, ['where is ', "where's ", 'where are '], 'starts with')) {
+    searchLocation(heard);
+    return true;
+  }
+
   // check definition search (more slightly more general)
   const signalPhrases = ["what's ", 'what is ', 'what are ', 'what was ', 'what were ',
                         "who's ", 'who is ', 'who are ', 'who was ', 'who were ',
@@ -357,6 +362,53 @@ function removeSignalPhrases(heard, signalPhrases) {
   return heard;
 }
 
+function searchLocation(heard) {
+
+  var searchWords, regex, matches, searchFor, searchIn;
+
+  // note: TRICKY!: check more restrictive first! (otherwise capture too much)
+
+  // where is/are (there) ... in ...
+  // https://www.google.com/maps/search/?api=1&query=pizza+seattle
+  regex = new RegExp("^where (is|are) (there )?(.+) in (.+)");
+  matches = regex.test(heard);
+  if (matches) {
+    searchFor = heard.match(regex)[3];
+    searchIn = heard.match(regex)[4];
+    // going to put this into the url:
+    searchWords = searchFor + ' ' + searchIn;
+  } else {
+
+    // where is/are (the nearest) ...
+    // https://www.google.com/maps/search/?api=1&query=seattle
+    regex = new RegExp('^where (is|are) (the nearest )?(.+)');
+    matches = regex.test(heard);
+    if (matches) {
+      // going to put this into the url:
+      searchWords = heard.match(regex)[3];
+    }
+
+  }
+
+  // either way:
+  if (matches) {
+    // https://www.google.com/maps/search/?api=1&query={searchWords}
+    var urlAPICall = 'https://www.google.com/maps/search/?api=1&query=';
+    urlAPICall += searchWords;
+    say("I'm now opening a Google maps results page.");
+    window.open(urlAPICall);
+
+    // $.getJSON(urlAPICall, function(data) {
+    //   var weatherDescription = data.query.results.channel.item.condition.text;
+    //   say("it's " + weatherDescription + ' around ' + myLocation);
+    // });
+
+    return true;
+  }
+  // otherwise
+  return false;
+}
+
 function searchDefinition(words) {
   // search wikipedia
 
@@ -377,7 +429,7 @@ function searchDefinition(words) {
 }
 
 function searchQuestion(heard) {
-  // TODO: search duckduckgo
+  // search duckduckgo
 
   // var urlAPICall = 'https://api.duckduckgo.com/?format=json&pretty=1&q=';
   var urlAPICall = 'https://api.duckduckgo.com/?q=';
