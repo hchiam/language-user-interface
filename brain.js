@@ -157,7 +157,7 @@ function heardSearch(heard) {
   if (askingDirections(heard)) return true;
   if (askingReminder(heard)) return true;
 
-  if (didHear(heard, ['where is ', "where's ", 'where are '], 'starts with')) {
+  if (didHear(heard, ['where is ', "where's ", 'where are ', 'find '], 'starts with')) {
     searchLocation(heard);
     return true;
   }
@@ -486,11 +486,12 @@ function searchLocation(heard) {
 
     // where is/are (the nearest) ...
     // https://www.google.com/maps/search/?api=1&query=seattle
-    regex = new RegExp('^where (is|are) (the nearest |the closest )?(.+)');
+    regex = new RegExp('^(find|where (is|are))( a|the nearest|the closest)? (.+)');
     matches = regex.test(heard);
     if (matches) {
+      searchFor = heard.match(regex)[4];
       // going to put this into the url:
-      searchWords = heard.match(regex)[3];
+      searchWords = searchFor;
     }
 
   }
@@ -500,7 +501,7 @@ function searchLocation(heard) {
     // https://www.google.com/maps/search/?api=1&query={searchWords}
     var urlAPICall = 'https://www.google.com/maps/search/?api=1&query=';
     urlAPICall += searchWords;
-    say("I'm now opening a Google maps results page.");
+    say("I'm now opening a Google maps results page for: " + searchFor);
     window.open(urlAPICall);
     return true;
   }
