@@ -57,6 +57,7 @@ function listen() {
   heard = heard.trim().toLowerCase();
   heard = heard.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/i,'');
   heard = removeOKLouis(heard);
+  // TODO: ? make heard into an object indicating which topic to speak about?
   return heard;
 }
 
@@ -153,6 +154,7 @@ function heardSearch(heard) {
   if (askingTime(heard)) return true;
   if (askingMath(heard)) return true;
   if (askingWeather(heard)) return true;
+  if (askingReminder(heard)) return true;
 
   if (didHear(heard, ['where is ', "where's ", 'where are '], 'starts with')) {
     searchLocation(heard);
@@ -311,6 +313,73 @@ function getWeather(myLocation) {
     // alert(data.query);
     // say(wind.chill);
   });
+}
+
+function askingReminder(heard) {
+  // check if asking for a reminder
+  const signalPhrases = ['remind me ', 'tell me '];
+  if (didHear(heard,signalPhrases),'starts with') {
+    heard = removeSignalPhrases(heard, signalPhrases);
+
+    // swap pronouns in reminder
+    const pronounSwaps = {'me':'you', 'you':'me',
+                          'my':'your', 'your':'my',
+                          'myself':'yourself', 'yourself':'myself'};
+    heard = swapWords(heard, pronounSwaps);
+
+    // get what and when to remind
+    var regex = new RegExp("^(.+) in (.+) (minutes?|hours?|seconds?)$");
+    matches = regex.test(heard);
+    var remindWhat, remindWhen, timeUnits;
+    if (matches) {
+      remindWhat = heard.match(regex)[1].replace(/^to /g,'');
+      remindWhen = heard.match(regex)[2];
+      timeUnits  = heard.match(regex)[3];
+
+      if (timeUnits != 'seconds' && timeUnits != 'second') {
+        // confirm reminder (but not if user specified in seconds)
+        say("I'll remind you to " + remindWhat + ' in ' + remindWhen + ' ' + timeUnits);
+      }
+
+      // set reminder time
+      reminderTimer(remindWhat, remindWhen, timeUnits);
+
+      return true;
+    } else {
+      return false;
+    }
+  }
+  return false;
+}
+
+function reminderTimer(remindWhat, remindWhen, timeUnits) {
+  // expecting: timeUnits = minute(s), hour(s), second(s)
+  switch (timeUnits) {
+    case 'minutes':
+      remindWhen *= 60 * 1000;
+      break;
+    case 'hours':
+      remindWhen *= 3600 * 1000;
+      break;
+    case 'seconds':
+      remindWhen *= 1000;
+      break;
+    default:
+      remindWhen = 60000; // default to one minute
+      break;
+  }
+  var unfamiliarUser = setTimeout(function(){
+    say(remindWhat)
+  }, remindWhen);
+}
+
+function swapWords(sentence, dictionary) {
+  var words = sentence.split(' ');
+  for (var i in words) {
+    var word = words[i];
+    if (word in dictionary) words[i] = dictionary[word];
+  }
+  return words.join(' ');
 }
 
 function askingMath(heard) {
