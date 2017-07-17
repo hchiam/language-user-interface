@@ -24,13 +24,14 @@ function welcome() {
 
 var unfamiliarUser = setTimeout(function(){
   introSelf();
-}, 9000);
+}, 7000);
 
 function introSelf() {
-  say('You seem unfamiliar with this interface. \
+  say("You seem unfamiliar with this interface. \
        You can type a question in the textbox. \
        Or, if you have speech recognition software, such as Mac Dictation, \
-       you can enter text verbally into the textbox.')
+       you can enter text verbally into the textbox. \
+       For example, you can ask me: 'Where are the nearest restaurants?'.");
 }
 
 var delayedAction;
