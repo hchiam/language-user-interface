@@ -36,7 +36,7 @@ function introSelf() {
 var delayedAction;
 
 function converse() {
-  // clearTimeout(unfamiliarUser); // user is using the interface
+  clearTimeout(unfamiliarUser); // user is using the interface
   say(' '); // let user interrupt
   clearTimeout(delayedAction); // let user continue what they're saying
   delayedAction = setTimeout(function(){
