@@ -211,14 +211,18 @@ function askingMyLocation(heard) {
 
 function askingTime(heard) {
   // check time
-  if (didHear(heard,['what time is it','what time is it right now'])) {
+  if (didHear(heard,['what time is it', 'what time is it right now',
+                     'what time is it now',
+                     'what is the time', 'what is the time right now',
+                     "what's the time", "what's the time right now"])) {
     var d = new Date();
     var t = d.toLocaleTimeString();
     say('It is ' + t);
     return true;
   }
   // check date
-  if (didHear(heard,["what's today's date", "what's the date today",'what is the date today','what day is it today'])) {
+  if (didHear(heard,["what's today's date", "what's the date today",
+                     'what is the date today','what day is it today'])) {
     var d = new Date();
     var t = d.toDateString();
     say('It is ' + t);
