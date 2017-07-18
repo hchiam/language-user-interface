@@ -340,7 +340,7 @@ function askingDirections(heard) {
       // https://www.google.com/maps/dir/here/{searchFor}
       var urlAPICall = 'https://www.google.com/maps/dir/here/';
       urlAPICall += searchFor.replace(' ','+');
-      // say("I'm now opening a Google maps results page for the closest " + searchFor);
+      say("I'm now opening a Google maps results page for the closest " + searchFor);
       tryOpeningWindow(urlAPICall);
       return true;
     }
