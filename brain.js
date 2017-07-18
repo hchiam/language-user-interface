@@ -327,8 +327,8 @@ function askingDirections(heard) {
 
   // check and format
   const regex = [
-                  /^get directions (to|for) (a|the nearest|the closest)? (.+)/,
-                  /^how (can|do) (i|we) (get|go) to (a|the nearest|the closest)? (.+)/
+                  /^get directions (to|for) (a |the nearest |the closest )?(.+)/,
+                  /^how (can|do) (i|we) (get|go) to (a |the nearest |the closest )?(.+)/
                 ];
   var matchFound = [];
   var searchFor;
