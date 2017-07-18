@@ -44,7 +44,7 @@ function converse() {
     var heard = listen();
     if (heard) speak(heard);
     clearMessageHeardAlready();
-  }, 2000);
+  }, 5000);
 }
 
 function say(sentence) {
