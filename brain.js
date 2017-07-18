@@ -41,11 +41,31 @@ function converse() {
   clearTimeout(unfamiliarUser); // user is using the interface
   say(' '); // let user interrupt
   clearTimeout(delayedAction); // let user continue what they're saying
-  delayedAction = setTimeout(function(){
+  resetCountDownWaiting(); // let user continue what they're saying
+  delayedAction = setInterval(countDownWaiting, 1000);
+}
+
+function resetCountDownWaiting() {
+  document.getElementById('countDownWaiting').value = 0;
+}
+
+function countDownWaiting() {
+  document.getElementById('countDownWaiting').value += 20;
+  var percent = document.getElementById('countDownWaiting').value;
+  if (percent >= 100) {
     var heard = listen();
     if (heard) speak(heard);
     clearMessageHeardAlready();
-  }, 5000);
+  }
+  // stop repeating timer if nothing in input box
+  if (document.getElementById("input").value === '') {
+    resetCountDownWaiting();
+  }
+}
+
+function clearMessageHeardAlready() {
+  document.getElementById("input").value = '';
+  resetCountDownWaiting();
 }
 
 function say(sentence) {
@@ -84,10 +104,6 @@ function speak(heard) {
     // need '...' to make an audible pause
     say(sentence);
   }
-}
-
-function clearMessageHeardAlready() {
-  document.getElementById("input").value = '';
 }
 
 function didHear(heard, listOfChecks=[], checkType='exact match') {
