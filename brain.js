@@ -29,9 +29,10 @@ var unfamiliarUser = setTimeout(function(){
 function introSelf() {
   say("You seem unfamiliar with this interface. \
        You can type a question in the textbox. \
-       Or, if you have speech recognition software, such as Mac Dictation, \
-       you can enter text verbally into the textbox. \
-       For example, you can ask me: 'Where are the closest restaurants?'.");
+       For example, you can ask me: 'Where are the closest restaurants?' \
+       Alternatively, if you have speech recognition software, \
+       such as Mac Dictation, \
+       you can enter text verbally into the textbox.");
 }
 
 var delayedAction;
