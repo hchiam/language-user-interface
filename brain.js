@@ -560,12 +560,12 @@ function searchQuestion(heard) {
 function tryOpeningWindow(url) { // notice and tell user to unblock if can't open window
   var newWindow = window.open(url);
   if(!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-    say('please authorize me to open new windows for you');
+    say('sorry... please authorize me to open new windows for you... you may be using an ad blocker.');
   } else {
     try {
       newWindow.focus();
     } catch (e) {
-      say('please authorize me to open new windows for you');
+      say('sorry... please authorize me to open new windows for you... you may be using an ad blocker.');
     }
   }
 }
