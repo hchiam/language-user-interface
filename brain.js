@@ -340,8 +340,8 @@ function askingDirections(heard) {
       // https://www.google.com/maps/dir/here/{searchFor}
       var urlAPICall = 'https://www.google.com/maps/dir/here/';
       urlAPICall += searchFor.replace(' ','+');
-      say("I'm now opening a Google maps results page for the closest " + searchFor);
-      window.open(urlAPICall);
+      // say("I'm now opening a Google maps results page for the closest " + searchFor);
+      tryOpeningWindow(urlAPICall);
       return true;
     }
   }
@@ -506,7 +506,7 @@ function searchLocation(heard) {
     var urlAPICall = 'https://www.google.com/maps/search/?api=1&query=';
     urlAPICall += searchWords;
     say("I'm now opening a Google maps results page for: " + searchFor);
-    window.open(urlAPICall);
+    tryOpeningWindow(urlAPICall);
     return true;
   }
   // otherwise
@@ -519,7 +519,7 @@ function searchDefinition(words) {
   // var urlAPICall = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&exsentences=1&callback=?&titles=';
   var urlAPICall = 'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exsentences=1&exintro&explaintext=&indexpageids=true&format=json&generator=search&gsrlimit=1&callback=?&gsrsearch=';
   urlAPICall += words;
-  // window.open(urlAPICall);
+  // tryOpeningWindow(urlAPICall);
   $.getJSON(urlAPICall, function(data) {
     // wikipedia returns pages with page id's, so try to get the extract of the first one
     var pageInfo = Object.values(data.query.pages)[0];
@@ -539,11 +539,11 @@ function searchQuestion(heard) {
   var urlAPICall = 'https://api.duckduckgo.com/?q=';
   urlAPICall += heard;
   say("I'm now opening a search results page.");
-  window.open(urlAPICall);
+  tryOpeningWindow(urlAPICall);
 
   // var urlAPICall = 'http://api.duckduckgo.com/?format=jsonp&pretty=1&q=';
   // urlAPICall += words;
-  // // window.open(urlAPICall);
+  // // tryOpeningWindow(urlAPICall);
   // alert('right above getJSON')
   // $.getJSON(urlAPICall, function(data) {
   //   alert('got in')
@@ -555,4 +555,17 @@ function searchQuestion(heard) {
   //   // if (title.toLowerCase() != words) say("I'm not sure this is what you're looking for, but here's what I found.")
   //   // say("duck duck go says: " + summary); // alert(Object.values(data.query.pages)[0].extract)
   // });
+}
+
+function tryOpeningWindow(url) { // notice and tell user to unblock if can't open window
+  var newWindow = window.open(url);
+  if(!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+    say('please authorize me to open new windows for you');
+  } else {
+    try {
+      newWindow.focus();
+    } catch (e) {
+      say('please authorize me to open new windows for you');
+    }
+  }
 }
