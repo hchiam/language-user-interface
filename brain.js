@@ -566,15 +566,19 @@ function searchDefinition(words) {
   urlAPICall += words;
   // tryOpeningWindow(urlAPICall);
   $.getJSON(urlAPICall, function(data) {
-    // wikipedia returns pages with page id's, so try to get the extract of the first one
-    var pageInfo = Object.values(data.query.pages)[0];
-    var summary = pageInfo.extract;
-    var title = pageInfo.title;
-    if (summary) {
-      if (title.toLowerCase() != words) {
-        summary = "I'm not sure if you're looking for this, but here's what I found: " + summary;
+    try {
+      // wikipedia returns pages with page id's, so try to get the extract of the first one
+      var pageInfo = Object.values(data.query.pages)[0];
+      var summary = pageInfo.extract;
+      var title = pageInfo.title;
+      if (summary) {
+        if (title.toLowerCase() != words) {
+          summary = "I'm not sure if you're looking for this, but here's what I found: " + summary;
+        }
+        say(summary); // alert(Object.values(data.query.pages)[0].extract)
       }
-      say(summary); // alert(Object.values(data.query.pages)[0].extract)
+    } catch(err) { // data.query, i.e. ['query'] not found
+      say("Sorry, I couldn't find anything on " + words);
     }
   });
 }
