@@ -67,14 +67,22 @@ function countDownWaiting() {
 }
 
 function updateMessageLog(message, who) {
-  var align = ' style="text-align: ';
+  // set up style based on LUI/user speaking
+  var style = ' style="';
+  var align = 'text-align: ';
+  var colour = 'color:';
   if (who === 'LUI') {
-    align += 'left;"';
+    align += 'left;';
+    colour += 'blue;';
   } else if (who === 'user') {
-    align += 'right;"';
+    align += 'right;';
+    colour += 'red;';
   }
-  var nextMessage = '<p' + align + '>' + message + '</p>';
+  style += align + colour + '"';
+  // create message
+  var nextMessage = '<p' + style + '>' + message + '</p>';
   var logSoFar = document.getElementById('messageLog').innerHTML;
+  // show message
   document.getElementById('messageLog').innerHTML = nextMessage + logSoFar;
 }
 
