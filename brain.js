@@ -67,23 +67,16 @@ function countDownWaiting() {
 }
 
 function updateMessageLog(message, who) {
-  // set up style based on LUI/user speaking
-  var style = ' style="';
-  var align = 'text-align: ';
-  var colour = 'color:';
-  if (who === 'LUI') {
-    align += 'left;';
-    colour += 'blue;';
-  } else if (who === 'user') {
-    align += 'right;';
-    colour += 'red;';
+  // ignore the interrupt say(' ')
+  if (message != ' ') {
+    // set up style based on LUI/user speaking
+    var id = ' id="log-' + who + '"';
+    // create message
+    var nextMessage = '<p' + id + '>' + message + '</p>';
+    var logSoFar = document.getElementById('messageLog').innerHTML;
+    // show message
+    document.getElementById('messageLog').innerHTML = nextMessage + logSoFar;
   }
-  style += align + colour + '"';
-  // create message
-  var nextMessage = '<p' + style + '>' + message + '</p>';
-  var logSoFar = document.getElementById('messageLog').innerHTML;
-  // show message
-  document.getElementById('messageLog').innerHTML = nextMessage + logSoFar;
 }
 
 function clearMessageHeardAlready() {

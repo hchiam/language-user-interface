@@ -5,7 +5,7 @@
   display: -webkit-flex;
   display: flex;
   flex-direction: column;
-  
+
   align-items: center;
 
   padding: 5%;
@@ -13,6 +13,29 @@
 
 #messageLog {
   margin: 20%;
+}
+
+#log-LUI, #log-user {
+  padding: 5px;
+  font-weight: bold;
+
+  border-radius: 10px;
+}
+
+#log-LUI {
+  text-align: left;
+  margin-right: 25%;
+  color: blue;
+  border: solid lightblue;
+  background: lightblue;
+}
+
+#log-user {
+  text-align: right;
+  margin-left: 25%;
+  color: red;
+  border: solid pink;
+  background: pink;
 }
 
 body {
