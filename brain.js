@@ -49,6 +49,12 @@ function resetCountDownWaiting() {
   document.getElementById('countDownWaiting').value = 0;
 }
 
+function userWantsAnswerNow(event, kd) {
+  if (event.keyCode == 13) { // key code for "enter"
+    document.getElementById('countDownWaiting').value = 100;
+  }
+}
+
 function countDownWaiting() {
   document.getElementById('countDownWaiting').value += 20;
   var percent = document.getElementById('countDownWaiting').value;
