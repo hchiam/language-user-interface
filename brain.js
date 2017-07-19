@@ -151,7 +151,7 @@ function heardInterrupt(heard) {
 
 function heardPleasantries(heard) {
   if (didHear(heard,['hi','hey','hello'])) {
-    say(heard);
+    say(capitalizeFirstLetter(heard) + '.');
     return true;
   } else if (heard === 'hi there') {
     say('Right back at you.');
@@ -177,6 +177,10 @@ function heardPleasantries(heard) {
   }
   // otherwise
   return false;
+}
+
+function capitalizeFirstLetter(sentence) {
+  return sentence.charAt(0).toUpperCase() + sentence.slice(1);
 }
 
 function heardSearch(heard) {
