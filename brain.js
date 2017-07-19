@@ -81,6 +81,7 @@ function updateMessageLog(message, who) {
 
 function clearMessageHeardAlready() {
   document.getElementById("input").value = '';
+  document.getElementById("input").focus();
   resetCountDownWaiting();
 }
 
