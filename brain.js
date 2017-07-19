@@ -257,7 +257,7 @@ function askingMyLocation(heard) {
 function askingTime(heard) {
   // check time
   if (didHear(heard,['what time is it', 'what time is it right now',
-                     'what time is it now',
+                     'what time is it now', "what time's it",
                      'what is the time', 'what is the time right now',
                      "what's the time", "what's the time right now"])) {
     var d = new Date();
