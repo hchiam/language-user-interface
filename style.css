@@ -2,8 +2,15 @@
   min-height: 100%; /* for browsers that DON'T support vh unit */
   min-height: 100vh;
 
+  display: -webkit-flex;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  
+  padding: 5%;
+}
+
+#messageLog {
+  margin: 20%;
 }
 
 body {

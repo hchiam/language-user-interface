@@ -54,13 +54,28 @@ function countDownWaiting() {
   var percent = document.getElementById('countDownWaiting').value;
   if (percent >= 100) {
     var heard = listen();
-    if (heard) speak(heard);
+    if (heard) {
+      updateMessageLog(heard, 'user');
+      reply(heard);
+    }
     clearMessageHeardAlready();
   }
   // stop repeating timer if nothing in input box
   if (document.getElementById("input").value === '') {
     resetCountDownWaiting();
   }
+}
+
+function updateMessageLog(message, who) {
+  var align = ' style="text-align: ';
+  if (who === 'LUI') {
+    align += 'left;"';
+  } else if (who === 'user') {
+    align += 'right;"';
+  }
+  var nextMessage = '<p' + align + '>' + message + '</p>';
+  var logSoFar = document.getElementById('messageLog').innerHTML;
+  document.getElementById('messageLog').innerHTML = nextMessage + logSoFar;
 }
 
 function clearMessageHeardAlready() {
@@ -70,6 +85,7 @@ function clearMessageHeardAlready() {
 
 function say(sentence) {
   responsiveVoice.speak(sentence, 'UK English Male');
+  updateMessageLog(sentence, 'LUI');
 }
 
 function listen() {
@@ -89,7 +105,7 @@ function removeOKLouis(heard) {
   return heard;
 }
 
-function speak(heard) {
+function reply(heard) {
   // TODO: add more functionality
   // TODO: make more modular
 
@@ -138,25 +154,25 @@ function heardPleasantries(heard) {
     say(heard);
     return true;
   } else if (heard === 'hi there') {
-    say('right back at you');
+    say('Right back at you.');
     return true;
   } else if (didHear(heard,['hello world','anyone home','anyone there','anyone listening'])) {
-    say('hi there');
+    say('Hi there.');
     return true;
   } else if (didHear(heard,["is this thing on",'can you hear me',"does this thing work",'are you on right now'],'starts with')) {
-    say('yes');
+    say('Yes.');
     return true;
   } else if (didHear(heard,["let's begin","let's start","let's get started"])) {
     say('Okay. What would you like to do?');
     return true;
   } else if (didHear(heard,['thanks','thank you'])) {
-    say("you're welcome");
+    say("You're welcome.");
     return true;
   } else if (didHear(heard,['thank you so much','thank you very much'])) {
-    say("you're very welcome");
+    say("You're very welcome.");
     return true;
   } else if (didHear(heard,['goodbye','bye','byebye','see you','see you later'])) {
-    say('farewell'); //  + '...Would you like me to shut down?'
+    say('Farewell.'); //  + '...Would you like me to shut down?'
     return true;
   }
   // otherwise
@@ -256,7 +272,7 @@ function getLocation(func) { // e.g.: getLocation passes myLocation to getWeathe
   if (navigator.geolocation === undefined) {
     alert("Sorry, I'm unable to use geolocation in this browser. Try another browser.")
   } else {
-    say('please authorize geolocation');
+    say('Please authorize geolocation.');
 
     // get location latitude and longitude
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -301,7 +317,7 @@ function getLocation(func) { // e.g.: getLocation passes myLocation to getWeathe
                 if (func) {
                   func(myLocation); // e.g.: pass myLocation to function getWeather(myLocation)
                 } else {
-                  say("we're in " + myLocation);
+                  say("We're in " + myLocation + '.');
                   // say("we're at " + locationFull);
                 }
 
@@ -330,7 +346,7 @@ function getWeather(myLocation) {
   $.getJSON(urlAPICall, function(data) {
     // respond with weather statement for that location
     var weatherDescription = data.query.results.channel.item.condition.text;
-    say("it's " + weatherDescription + ' around ' + myLocation);
+    say("It's " + weatherDescription + ' around ' + myLocation + '.');
     // var wind = data.query.results.channel.wind;
     // alert(data.query);
     // say(wind.chill);
@@ -357,7 +373,7 @@ function askingDirections(heard) {
       // https://www.google.com/maps/dir/here/{searchFor}
       var urlAPICall = 'https://www.google.com/maps/dir/here/';
       urlAPICall += searchFor.replace(' ','+');
-      say("I'm now opening a Google maps results page for the closest " + searchFor);
+      say("I'm now opening a Google maps results page for the closest " + searchFor + '.');
       tryOpeningWindow(urlAPICall);
       return true;
     }
@@ -390,7 +406,7 @@ function askingReminder(heard) {
 
       if (timeUnits != 'seconds' && timeUnits != 'second') {
         // confirm reminder (but not if user specified in seconds)
-        say("I'll remind you to " + remindWhat + ' in ' + remindWhen + ' ' + timeUnits);
+        say("I'll remind you to " + remindWhat + ' in ' + remindWhen + ' ' + timeUnits + '.');
       }
 
       // set reminder time
@@ -458,7 +474,7 @@ function askingMath(heard) {
   possibleExpression = possibleExpression.replace(/ /g,'');
   if (safeForMath(possibleExpression)) {
     possibleExpression = eval(possibleExpression);
-    say('the answer is: ' + possibleExpression.toString());
+    say('The answer is: ' + possibleExpression.toString());
     return true;
   }
   return false;
@@ -522,7 +538,7 @@ function searchLocation(heard) {
     // https://www.google.com/maps/search/?api=1&query={searchWords}
     var urlAPICall = 'https://www.google.com/maps/search/?api=1&query=';
     urlAPICall += searchWords;
-    say("I'm now opening a Google maps results page for: " + searchFor);
+    say("I'm now opening a Google maps results page for: " + searchFor + '.');
     tryOpeningWindow(urlAPICall);
     return true;
   }
@@ -543,7 +559,9 @@ function searchDefinition(words) {
     var summary = pageInfo.extract;
     var title = pageInfo.title;
     if (summary) {
-      if (title.toLowerCase() != words) say("I'm not sure if you're looking for this, but here's what I found.")
+      if (title.toLowerCase() != words) {
+        summary = "I'm not sure if you're looking for this, but here's what I found: " + summary;
+      }
       say(summary); // alert(Object.values(data.query.pages)[0].extract)
     }
   });
@@ -577,12 +595,12 @@ function searchQuestion(heard) {
 function tryOpeningWindow(url) { // notice and tell user to unblock if can't open window
   var newWindow = window.open(url);
   if(!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-    say('sorry... please authorize me to open new windows for you... you may be using an ad blocker.');
+    say('Sorry... Please authorize me to open new windows for you... You may be using an ad blocker.');
   } else {
     try {
       newWindow.focus();
     } catch (e) {
-      say('sorry... please authorize me to open new windows for you... you may be using an ad blocker.');
+      say('Sorry... Please authorize me to open new windows for you... You may be using an ad blocker.');
     }
   }
 }
