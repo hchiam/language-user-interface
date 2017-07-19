@@ -87,13 +87,14 @@ function updateMessageLog(message, who) {
 
 function clearMessageHeardAlready() {
   document.getElementById("input").value = '';
-  document.getElementById("input").focus();
+  document.getElementById("input").focus(); // put cursor back
   resetCountDownWaiting();
 }
 
 function say(sentence) {
   responsiveVoice.speak(sentence, 'UK English Male');
   updateMessageLog(sentence, 'LUI');
+  document.getElementById("input").focus(); // put cursor back
 }
 
 function listen() {
