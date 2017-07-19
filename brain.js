@@ -344,6 +344,7 @@ function getLocation(func) { // e.g.: getLocation passes myLocation to getWeathe
 }
 
 function askingWeather(heard) {
+  // general weather description
   var regexHow = new RegExp("^how('s| is)? (the )?(weather|forecast)( like)?( today)?( like)?");
   var regexWhat = new RegExp("^what('s| is)? (the )?(weather|forecast)( like( today)?| today( like)?)");
   // TODO: add "^(.+) at (.+) (o'clock)?$"
@@ -353,16 +354,40 @@ function askingWeather(heard) {
     getLocation(getWeather);
     return true;
   }
+
+  // temperature
+  var regexTemp = new RegExp("^(how|what)('s| is) (the )?temperature( like)?( today)?( like)?");
+  // TODO: add "^(.+) at (.+) (o'clock)?$"
+  matches = regexTemp.test(heard);
+  if (matches) {
+    // getLocation will pass myLocation to the function getWeather(myLocation)
+    getLocation(getTemperature);
+    return true;
+  }
+
   return false;
 }
 
 function getWeather(myLocation) {
-  // get weather statement for that location
+  // get weather statement for that location (text)
   var urlAPICall = "https://query.yahooapis.com/v1/public/yql?q=select item.condition.text from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + myLocation + "')&format=json";
   $.getJSON(urlAPICall, function(data) {
-    // respond with weather statement for that location
-    var weatherDescription = data.query.results.channel.item.condition.text;
-    say("It's " + weatherDescription + ' around ' + myLocation + '.');
+    // text
+    var weatherInfo = data.query.results.channel.item.condition.text;
+    say("It's " + weatherInfo + ' around ' + myLocation + '.');
+    // var wind = data.query.results.channel.wind;
+    // alert(data.query);
+    // say(wind.chill);
+  });
+}
+
+function getTemperature(myLocation) {
+  // get temperature for that location (temp)
+  var urlAPICall = "https://query.yahooapis.com/v1/public/yql?q=select item.condition.temp from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + myLocation + "')&format=json";
+  $.getJSON(urlAPICall, function(data) {
+    // temp
+    var weatherInfo = data.query.results.channel.item.condition.temp;
+    say("It's " + weatherInfo + ' around ' + myLocation + '.');
     // var wind = data.query.results.channel.wind;
     // alert(data.query);
     // say(wind.chill);
