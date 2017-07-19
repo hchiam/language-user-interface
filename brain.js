@@ -344,7 +344,11 @@ function getLocation(func) { // e.g.: getLocation passes myLocation to getWeathe
 }
 
 function askingWeather(heard) {
-  if (didHear(heard,["how's the weather","how's the weather today","what's the weather like today","what is the weather like today"])) {
+  var regexHow = new RegExp("^how('s| is)? (the )?(weather|forecast)( like)?( today)?( like)?");
+  var regexWhat = new RegExp("^what('s| is)? (the )?(weather|forecast)( like( today)?| today( like)?)");
+  // TODO: add "^(.+) at (.+) (o'clock)?$"
+  matches = regexHow.test(heard) || regexWhat.test(heard);
+  if (matches) {
     // getLocation will pass myLocation to the function getWeather(myLocation)
     getLocation(getWeather);
     return true;
