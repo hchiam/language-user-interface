@@ -33,9 +33,9 @@
 #log-user {
   text-align: right;
   margin-left: 25%;
-  color: red;
-  border: solid pink;
-  background: pink;
+  color: orange;
+  border: solid lightyellow;
+  background: lightyellow;
 }
 
 body {
