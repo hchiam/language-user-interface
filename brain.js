@@ -615,7 +615,7 @@ function searchDefinition(words) {
       var summary = pageInfo.extract;
       var title = pageInfo.title;
       if (isSubstring(summary,'may refer to')) {
-        say('"' + capitalizeFirstLetter(words) + '"' + " may refer to a few different things. I'm opening up the Wikipedia disambiguation page.")
+        say('"' + capitalizeFirstLetter(words) + '"' + " can mean a few different things. I'm opening the Wikipedia disambiguation page.")
         window.open('https://www.wikipedia.org/wiki/' + words);
       } else if (summary) {
         if (title.toLowerCase() != words) {
