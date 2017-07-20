@@ -384,11 +384,11 @@ function getWeather(myLocation) {
 
 function getTemperature(myLocation) {
   // get temperature for that location (temp)
-  var urlAPICall = "https://query.yahooapis.com/v1/public/yql?q=select item.condition.temp from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + myLocation + "')&format=json";
+  var urlAPICall = "https://query.yahooapis.com/v1/public/yql?q=select item.condition.temp from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + myLocation + "') and u='c'&format=json";
   $.getJSON(urlAPICall, function(data) {
     // temp
     var weatherInfo = data.query.results.channel.item.condition.temp;
-    say("It's " + weatherInfo + ' around ' + myLocation + '.');
+    say("It's " + weatherInfo + ' degrees Celsius around ' + myLocation + '.');
     // var wind = data.query.results.channel.wind;
     // alert(data.query);
     // say(wind.chill);
