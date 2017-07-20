@@ -202,6 +202,7 @@ function heardSearch(heard) {
   if (askingWeather(heard)) return true;
   if (askingDirections(heard)) return true;
   if (askingReminder(heard)) return true;
+  if (askingAnalogy(heard)) return true;
 
   if (didHear(heard, ['where is ', "where's ", 'where are ', 'find '], 'starts with')) {
     searchLocation(heard);
@@ -544,6 +545,35 @@ function safeForMath(expression) {
     }
   }
   return true;
+}
+
+function askingAnalogy(heard) {
+  const regex1 = new RegExp("^what('s| is) (an? |the )?(.+)( like)+?");
+  const regex2 = new RegExp("^what('s| is) (an? )?analogy for (an? )?(.+)");
+  const regex3 = new RegExp("^find (an? )?analogy for (an? )?(.+)");
+  var matches, words;
+  matches = heard.match(regex1);
+  if (matches) {
+    searchAnalogy(matches[3]);
+    return true;
+  }
+  matches = heard.match(regex2);
+  if (matches) {
+    searchAnalogy(matches[4]);
+    return true;
+  }
+  matches = heard.match(regex3);
+  if (matches) {
+    searchAnalogy(matches[3]);
+    return true;
+  }
+  // otherwise
+  return false;
+}
+
+function searchAnalogy(words) {
+  say("I'm opening metamia.com for " + words + ' analogies.');
+  tryOpeningWindow('http://www.metamia.com/analogize.php?q=' + words);
 }
 
 function removeSignalPhrases(heard, signalPhrases) {
