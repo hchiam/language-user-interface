@@ -387,12 +387,25 @@ function getTemperature(myLocation) {
   var urlAPICall = "https://query.yahooapis.com/v1/public/yql?q=select item.condition.temp from weather.forecast where woeid in (select woeid from geo.places(1) where text='" + myLocation + "') and u='c'&format=json";
   $.getJSON(urlAPICall, function(data) {
     // temp
-    var weatherInfo = data.query.results.channel.item.condition.temp;
-    say("It's " + weatherInfo + ' degrees Celsius around ' + myLocation + '.');
-    // var wind = data.query.results.channel.wind;
-    // alert(data.query);
-    // say(wind.chill);
+    var temp = data.query.results.channel.item.condition.temp;
+    var tempRefPt = getTemperatureRefPt(temp);
+    say("It's " + temp + ' degrees Celsius around ' + myLocation + '. ' + tempRefPt);
   });
+}
+
+function getTemperatureRefPt(temp) {
+  // inspiration: https://imgs.xkcd.com/comics/converting_to_metric.png
+  if (temp >= 33) return "Sounds like a heat wave. Keep hydrated.";
+  if (temp >= 28 && temp <= 32) return "That around beach weather temperature.";
+  if (temp >= 23 && temp <= 27) return "That's like a warm room.";
+  if (temp >= 18 && temp <= 22) return "That's around room temperature.";
+  if (temp >= 8 && temp <= 12) return "You may want a jacket.";
+  if (temp >= -1 && temp <= 0) return "Snow can start forming at this temperature.";
+  if (temp >= -10 && temp <= -5) return "It might be a cold day, depending on where you're from.";
+  // otherwise cold
+  if (temp <= 0) return "That's below freezing.";
+  // otherwise failsafe just in case:
+  return '';
 }
 
 function askingDirections(heard) {
