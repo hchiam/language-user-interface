@@ -614,7 +614,10 @@ function searchDefinition(words) {
       var pageInfo = Object.values(data.query.pages)[0];
       var summary = pageInfo.extract;
       var title = pageInfo.title;
-      if (summary) {
+      if (isSubstring(summary,'may refer to')) {
+        say('"' + capitalizeFirstLetter(words) + '"' + " may refer to a few different things. I'm opening up the Wikipedia disambiguation page.")
+        window.open('https://www.wikipedia.org/wiki/' + words);
+      } else if (summary) {
         if (title.toLowerCase() != words) {
           summary = "I'm not sure if you're looking for this, but here's what I found: " + summary;
         }
@@ -624,6 +627,10 @@ function searchDefinition(words) {
       say("Sorry, I couldn't find anything on " + words);
     }
   });
+}
+
+function isSubstring(string, substring) {
+  return string.indexOf(substring) !== -1;
 }
 
 function searchQuestion(heard) {
