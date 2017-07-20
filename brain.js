@@ -375,7 +375,7 @@ function getWeather(myLocation) {
   $.getJSON(urlAPICall, function(data) {
     // text
     var weatherInfo = data.query.results.channel.item.condition.text;
-    say("It's " + weatherInfo + ' around ' + myLocation + '.');
+    say("It's " + weatherInfo.toLowerCase() + ' around ' + myLocation + '.');
     // var wind = data.query.results.channel.wind;
     // alert(data.query);
     // say(wind.chill);
