@@ -101,7 +101,7 @@ function listen() {
   var heard = document.getElementById("input").value;
   // remove trailing/leading spaces, set to lowercase, and remove punctuation
   heard = heard.trim().toLowerCase();
-  heard = heard.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/i,'');
+  heard = heard.replace(/[.,\/#!?$%\^&\*;:{}<>+=\-_`"~()]/g,'');
   heard = removeOKLouis(heard);
   // TODO: ? make heard into an object indicating which topic to speak about?
   return heard;
@@ -508,7 +508,7 @@ function swapWords(sentence, dictionary) {
 
 function askingMath(heard) {
   var possibleExpression = heard.replace('what is ').replace("what's ");
-  possibleExpression = possibleExpression.replace(/[.,\/#!?$%\^&\*;:{}=\-_`~()]/i,''); // make safer
+  possibleExpression = possibleExpression.replace(/[.,\/#!?$%\^&\*;:{}<>+=\-_`"~()]/g,''); // make safer
   const mathWords = {'one':'1','two':'2','three':'3','four':'4','five':'5',
                     'six':'6','seven':'7','eight':'8','nine':'9','zero':'0',
                     'ten':'10',
