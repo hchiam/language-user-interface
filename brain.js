@@ -196,17 +196,17 @@ function heardSearch(heard) {
 
   // first check special cases before more general cases
   if (askingWhoAreYou(heard)) return true;
-  if (askingMyLocation(heard)) return true;
+  if (askingMyLocation(heard)) return true; // maps.googleapis.com (ipinfo.io)
   if (askingTime(heard)) return true;
   if (askingMath(heard)) return true;
-  if (askingWeather(heard)) return true;
-  if (askingDirections(heard)) return true;
+  if (askingWeather(heard)) return true; // query.yahooapis.com and maps.googleapis.com
+  if (askingDirections(heard)) return true; // google.com/maps/dir
   if (askingReminder(heard)) return true;
-  if (askingAnalogy(heard)) return true;
-  if (askingHowDoI(heard)) return true;
+  if (askingAnalogy(heard)) return true; // metamia.com
+  if (askingHowDoI(heard)) return true; // youtube.com
 
   if (didHear(heard, ['where is ', "where's ", 'where are ', 'find '], 'starts with')) {
-    searchLocation(heard);
+    searchLocation(heard); // google.com/maps/search
     return true;
   }
 
@@ -216,14 +216,14 @@ function heardSearch(heard) {
                         'search for ', 'tell me about '];
   if (didHear(heard, signalPhrases, 'starts with')) {
     let words = removeSignalPhrases(heard,signalPhrases);
-    searchDefinition(words);
+    searchDefinition(words); // wikipedia.org
     return true;
   }
 
   // otherwise put the whole question into search engine (most general search)
   const signalGenericQuestion = ['what ', 'who ', 'where ', 'when ', 'why ', 'how ', 'which ', 'show me '];
   if (didHear(heard, signalGenericQuestion, 'starts with')) {
-    searchQuestion(heard);
+    searchQuestion(heard); // api.duckduckgo.com
     return true;
   }
 
