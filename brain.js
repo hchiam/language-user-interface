@@ -203,6 +203,7 @@ function heardSearch(heard) {
   if (askingDirections(heard)) return true;
   if (askingReminder(heard)) return true;
   if (askingAnalogy(heard)) return true;
+  if (askingHowDoI(heard)) return true;
 
   if (didHear(heard, ['where is ', "where's ", 'where are ', 'find '], 'starts with')) {
     searchLocation(heard);
@@ -220,7 +221,7 @@ function heardSearch(heard) {
   }
 
   // otherwise put the whole question into search engine (most general search)
-  const signalGenericQuestion = ['what ', 'who ', 'where ', 'when ', 'why ', 'how ', 'which '];
+  const signalGenericQuestion = ['what ', 'who ', 'where ', 'when ', 'why ', 'how ', 'which ', 'show me '];
   if (didHear(heard, signalGenericQuestion, 'starts with')) {
     searchQuestion(heard);
     return true;
@@ -574,6 +575,16 @@ function askingAnalogy(heard) {
 function searchAnalogy(words) {
   say("I'm opening metamia.com for " + words + ' analogies.');
   tryOpeningWindow('http://www.metamia.com/analogize.php?q=' + words);
+}
+
+function askingHowDoI(heard) {
+  if (didHear(heard,['how do ', 'show me ', 'explain '],'starts with')) {
+    heard = heard.replace('show me ','');
+    say("I'm opening youtube for " + heard);
+    tryOpeningWindow('https://www.youtube.com/results?search_query=' + heard);
+    return true;
+  }
+  return false;
 }
 
 function removeSignalPhrases(heard, signalPhrases) {
