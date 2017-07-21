@@ -122,6 +122,7 @@ function reply(heard) {
 
   heardRecognized |= heardInterrupt(heard);
   heardRecognized |= heardPleasantries(heard);
+  heardRecognized |= heardScheduler(heard);
   heardRecognized |= heardSearch(heard);
 
   if (!heardRecognized) {
@@ -190,6 +191,18 @@ function heardPleasantries(heard) {
 
 function capitalizeFirstLetter(sentence) {
   return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+}
+
+function heardScheduler(heard) { // https://doodle.com/create?title=
+  let regex = new RegExp("^(let's )?(plan|schedule) (a )?(.+)");
+  let matches = heard.match(regex);
+  if (matches) {
+    let title = matches[4];
+    say("I'm starting a scheduler for you on Doodle.com.");
+    window.open('https://doodle.com/create?title=' + title);
+    return true;
+  }
+  return false;
 }
 
 function heardSearch(heard) {
@@ -454,12 +467,12 @@ function askingReminder(heard) {
     // get what and when to remind
     let regex = new RegExp("^(.+) in (.+) (minutes?|hours?|seconds?)$");
     // TODO: add "^(.+) at (.+) (o'clock)?$"
-    matches = regex.test(heard);
+    let matches = heard.match(regex);
     let remindWhat, remindWhen, timeUnits;
     if (matches) {
-      remindWhat = heard.match(regex)[1].replace(/^to /g,'');
-      remindWhen = heard.match(regex)[2];
-      timeUnits  = heard.match(regex)[3];
+      remindWhat = matches[1].replace(/^to /g,'');
+      remindWhen = matches[2];
+      timeUnits  = matches[3];
 
       if (timeUnits != 'seconds' && timeUnits != 'second') {
         // confirm reminder (but not if user specified in seconds)
@@ -609,10 +622,10 @@ function searchLocation(heard) {
   // where is/are (there) ... in ...
   // https://www.google.com/maps/search/?api=1&query=pizza+seattle
   regex = new RegExp("^where (is|are) (there )?(.+) in (.+)");
-  matches = regex.test(heard);
+  matches = heard.match(regex);
   if (matches) {
-    searchFor = heard.match(regex)[3];
-    searchIn = heard.match(regex)[4];
+    searchFor = matches[3];
+    searchIn = matches[4];
     // going to put this into the url:
     searchWords = searchFor + ' ' + searchIn;
   } else {
@@ -620,9 +633,9 @@ function searchLocation(heard) {
     // where is/are (the nearest) ...
     // https://www.google.com/maps/search/?api=1&query=seattle
     regex = new RegExp('^(find|where (is|are))( a|the nearest|the closest)? (.+)');
-    matches = regex.test(heard);
+    matches = heard.match(regex);
     if (matches) {
-      searchFor = heard.match(regex)[4];
+      searchFor = matches[4];
       // going to put this into the url:
       searchWords = searchFor;
     }
