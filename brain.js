@@ -248,7 +248,7 @@ function askingWhoAreYou(heard) {
 function askingMyLocation(heard) {
   if (didHear(heard,['where am i','where are we'])) {
     // // keep for reference:
-    // $.getJSON("http://ipinfo.io", function(response) {
+    // $.getJSON("https://ipinfo.io", function(response) {
     //   say("I am detecting that we're around " + response.city);
     // });
     getLocation();
@@ -683,7 +683,7 @@ function searchQuestion(heard) {
   say("I'm now opening a search results page.");
   tryOpeningWindow(urlAPICall);
 
-  // let urlAPICall = 'http://api.duckduckgo.com/?format=jsonp&pretty=1&q=';
+  // let urlAPICall = 'https://api.duckduckgo.com/?format=jsonp&pretty=1&q=';
   // urlAPICall += words;
   // // tryOpeningWindow(urlAPICall);
   // alert('right above getJSON')
