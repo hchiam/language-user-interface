@@ -126,9 +126,15 @@ function reply(heard) {
   heardRecognized |= heardSearch(heard);
 
   if (!heardRecognized) {
-    let sentence = "You said: " + heard + '...' + "Sorry, I currently don't have a pre-programmed response to that.";
+    let sentence = "Sorry, I didn't understand that.";
     // need '...' to make an audible pause
     say(sentence);
+    setTimeout(function(){
+      let suggestFeature = "Here's a page to suggest features or comment on bugs. \
+                            Click on the \"new issue\" button.";
+      say(suggestFeature);
+      tryOpeningWindow('https://github.com/hchiam/language-user-interface/issues');
+    },2000);
   }
 }
 
