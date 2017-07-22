@@ -4,7 +4,8 @@ The function converse() would be a good place to start.
 */
 
 // TODO: track conversation topic and type to make things more two-way conversational
-let currentConversationTopic, currentConversationType;
+let currentConversationTopic = '';
+let currentConversationType = '';
 
 // automatically notify of internet connection
 window.addEventListener('offline', function(e) { say("You've lost your internet connection."); });
@@ -123,24 +124,37 @@ function reply(heard) {
 
   let heardRecognized = false;
 
-  heardRecognized |= heardInterrupt(heard);
-  heardRecognized |= heardPleasantries(heard);
-  heardRecognized |= heardScheduler(heard);
-  heardRecognized |= heardSearch(heard);
+  heardRecognized |= heardConfirm(heard);
+  if (heardRecognized) {
+    handleConfirm();
+    return;
+  }
+
+  // check different cases and if match recognized then return to escape function early:
+  heardRecognized |= heardInterrupt(heard); if (heardRecognized) return;
+  heardRecognized |= heardPleasantries(heard); if (heardRecognized) return;
+  heardRecognized |= heardScheduler(heard); if (heardRecognized) return;
+  heardRecognized |= heardSearch(heard); if (heardRecognized) return;
   // otherwise
   if (!heardRecognized) notUnderstood();
 }
 
 function notUnderstood() {
-  let sentence = "Sorry, I didn't understand that.";
+  let sentence = "Sorry, I didn't understand that. Would you like to suggest a feature or comment on a bug?";
   // need '...' to make an audible pause
   say(sentence);
-  setTimeout(function(){
-    let suggestFeature = "Here's a page to suggest features or comment on bugs. \
-                          Click on the \"new issue\" button.";
-    say(suggestFeature);
-    tryOpeningWindow('https://github.com/hchiam/language-user-interface/issues');
-  },2000);
+  currentConversationType = 'feedback';
+  currentConversationTopic = 'feedback';
+  // setTimeout(function(){
+  //   giveFeedback();
+  // },2000);
+}
+
+function giveFeedback() {
+  let suggestFeature = "Alright. Here's a page to suggest features or to comment on bugs. \
+                        Click on the \"new issue\" button.";
+  say(suggestFeature);
+  tryOpeningWindow('https://github.com/hchiam/language-user-interface/issues');
 }
 
 function didHear(heard, listOfChecks=[], checkType='exact match') {
@@ -160,6 +174,39 @@ function didHear(heard, listOfChecks=[], checkType='exact match') {
   }
   // otherwise
   return false;
+}
+
+function heardConfirm(heard) {
+  // immediately escape if no topic yet // TODO: maybe not for more complex conversations, but leave this for now
+  if (currentConversationTopic === '' || currentConversationType === '') return false;
+
+  let yes = ['y','yes','yeah','yep','yap','yup','ya','yah','aye','ahunh','affirmative','correct','positive'];
+  let no = ['n','no','nah','nope','na','nay','negative','incorrect'];
+
+  if (didHear(heard,yes)) {
+    if (currentConversationType === 'feedback') {
+      currentConversationTopic = 'give feedback';
+    }
+    return true;
+  } else if (didHear(heard,no)) {
+    if (currentConversationType === 'feedback') {
+      currentConversationTopic = 'no feedback';
+    }
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function handleConfirm() {
+  if (currentConversationType === 'feedback') {
+    if (currentConversationTopic === 'give feedback') {
+      giveFeedback();
+    }
+  }
+  // reset // TODO: maybe not for more complex conversations, but leave this for now
+  currentConversationTopic = '';
+  currentConversationType = '';
 }
 
 function heardInterrupt(heard) {
