@@ -4,8 +4,8 @@ The function converse() would be a good place to start.
 */
 
 // TODO: track conversation topic and type to make things more two-way conversational
-let currentConversationTopic = '';
-let currentConversationType = '';
+let currentConversationTopic = ''; // example: location (weather at a location)
+let currentConversationType = ''; // example: weather, time, reminders related to that location
 
 // automatically notify of internet connection
 window.addEventListener('offline', function(e) { say("You've lost your internet connection."); });
@@ -204,9 +204,9 @@ function handleConfirm() {
       giveFeedback();
     }
   }
-  // reset // TODO: maybe not for more complex conversations, but leave this for now
-  currentConversationTopic = '';
-  currentConversationType = '';
+  // // reset // TODO: maybe not for more complex conversations
+  // currentConversationTopic = '';
+  // currentConversationType = '';
 }
 
 function heardInterrupt(heard) {
@@ -277,6 +277,7 @@ function heardSearch(heard) {
   if (askingHowDoI(heard)) return true; // youtube.com
 
   if (didHear(heard, ['where is ', "where's ", 'where are ', 'find '], 'starts with')) {
+    currentConversationType = 'location';
     searchLocation(heard); // google.com/maps/search
     return true;
   }
@@ -287,6 +288,8 @@ function heardSearch(heard) {
                         'search for ', 'tell me about '];
   if (didHear(heard, signalPhrases, 'starts with')) {
     let words = removeSignalPhrases(heard,signalPhrases);
+    currentConversationType = 'definition';
+    currentConversationTopic = words;
     searchDefinition(words); // wikipedia.org
     return true;
   }
@@ -294,6 +297,8 @@ function heardSearch(heard) {
   // otherwise put the whole question into search engine (most general search)
   const signalGenericQuestion = ['what ', 'who ', 'where ', 'when ', 'why ', 'how ', 'which ', 'show me '];
   if (didHear(heard, signalGenericQuestion, 'starts with')) {
+    currentConversationType = 'question';
+    currentConversationTopic = heard;
     searchQuestion(heard); // api.duckduckgo.com
     return true;
   }
@@ -305,12 +310,18 @@ function heardSearch(heard) {
 function askingWhoAreYou(heard) {
   if (didHear(heard,['who are you','what are you'])) {
     say("My name is LUI. That's short for Language User Interface.");
+    currentConversationTopic = '';
+    currentConversationType = '';
     return true;
   } else if (heard === 'are you jarvis') {
     say("Not exactly. My name is LUI. But I am a Language User Interface.");
+    currentConversationTopic = '';
+    currentConversationType = '';
     return true;
   } else if (heard === 'are you like jarvis') {
     say("Sort of. My name is LUI. A Language User Interface.");
+    currentConversationTopic = '';
+    currentConversationType = '';
     return true;
   }
   return false;
@@ -318,6 +329,7 @@ function askingWhoAreYou(heard) {
 
 function askingMyLocation(heard) {
   if (didHear(heard,['where am i','where are we'])) {
+    currentConversationType = 'location';
     // // keep for reference:
     // $.getJSON("https://ipinfo.io", function(response) {
     //   say("I am detecting that we're around " + response.city);
@@ -337,6 +349,7 @@ function askingTime(heard) {
     let d = new Date();
     let t = d.toLocaleTimeString();
     say('It is ' + t);
+    currentConversationType = 'time';
     return true;
   }
   // check date
@@ -345,6 +358,7 @@ function askingTime(heard) {
     let d = new Date();
     let t = d.toDateString();
     say('It is ' + t);
+    currentConversationType = 'date';
     return true;
   }
   // otherwise
@@ -397,6 +411,7 @@ function getLocation(func) { // e.g.: getLocation passes myLocation to getWeathe
                 }
                 // put the pieces together
                 myLocation = city + ' ' + adminAreaLvl1; // + ' ' + country;
+                currentConversationTopic = myLocation;
                 // myLocation = locationFull; // TODO could ask for this
 
                 // just say location, or pass location to another function (i.e. callback)
@@ -424,8 +439,9 @@ function askingWeather(heard) {
   // TODO: add "^(.+) at (.+) (o'clock)?$"
   matches = regexHow.test(heard) || regexWhat.test(heard);
   if (matches) {
+    currentConversationType = 'weather';
     // getLocation will pass myLocation to the function getWeather(myLocation)
-    getLocation(getWeather);
+    getLocation(getWeather); // see getWeather(myLocation)
     return true;
   }
 
@@ -434,8 +450,9 @@ function askingWeather(heard) {
   // TODO: add "^(.+) at (.+) (o'clock)?$"
   matches = regexTemp.test(heard);
   if (matches) {
-    // getLocation will pass myLocation to the function getWeather(myLocation)
-    getLocation(getTemperature);
+    currentConversationType = 'temperature';
+    // getLocation will pass myLocation to the function getTemperature(myLocation)
+    getLocation(getTemperature); // see getTemperature(myLocation)
     return true;
   }
 
@@ -449,6 +466,7 @@ function getWeather(myLocation) {
     // text
     let weatherInfo = data.query.results.channel.item.condition.text;
     say("It's " + weatherInfo.toLowerCase() + ' around ' + myLocation + '.');
+    currentConversationTopic = myLocation;
     // let wind = data.query.results.channel.wind;
     // alert(data.query);
     // say(wind.chill);
@@ -463,6 +481,7 @@ function getTemperature(myLocation) {
     let temp = data.query.results.channel.item.condition.temp;
     let tempRefPt = getTemperatureRefPt(temp);
     say("It's " + temp + ' degrees Celsius around ' + myLocation + '. ' + tempRefPt);
+    currentConversationTopic = myLocation;
   });
 }
 
@@ -497,6 +516,8 @@ function askingDirections(heard) {
     matchFound[i] = heard.match(regex[i])
     if (matchFound[i]) {
       searchFor = matchFound[i][matchFound[i].length-1];
+      currentConversationTopic = searchFor;
+      currentConversationType = 'directions';
       // go to map
       // https://www.google.com/maps/dir/here/{searchFor}
       let urlAPICall = 'https://www.google.com/maps/dir/here/';
@@ -539,6 +560,9 @@ function askingReminder(heard) {
 
       // set reminder time
       reminderTimer(remindWhat, remindWhen, timeUnits);
+
+      currentConversationTopic = remindWhat;
+      currentConversationType = 'reminder';
 
       return true;
     } else {
@@ -601,6 +625,9 @@ function askingMath(heard) {
   // TODO: if '#0' numbers then check if next word is also integer, then add values
   possibleExpression = possibleExpression.replace(/ /g,'');
   if (safeForMath(possibleExpression)) {
+    currentConversationTopic = possibleExpression;
+    currentConversationType = 'math';
+
     possibleExpression = eval(possibleExpression);
     say('The answer is: ' + possibleExpression.toString());
     return true;
@@ -626,17 +653,26 @@ function askingAnalogy(heard) {
   let matches, words;
   matches = heard.match(regex1);
   if (matches) {
-    searchAnalogy(matches[3]);
+    words = matches[3];
+    searchAnalogy(words);
+    currentConversationTopic = words;
+    currentConversationType = 'analogy';
     return true;
   }
   matches = heard.match(regex2);
   if (matches) {
-    searchAnalogy(matches[4]);
+    words = matches[4];
+    searchAnalogy(words);
+    currentConversationTopic = words;
+    currentConversationType = 'analogy';
     return true;
   }
   matches = heard.match(regex3);
   if (matches) {
-    searchAnalogy(matches[3]);
+    words = matches[3];
+    searchAnalogy(words);
+    currentConversationTopic = words;
+    currentConversationType = 'analogy';
     return true;
   }
   // otherwise
@@ -650,9 +686,11 @@ function searchAnalogy(words) {
 
 function askingHowDoI(heard) {
   if (didHear(heard,['how do ', 'show me ', 'explain '],'starts with')) {
-    heard = heard.replace('show me ','');
-    say("I'm opening youtube for " + heard);
-    tryOpeningWindow('https://www.youtube.com/results?search_query=' + heard);
+    topic = heard.replace('show me ','');
+    currentConversationTopic = topic;
+    currentConversationType = 'how do i';
+    say("I'm opening youtube for " + topic);
+    tryOpeningWindow('https://www.youtube.com/results?search_query=' + topic);
     return true;
   }
   return false;
@@ -702,6 +740,7 @@ function searchLocation(heard) {
 
   // either way:
   if (matches) {
+    currentConversationTopic = searchWords;
     // https://www.google.com/maps/search/?api=1&query={searchWords}
     let urlAPICall = 'https://www.google.com/maps/search/?api=1&query=';
     urlAPICall += searchWords;
