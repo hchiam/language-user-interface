@@ -205,7 +205,7 @@ function heardScheduler(heard) { // https://doodle.com/create?title=
   if (matches) {
     let title = matches[4];
     say("I'm starting a scheduler for you on Doodle.com.");
-    window.open('https://doodle.com/create?title=' + title);
+    tryOpeningWindow('https://doodle.com/create?title=' + title);
     return true;
   }
   return false;
