@@ -3,6 +3,9 @@ Trying to understand this code?
 The function converse() would be a good place to start.
 */
 
+// TODO: track conversation topic and type to make things more two-way conversational
+let currentConversationTopic, currentConversationType;
+
 // automatically notify of internet connection
 window.addEventListener('offline', function(e) { say("You've lost your internet connection."); });
 window.addEventListener('online', function(e) { say("We're back online now."); });
