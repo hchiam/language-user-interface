@@ -95,6 +95,19 @@ function clearMessageHeardAlready() {
   resetCountDownWaiting();
 }
 
+function tryOpeningWindow(url) { // notice and tell user to unblock if can't open window
+  let newWindow = window.open(url);
+  if(!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+    say('Sorry... Please authorize me to open new windows for you... You may be using an ad blocker.');
+  } else {
+    try {
+      newWindow.focus();
+    } catch (e) {
+      say('Sorry... Please authorize me to open new windows for you... You may be using an ad blocker.');
+    }
+  }
+}
+
 function say(sentence) {
   responsiveVoice.speak(sentence, 'UK English Male');
   updateMessageLog(sentence, 'LUI');
@@ -115,6 +128,19 @@ function removeOKLouis(heard) {
   heard = heard.replace(' louis ', ' lui ');
   const toReplace = ['okay lui ', 'ok lui ', 'hi lui ', 'hey lui ', 'hello lui ', 'alright lui '];
   heard = removeSignalPhrases(heard, toReplace);
+  return heard;
+}
+
+function removeSignalPhrases(heard, signalPhrases) {
+  // find first match for start of sentence, remove, and stop checking
+  for (let i in signalPhrases) {
+    if (heard.startsWith(signalPhrases[i])) {
+      heard = heard.replace(signalPhrases[i],'');
+      break;
+    }
+  }
+  // remove initial 'a' or 'an' from the rest of the remaining sentence
+  heard = heard.replace(/^an? /,'');
   return heard;
 }
 
@@ -269,44 +295,23 @@ function heardSearch(heard) {
   if (askingWhoAreYou(heard)) return true;
   if (askingMyLocation(heard)) return true; // maps.googleapis.com (ipinfo.io)
   if (askingTime(heard)) return true;
-  if (askingMath(heard)) return true;
   if (askingWeather(heard)) return true; // query.yahooapis.com and maps.googleapis.com
   if (askingDirections(heard)) return true; // google.com/maps/dir
   if (askingReminder(heard)) return true;
   if (askingAnalogy(heard)) return true; // metamia.com
   if (askingHowDoI(heard)) return true; // youtube.com
-
-  if (didHear(heard, ['where is ', "where's ", 'where are ', 'find '], 'starts with')) {
-    currentConversationType = 'location';
-    searchLocation(heard); // google.com/maps/search
-    return true;
-  }
+  if (askingLocation(heard)) return true; // google.com/maps/search
+  if (askingMath(heard)) return true;
 
   // check definition search (more slightly more general)
-  const signalPhrases = ["what's ", 'what is ', 'what are ', 'what was ', 'what were ',
-                        "who's ", 'who is ', 'who are ', 'who was ', 'who were ',
-                        'search for ', 'tell me about '];
-  if (didHear(heard, signalPhrases, 'starts with')) {
-    let words = removeSignalPhrases(heard,signalPhrases);
-    currentConversationType = 'definition';
-    currentConversationTopic = words;
-    searchDefinition(words); // wikipedia.org
-    return true;
-  }
+  if (askingDefinition(heard)) return true; // wikipedia.org
 
   // otherwise put the whole question into search engine (most general search)
-  const signalGenericQuestion = ['what ', 'who ', 'where ', 'when ', 'why ', 'how ', 'which ', 'show me '];
-  if (didHear(heard, signalGenericQuestion, 'starts with')) {
-    currentConversationType = 'question';
-    currentConversationTopic = heard;
-    searchQuestion(heard); // api.duckduckgo.com
-    return true;
-  }
+  if (askingQuestion(heard)) return true; // api.duckduckgo.com
 
   // otherwise prolly not a question
   return false;
 }
-
 function askingWhoAreYou(heard) {
   if (didHear(heard,['who are you','what are you'])) {
     say("My name is LUI. That's short for Language User Interface.");
@@ -337,31 +342,6 @@ function askingMyLocation(heard) {
     getLocation();
     return true;
   }
-  return false;
-}
-
-function askingTime(heard) {
-  // check time
-  if (didHear(heard,['what time is it', 'what time is it right now',
-                     'what time is it now', "what time's it",
-                     'what is the time', 'what is the time right now',
-                     "what's the time", "what's the time right now"])) {
-    let d = new Date();
-    let t = d.toLocaleTimeString();
-    say('It is ' + t);
-    currentConversationType = 'time';
-    return true;
-  }
-  // check date
-  if (didHear(heard,["what's today's date", "what's the date today",
-                     'what is the date today','what day is it today'])) {
-    let d = new Date();
-    let t = d.toDateString();
-    say('It is ' + t);
-    currentConversationType = 'date';
-    return true;
-  }
-  // otherwise
   return false;
 }
 
@@ -430,6 +410,31 @@ function getLocation(func) { // e.g.: getLocation passes myLocation to getWeathe
 
   }
 
+}
+
+function askingTime(heard) {
+  // check time
+  if (didHear(heard,['what time is it', 'what time is it right now',
+                     'what time is it now', "what time's it",
+                     'what is the time', 'what is the time right now',
+                     "what's the time", "what's the time right now"])) {
+    let d = new Date();
+    let t = d.toLocaleTimeString();
+    say('It is ' + t);
+    currentConversationType = 'time';
+    return true;
+  }
+  // check date
+  if (didHear(heard,["what's today's date", "what's the date today",
+                     'what is the date today','what day is it today'])) {
+    let d = new Date();
+    let t = d.toDateString();
+    say('It is ' + t);
+    currentConversationType = 'date';
+    return true;
+  }
+  // otherwise
+  return false;
 }
 
 function askingWeather(heard) {
@@ -602,50 +607,6 @@ function swapWords(sentence, dictionary) {
   return words.join(' ');
 }
 
-function askingMath(heard) {
-  let possibleExpression = heard.replace('what is ').replace("what's ");
-  possibleExpression = possibleExpression.replace(/[.,\/#!?$%\^&\*;:{}<>+=\-_`"~()]/g,''); // make safer
-  const mathWords = {'one':'1','two':'2','three':'3','four':'4','five':'5',
-                    'six':'6','seven':'7','eight':'8','nine':'9','zero':'0',
-                    'ten':'10',
-                    'eleven':'11','twelve':'12','thirteen':'13','fourteen':'14',
-                    'fifteen':'15','sixteen':'16','seventeen':'17','eighteen':'18',
-                    'nineteen':'19','twenty':'20','thirty':'30','fourty':'40',
-                    'fifty':'50','sixty':'60','eighty':'80','ninety':'90',
-                    //'hundred':'00','thousand':'000','million':'000000',
-                    'and':'',
-                    'point':'.','decimal':'.',
-                    'plus':'+', 'minus':'-', 'divided by':'/', 'times':'*', 'multiplied by':'*', 'to the power of':'^'};
-  for (let key in mathWords) {
-    let toReplaceAllInstances = new RegExp(key, "g");
-    possibleExpression = possibleExpression.replace(toReplaceAllInstances, mathWords[key]);
-  }
-  // TODO: split by spaces and check if pairs of current-adjacent words are integers or one of them equals 'and', then combine
-  // TODO: if the second of the adjacent words is 'and', then add if the one after 'and' is also integer
-  // TODO: if '#0' numbers then check if next word is also integer, then add values
-  possibleExpression = possibleExpression.replace(/ /g,'');
-  if (safeForMath(possibleExpression)) {
-    currentConversationTopic = possibleExpression;
-    currentConversationType = 'math';
-
-    possibleExpression = eval(possibleExpression);
-    say('The answer is: ' + possibleExpression.toString());
-    return true;
-  }
-  return false;
-}
-
-function safeForMath(expression) {
-  const mathy = '1234567890+-*/^';
-  for (let i in expression) {
-    let letter = expression[i];
-    if (!mathy.includes(letter)) {
-      return false;
-    }
-  }
-  return true;
-}
-
 function askingAnalogy(heard) {
   const regex1 = new RegExp("^what('s| is) (an? |the )?(.+)( like)+?");
   const regex2 = new RegExp("^what('s| is) (an? )?analogy for (an? )?(.+)");
@@ -696,17 +657,13 @@ function askingHowDoI(heard) {
   return false;
 }
 
-function removeSignalPhrases(heard, signalPhrases) {
-  // find first match for start of sentence, remove, and stop checking
-  for (let i in signalPhrases) {
-    if (heard.startsWith(signalPhrases[i])) {
-      heard = heard.replace(signalPhrases[i],'');
-      break;
-    }
+function askingLocation(heard) {
+  if (didHear(heard, ['where is ', "where's ", 'where are ', 'find '], 'starts with')) {
+    currentConversationType = 'location';
+    searchLocation(heard);
+    return true;
   }
-  // remove initial 'a' or 'an' from the rest of the remaining sentence
-  heard = heard.replace(/^an? /,'');
-  return heard;
+  return false;
 }
 
 function searchLocation(heard) {
@@ -752,6 +709,64 @@ function searchLocation(heard) {
   return false;
 }
 
+function askingMath(heard) {
+  let possibleExpression = heard.replace('what is ').replace("what's ");
+  possibleExpression = possibleExpression.replace(/[.,\/#!?$%\^&\*;:{}<>+=\-_`"~()]/g,''); // make safer
+  const mathWords = {'one':'1','two':'2','three':'3','four':'4','five':'5',
+                    'six':'6','seven':'7','eight':'8','nine':'9','zero':'0',
+                    'ten':'10',
+                    'eleven':'11','twelve':'12','thirteen':'13','fourteen':'14',
+                    'fifteen':'15','sixteen':'16','seventeen':'17','eighteen':'18',
+                    'nineteen':'19','twenty':'20','thirty':'30','fourty':'40',
+                    'fifty':'50','sixty':'60','eighty':'80','ninety':'90',
+                    //'hundred':'00','thousand':'000','million':'000000',
+                    'and':'',
+                    'point':'.','decimal':'.',
+                    'plus':'+', 'minus':'-', 'divided by':'/', 'times':'*', 'multiplied by':'*', 'to the power of':'^'};
+  for (let key in mathWords) {
+    let toReplaceAllInstances = new RegExp(key, "g");
+    possibleExpression = possibleExpression.replace(toReplaceAllInstances, mathWords[key]);
+  }
+  // TODO: split by spaces and check if pairs of current-adjacent words are integers or one of them equals 'and', then combine
+  // TODO: if the second of the adjacent words is 'and', then add if the one after 'and' is also integer
+  // TODO: if '#0' numbers then check if next word is also integer, then add values
+  possibleExpression = possibleExpression.replace(/ /g,'');
+  if (safeForMath(possibleExpression)) {
+    currentConversationTopic = possibleExpression;
+    currentConversationType = 'math';
+
+    possibleExpression = eval(possibleExpression);
+    say('The answer is: ' + possibleExpression.toString());
+    return true;
+  }
+  return false;
+}
+
+function safeForMath(expression) {
+  const mathy = '1234567890+-*/^';
+  for (let i in expression) {
+    let letter = expression[i];
+    if (!mathy.includes(letter)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function askingDefinition(heard) {
+  const signalPhrases = ["what's ", 'what is ', 'what are ', 'what was ', 'what were ',
+                        "who's ", 'who is ', 'who are ', 'who was ', 'who were ',
+                        'search for ', 'tell me about '];
+  if (didHear(heard, signalPhrases, 'starts with')) {
+    let words = removeSignalPhrases(heard,signalPhrases);
+    currentConversationType = 'definition';
+    currentConversationTopic = words;
+    searchDefinition(words);
+    return true;
+  }
+  return false;
+}
+
 function searchDefinition(words) {
   // search wikipedia
 
@@ -784,6 +799,17 @@ function isSubstring(string, substring) {
   return string.indexOf(substring) !== -1;
 }
 
+function askingQuestion(heard) {
+  const signalGenericQuestion = ['what ', 'who ', 'where ', 'when ', 'why ', 'how ', 'which ', 'show me '];
+  if (didHear(heard, signalGenericQuestion, 'starts with')) {
+    currentConversationType = 'question';
+    currentConversationTopic = heard;
+    searchQuestion(heard);
+    return true;
+  }
+  return false;
+}
+
 function searchQuestion(heard) {
   // search duckduckgo
 
@@ -807,17 +833,4 @@ function searchQuestion(heard) {
   //   // if (title.toLowerCase() != words) say("I'm not sure this is what you're looking for, but here's what I found.")
   //   // say("duck duck go says: " + summary); // alert(Object.values(data.query.pages)[0].extract)
   // });
-}
-
-function tryOpeningWindow(url) { // notice and tell user to unblock if can't open window
-  let newWindow = window.open(url);
-  if(!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-    say('Sorry... Please authorize me to open new windows for you... You may be using an ad blocker.');
-  } else {
-    try {
-      newWindow.focus();
-    } catch (e) {
-      say('Sorry... Please authorize me to open new windows for you... You may be using an ad blocker.');
-    }
-  }
 }
