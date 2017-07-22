@@ -127,18 +127,20 @@ function reply(heard) {
   heardRecognized |= heardPleasantries(heard);
   heardRecognized |= heardScheduler(heard);
   heardRecognized |= heardSearch(heard);
+  // otherwise
+  if (!heardRecognized) notUnderstood();
+}
 
-  if (!heardRecognized) {
-    let sentence = "Sorry, I didn't understand that.";
-    // need '...' to make an audible pause
-    say(sentence);
-    setTimeout(function(){
-      let suggestFeature = "Here's a page to suggest features or comment on bugs. \
-                            Click on the \"new issue\" button.";
-      say(suggestFeature);
-      tryOpeningWindow('https://github.com/hchiam/language-user-interface/issues');
-    },2000);
-  }
+function notUnderstood() {
+  let sentence = "Sorry, I didn't understand that.";
+  // need '...' to make an audible pause
+  say(sentence);
+  setTimeout(function(){
+    let suggestFeature = "Here's a page to suggest features or comment on bugs. \
+                          Click on the \"new issue\" button.";
+    say(suggestFeature);
+    tryOpeningWindow('https://github.com/hchiam/language-user-interface/issues');
+  },2000);
 }
 
 function didHear(heard, listOfChecks=[], checkType='exact match') {
