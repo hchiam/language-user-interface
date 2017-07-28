@@ -611,9 +611,9 @@ function swapWords(sentence, dictionary) {
 }
 
 function askingAnalogy(heard) {
-  const regex1 = new RegExp("^what('s| is) (an? |the )?(.+)( like)+?");
-  const regex2 = new RegExp("^what('s| is) (an? )?analogy for (an? )?(.+)");
-  const regex3 = new RegExp("^find (an? )?analogy for (an? )?(.+)");
+  const regex1 = new RegExp("^what('s| is| are) (an? |the )?(.+)( like)+?");
+  const regex2 = new RegExp("^what('s| is| are) (an? )?analog(y|ies) for (an? |the )?(.+)");
+  const regex3 = new RegExp("^find (an? )?analog(y|ies) for (an? |the )?(.+)");
   let matches, words;
   matches = heard.match(regex1);
   if (matches) {
@@ -625,7 +625,7 @@ function askingAnalogy(heard) {
   }
   matches = heard.match(regex2);
   if (matches) {
-    words = matches[4];
+    words = matches[5];
     searchAnalogy(words);
     currentConversationTopic = words;
     currentConversationType = 'analogy';
@@ -633,7 +633,7 @@ function askingAnalogy(heard) {
   }
   matches = heard.match(regex3);
   if (matches) {
-    words = matches[3];
+    words = matches[4];
     searchAnalogy(words);
     currentConversationTopic = words;
     currentConversationType = 'analogy';
