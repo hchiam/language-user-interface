@@ -256,6 +256,9 @@ function heardPleasantries(heard) {
   } else if (didHear(heard,["is this thing on",'can you hear me',"does this thing work",'are you on right now'],'starts with')) {
     say('Yes.');
     return true;
+  } else if (didHear(heard,['how are you',"how's it going"])) {
+    say("I'm doing good, thanks.");
+    return true;
   } else if (didHear(heard,["let's begin","let's start","let's get started"])) {
     say('Okay. What would you like to do?');
     return true;
