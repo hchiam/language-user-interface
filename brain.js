@@ -759,6 +759,11 @@ function askingDefinition(heard) {
                         'search for ', 'tell me about '];
   if (didHear(heard, signalPhrases, 'starts with')) {
     let words = removeSignalPhrases(heard,signalPhrases);
+    // special case for name
+    if (words === 'lui') {
+      say("I am LUI. That's short for Language User Interface.");
+      return true;
+    }
     currentConversationType = 'definition';
     currentConversationTopic = words;
     searchDefinition(words);
