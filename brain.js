@@ -260,6 +260,10 @@ function heardPleasantries(heard) {
   } else if (didHear(heard,["is this thing on",'can you hear me',"does this thing work",'are you on right now'],'starts with')) {
     say('Yes.');
     return true;
+  } else if (didHear(heard,['what can you do','what can i ask you','how can you help me','what can you do for me'])) {
+    say('You can ask me things like: "Where are the closest restaurants?"');
+    // TODO: add buttons of more showcase example questions
+    return true;
   } else if (didHear(heard,['how are you',"how's it going"])) {
     say("I'm doing good, thanks.");
     return true;
