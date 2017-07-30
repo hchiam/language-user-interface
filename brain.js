@@ -307,6 +307,7 @@ function heardOpen(heard) {
   let matches = heard.match(regex);
   if (matches) {
     let what = matches[2].replace(' and ',' ').split(' ');
+    say("I'm now trying to open those websites.");
     for (var i in what) {
       tryOpeningWindow('https://' + what[i]);
     }
