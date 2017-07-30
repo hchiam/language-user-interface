@@ -122,7 +122,7 @@ function listen() {
   let heard = document.getElementById("input").value;
   // remove trailing/leading spaces, set to lowercase, and remove punctuation
   heard = heard.trim().toLowerCase();
-  heard = heard.replace(/[.,\/#!?$%\^&\*;:{}<>+=\-_`"~()]/g,'');
+  heard = heard.replace(/[,\/#!?$%\^&\*;:{}<>+=_`"~()]/g,''); // make safer
   heard = removeOKLouis(heard);
   // TODO: ? make heard into an object indicating which topic to speak about?
   return heard;
@@ -164,6 +164,7 @@ function reply(heard) {
   heardRecognized |= heardInterrupt(heard); if (heardRecognized) return;
   heardRecognized |= heardPleasantries(heard); if (heardRecognized) return;
   heardRecognized |= heardScheduler(heard); if (heardRecognized) return;
+  heardRecognized |= heardOpen(heard); if (heardRecognized) return;
   heardRecognized |= heardSearch(heard); if (heardRecognized) return;
   // otherwise
   if (!heardRecognized) notUnderstood();
@@ -297,6 +298,20 @@ function heardScheduler(heard) { // https://doodle.com/create?title=
     tryOpeningWindow('https://doodle.com/create?title=' + title);
     return true;
   }
+  return false;
+}
+
+function heardOpen(heard) {
+  let regex = new RegExp('^open( up)? (.+)');
+  let matches = heard.match(regex);
+  if (matches) {
+    let what = matches[2].replace(' and ',' ').split(' ');
+    for (var i in what) {
+      tryOpeningWindow('https://' + what[i]);
+    }
+    return true;
+  }
+  // otherwise
   return false;
 }
 
@@ -737,7 +752,7 @@ function searchLocation(heard) {
 
 function askingMath(heard) {
   let possibleExpression = heard.replace('what is ').replace("what's ");
-  possibleExpression = possibleExpression.replace(/[.,\/#!?$%\^&\*;:{}<>+=\-_`"~()]/g,''); // make safer
+  possibleExpression = possibleExpression.replace(/[,\/#!?$%\^&\*;:{}<>+=_`"~()]/g,''); // make safer
   const mathWords = {'one':'1','two':'2','three':'3','four':'4','five':'5',
                     'six':'6','seven':'7','eight':'8','nine':'9','zero':'0',
                     'ten':'10',
