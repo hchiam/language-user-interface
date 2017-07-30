@@ -81,8 +81,10 @@ function updateMessageLog(message, who) {
   if (message != ' ') {
     // set up style based on LUI/user speaking
     let id = ' id="log-' + who + '"';
+    let idTimeStamp = ' id="log-time-stamp"';
     // create message
-    let nextMessage = '<p' + id + '>' + message + '</p>';
+    let timeStamp = '<br><small' + idTimeStamp + '>' + ' - ' + getTime() + '</small>';
+    let nextMessage = '<p' + id + '>' + message + timeStamp + '</p>';
     let logSoFar = document.getElementById('messageLog').innerHTML;
     // show message
     document.getElementById('messageLog').innerHTML = nextMessage + logSoFar;

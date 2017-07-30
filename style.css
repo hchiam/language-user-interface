@@ -38,6 +38,10 @@
   background: lightyellow;
 }
 
+#log-time-stamp {
+  font-size: 30%;
+}
+
 body {
   background: lightblue; /* For browsers that do not support gradients */
   background: -webkit-linear-gradient(right top, lightblue, white); /* For Safari 5.1 to 6.0 */
