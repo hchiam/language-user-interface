@@ -759,7 +759,7 @@ function safeForMath(expression) {
 function askingDefinition(heard) {
   const signalPhrases = ["what's ", 'what is ', 'what are ', 'what was ', 'what were ',
                         "who's ", 'who is ', 'who are ', 'who was ', 'who were ',
-                        'search for ', 'tell me about '];
+                        'search for ', 'tell me about ', 'define '];
   if (didHear(heard, signalPhrases, 'starts with')) {
     let words = removeSignalPhrases(heard,signalPhrases);
     // special case for name
