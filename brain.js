@@ -673,7 +673,7 @@ function searchAnalogy(words) {
 
 function askingHowDoI(heard) {
   if (didHear(heard,['how do ', 'show me ', 'explain '],'starts with')) {
-    topic = heard.replace(/^show me (a (youtube )?video for )?/,'');
+    topic = heard.replace(/^show me (a (youtube )?video (for|of) )?/,'');
     currentConversationTopic = topic;
     currentConversationType = 'how do i';
     say("I'm opening youtube for " + topic);
