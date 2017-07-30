@@ -421,23 +421,32 @@ function askingTime(heard) {
                      'what time is it now', "what time's it",
                      'what is the time', 'what is the time right now',
                      "what's the time", "what's the time right now"])) {
-    let d = new Date();
-    let t = d.toLocaleTimeString();
-    say('It is ' + t);
+    say('It is ' + getTime());
     currentConversationType = 'time';
     return true;
   }
   // check date
   if (didHear(heard,["what's today's date", "what's the date today",
-                     'what is the date today','what day is it today'])) {
-    let d = new Date();
-    let t = d.toDateString();
-    say('It is ' + t);
+                     'what is the date today', 'what day is it today',
+                     'what is the date', "what's the date"])) {
+    say('It is ' + getDate());
     currentConversationType = 'date';
     return true;
   }
   // otherwise
   return false;
+}
+
+function getTime() {
+  let d = new Date();
+  let t = d.toLocaleTimeString();
+  return t;
+}
+
+function getDate() {
+  let d = new Date();
+  let t = d.toDateString();
+  return t;
 }
 
 function askingWeather(heard) {
