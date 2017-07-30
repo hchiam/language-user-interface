@@ -584,12 +584,15 @@ function reminderTimer(remindWhat, remindWhen, timeUnits) {
   // expecting: timeUnits = minute(s), hour(s), second(s)
   switch (timeUnits) {
     case 'minutes':
+    case 'minute':
       remindWhen *= 60 * 1000;
       break;
     case 'hours':
+    case 'hour':
       remindWhen *= 3600 * 1000;
       break;
     case 'seconds':
+    case 'second':
       remindWhen *= 1000;
       break;
     default:
