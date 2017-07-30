@@ -302,6 +302,7 @@ function heardScheduler(heard) { // https://doodle.com/create?title=
 }
 
 function heardOpen(heard) {
+  // example: "open up google.com, gmail.com, and wikipedia.org"
   let regex = new RegExp('^open( up)? (.+)');
   let matches = heard.match(regex);
   if (matches) {
