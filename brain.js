@@ -778,8 +778,8 @@ function askingDefinition(heard) {
 function searchDefinition(words) {
   // search wikipedia
 
-  // let urlAPICall = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&exsentences=1&callback=?&titles=';
-  let urlAPICall = 'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exsentences=1&exintro&explaintext=&indexpageids=true&format=json&generator=search&gsrlimit=1&callback=?&gsrsearch=';
+  // let urlAPICall = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&exsentences=2&callback=?&titles=';
+  let urlAPICall = 'https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exsentences=2&exintro&explaintext=&indexpageids=true&format=json&generator=search&gsrlimit=1&callback=?&gsrsearch=';
   urlAPICall += words;
   // tryOpeningWindow(urlAPICall);
   $.getJSON(urlAPICall, function(data) {
@@ -788,6 +788,7 @@ function searchDefinition(words) {
       let pageInfo = Object.values(data.query.pages)[0];
       let summary = pageInfo.extract;
       let title = pageInfo.title;
+      summary = summary.match(/\w.*? [a-z]+[.?!]/g)[0]; // get first sentence, but ignore abbreviation periods
       if (isSubstring(summary,'may refer to')) {
         say('"' + capitalizeFirstLetter(words) + '"' + " can mean a few different things. I'm opening the Wikipedia disambiguation page.")
         tryOpeningWindow('https://www.wikipedia.org/wiki/' + words);
