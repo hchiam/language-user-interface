@@ -552,14 +552,14 @@ function askingReminder(heard) {
     heard = swapWords(heard, pronounSwaps);
 
     // get what and when to remind
-    let regex = new RegExp("^(.+) in (.+) (minutes?|hours?|seconds?)$");
+    let regex = new RegExp("^(.+) (in|after) (.+) (minutes?|hours?|seconds?)$");
     // TODO: add "^(.+) at (.+) (o'clock)?$"
     let matches = heard.match(regex);
     let remindWhat, remindWhen, timeUnits;
     if (matches) {
       remindWhat = matches[1].replace(/^to /g,'');
-      remindWhen = matches[2];
-      timeUnits  = matches[3];
+      remindWhen = matches[3];
+      timeUnits  = matches[4];
 
       if (timeUnits != 'seconds' && timeUnits != 'second') {
         // confirm reminder (but not if user specified in seconds)
