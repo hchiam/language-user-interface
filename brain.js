@@ -109,9 +109,11 @@ function tryOpeningWindow(url) { // notice and tell user to unblock if can't ope
 }
 
 function say(sentence) {
-  responsiveVoice.speak(sentence, 'UK English Male');
-  updateMessageLog(sentence, 'LUI');
-  document.getElementById("input").focus(); // put cursor back
+  if (sentence != ' ') {
+    responsiveVoice.speak(sentence, 'UK English Male');
+    updateMessageLog(sentence, 'LUI');
+    document.getElementById("input").focus(); // put cursor back
+  }
 }
 
 function listen() {
