@@ -244,7 +244,7 @@ function handleConfirm() {
 }
 
 function heardInterrupt(heard) {
-  if (didHear(heard,['okay','ok','stop',"that's enough",'enough','alright',''])) { // '' in case just spaces entered
+  if (didHear(heard,['okay','ok','stop',"that's enough",'enough','alright','thats enough',''])) { // '' in case just spaces entered
     say(' ');
     return true;
   }
@@ -268,10 +268,10 @@ function heardPleasantries(heard) {
     // add custom message with buttons of showcase example questions
     showWhatICanDo();
     return true;
-  } else if (didHear(heard,['how are you',"how's it going"])) {
+  } else if (didHear(heard,['how are you',"how's it going",'hows it going'])) {
     say("I'm doing good, thanks.");
     return true;
-  } else if (didHear(heard,["let's begin","let's start","let's get started"])) {
+  } else if (didHear(heard,["let's begin","let's start","let's get started",'lets begin','lets start','lets get started'])) {
     say('Okay. What would you like to do?');
     return true;
   } else if (didHear(heard,['thanks','thank you'])) {
@@ -345,7 +345,7 @@ function useExample(whatToSay) {
 }
 
 function heardScheduler(heard) { // https://doodle.com/create?title=
-  let regex = new RegExp("^(let's )?(plan|schedule) (a )?(.+)");
+  let regex = new RegExp("^(let'?s )?(plan|schedule) (a )?(.+)");
   let matches = heard.match(regex);
   if (matches) {
     let title = matches[4];
@@ -514,7 +514,7 @@ function askingTime(heard) {
   // check date
   if (didHear(heard,["what's today's date", "what's the date today",
                      'what is the date today', 'what day is it today',
-                     'what is the date', "what's the date"])) {
+                     'what is the date', "what's the date", "what is today's date"])) {
     say('It is ' + getDate());
     currentConversationType = 'date';
     return true;
@@ -712,8 +712,8 @@ function swapWords(sentence, dictionary) {
 }
 
 function askingAnalogy(heard) {
-  const regex1 = new RegExp("^what('s| is| are) (an? |the )?(.+)( like)+?");
-  const regex2 = new RegExp("^what('s| is| are) (an? )?analog(y|ies) for (an? |the )?(.+)");
+  const regex1 = new RegExp("^what('?s| is| are) (an? |the )?(.+)( like)+?");
+  const regex2 = new RegExp("^what('?s| is| are) (an? )?analog(y|ies) for (an? |the )?(.+)");
   const regex3 = new RegExp("^find (an? )?analog(y|ies) for (an? |the )?(.+)");
   let matches, words;
   matches = heard.match(regex1);
@@ -762,7 +762,7 @@ function askingHowDoI(heard) {
 }
 
 function askingLocation(heard) {
-  if (didHear(heard, ['where is ', "where's ", 'where are ', 'find '], 'starts with')) {
+  if (didHear(heard, ['where is ', "where's ", 'wheres', 'where are ', 'find '], 'starts with')) {
     currentConversationType = 'location';
     searchLocation(heard);
     return true;
@@ -814,7 +814,7 @@ function searchLocation(heard) {
 }
 
 function askingMath(heard) {
-  let possibleExpression = heard.replace('what is ').replace("what's ");
+  let possibleExpression = heard.replace('what is ').replace("what's ").replace('whats');
   possibleExpression = possibleExpression.replace(/[,\\\/#!?$%\^&\*;:{}<>+=_`"~()]/g,''); // make safer
   const mathWords = {'one':'1','two':'2','three':'3','four':'4','five':'5',
                     'six':'6','seven':'7','eight':'8','nine':'9','zero':'0',
@@ -858,8 +858,8 @@ function safeForMath(expression) {
 }
 
 function askingDefinition(heard) {
-  const signalPhrases = ["what's ", 'what is ', 'what are ', 'what was ', 'what were ',
-                        "who's ", 'who is ', 'who are ', 'who was ', 'who were ',
+  const signalPhrases = ["what's ", 'whats', 'what is ', 'what are ', 'what was ', 'what were ',
+                        "who's ", 'whos', 'who is ', 'who are ', 'who was ', 'who were ',
                         'search for ', 'tell me about ', 'define '];
   if (didHear(heard, signalPhrases, 'starts with')) {
     let words = removeSignalPhrases(heard,signalPhrases);
