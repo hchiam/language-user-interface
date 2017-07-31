@@ -534,8 +534,8 @@ function getDate() {
 
 function askingWeather(heard) {
   // general weather description
-  let regexHow = new RegExp("^how('s| is)? (the |today's )?(weather|forecast)( like)?( today)?( like)?");
-  let regexWhat = new RegExp("^what('s| is)? (the |today's )?(weather|forecast)( like( today)?| today( like)?)");
+  let regexHow = new RegExp("^how('?s| is)? (the |today'?s )?(weather|forecast)( like)?( today)?( like)?");
+  let regexWhat = new RegExp("^what('?s| is)? (the |today'?s )?(weather|forecast)( like( today)?| today( like)?)");
   // TODO: add "^(.+) at (.+) (o'clock)?$"
   matches = regexHow.test(heard) || regexWhat.test(heard);
   if (matches) {
