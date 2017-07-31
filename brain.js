@@ -270,9 +270,11 @@ function heardPleasantries(heard) {
          "how do i learn to learn". \
          "what is special relativity". \
          "who was albert einstein". \
+         "who are you". \
          "where are we". \
          "what time is it". \
          "show me how to draw". \
+         "explain philosophy". \
          "open gmail.com, facebook.com, and habitica.com". \
          "find analogies for an atom". \
          "remind me to take a break in 30 minutes". \
