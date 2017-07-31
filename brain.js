@@ -626,7 +626,7 @@ function askingDirections(heard) {
       // go to map
       // https://www.google.com/maps/dir/here/{searchFor}
       let urlAPICall = 'https://www.google.com/maps/dir/here/';
-      urlAPICall += searchFor.replace(' ','+');
+      urlAPICall += searchFor.replace(/ /g,'+');
       say("I'm now opening a Google maps results page for the closest " + searchFor + '.');
       tryOpeningWindow(urlAPICall);
       return true;
