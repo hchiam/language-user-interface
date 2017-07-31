@@ -301,6 +301,7 @@ function showWhatICanDo() {
     "where are the closest restaurants",
     "where is there tim hortons in toronto",
     "how's the weather today",
+    "what's today's temperature",
     "how do i learn to learn",
     "what is special relativity",
     "who was albert einstein",
@@ -321,7 +322,7 @@ function showWhatICanDo() {
   // set up what buttons to show
   let sentenceToShow = 'You can ask me things like: ';
   for (var i in examples) {
-    sentenceToShow += '<button onclick="useExample(\'' + examples[i].replace('\'','') + '\')">' + examples[i] + '</button>';
+    sentenceToShow += '<button onclick="useExample(\'' + examples[i].replace(/\'/g,'') + '\')">' + examples[i] + '</button>';
   }
 
   // say aloud
@@ -548,7 +549,7 @@ function askingWeather(heard) {
   }
 
   // temperature
-  let regexTemp = new RegExp("^(how|what)('s| is) (the )?temperature( like)?( today)?( like)?");
+  let regexTemp = new RegExp("^(how|what)('?s| is) (the |today'?s )?temperature( like)?( today)?( like)?");
   // TODO: add "^(.+) at (.+) (o'clock)?$"
   matches = regexTemp.test(heard);
   if (matches) {
