@@ -321,6 +321,11 @@ function heardOpen(heard) {
   let matches = heard.match(regex);
   if (matches) {
     let what = matches[2].replace(' and ',' ').split(' ');
+    // refuse if user tries to open too many at a time
+    if (what.length > 5) {
+      say("Sorry, that's a little too many websites to open at the same time. Please open at most 5 at a time.");
+      return true;
+    }
     say("I'm now trying to open those websites.");
     for (var i in what) {
       tryOpeningWindow('https://' + what[i]);
