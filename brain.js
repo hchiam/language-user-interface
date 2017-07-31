@@ -392,6 +392,7 @@ function heardSearch(heard) {
   if (askingHowDoI(heard)) return true; // youtube.com
   if (askingLocation(heard)) return true; // google.com/maps/search
   if (askingMath(heard)) return true;
+  if (askingShowMePicture(heard)) return true; // google.com/search?tbm=isch&q=
 
   // check definition search (more slightly more general)
   if (askingDefinition(heard)) return true; // wikipedia.org
@@ -857,6 +858,45 @@ function safeForMath(expression) {
     }
   }
   return true;
+}
+
+function askingShowMePicture(heard) { // make sure to check this AFTER checking "show me how"
+  const signalPhrases = ['show ', 'what does '];
+  if (didHear(heard,signalPhrases,'starts with')) {
+    let regex, matches, what;
+
+    // example: show me ... pictures
+    // example: show me what a ... looks like
+    // example: what does the ... look like
+    regex = new RegExp('^(show (me )?(what )?|what (do |does )?)(an? |the )?(.+)( pictures?| looks? like)$');
+    // need $ to detect "show me pictures OF ..."
+    matches = heard.match(regex);
+    if (matches) {
+      what = matches[6];
+      searchPictures(what);
+      return true;
+    } else { // otherwise check more alternate phrasings
+
+      // example: show me pictures of ...
+      // example: show an example of ...
+      regex = new RegExp('^show (me )?(an? )?((example|picture)s? )(of )?(.+)');
+      matches = heard.match(regex);
+      if (matches) {
+        what = matches[matches.length-1]; // get last 'bracketed' item
+        searchPictures(what);
+        return true;
+      }
+    }
+
+    return false;
+  }
+  return false;
+}
+
+function searchPictures(what) { // https://www.google.com/search?tbm=isch&safe=active&q=
+  say("Here are pictures of " + what);
+  let url = 'https://www.google.com/search?tbm=isch&safe=active&q=' + what;
+  tryOpeningWindow(url);
 }
 
 function askingDefinition(heard) {
