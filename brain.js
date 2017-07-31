@@ -298,7 +298,7 @@ function showWhatICanDo() {
     "how do i get to the nearest hotel",
     "where are the closest restaurants",
     "where is there tim hortons in toronto",
-    "how is the weather today",
+    "how's the weather today",
     "how do i learn to learn",
     "what is special relativity",
     "who was albert einstein",
@@ -319,7 +319,7 @@ function showWhatICanDo() {
   // set up what buttons to show
   let sentenceToShow = 'You can ask me things like: ';
   for (var i in examples) {
-    sentenceToShow += '<button onclick="useExample(\'' + examples[i] + '\')">' + examples[i] + '</button>';
+    sentenceToShow += '<button onclick="useExample(\'' + examples[i].replace('\'','') + '\')">' + examples[i] + '</button>';
   }
 
   // say aloud
