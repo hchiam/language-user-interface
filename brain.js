@@ -298,7 +298,7 @@ function showWhatICanDo() {
     "how do i get to the nearest hotel",
     "where are the closest restaurants",
     "where is there tim hortons in toronto",
-    "how\'s the weather today",
+    "how's the weather today",
     "how do i learn to learn",
     "what is special relativity",
     "who was albert einstein",
