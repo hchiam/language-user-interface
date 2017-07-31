@@ -36,7 +36,8 @@ function introSelf() {
        For example, you can ask me: 'Where are the closest restaurants?' \
        Alternatively, if you have speech recognition software, \
        such as Mac Dictation, \
-       you can enter text verbally into the textbox.");
+       you can enter text verbally into the textbox. \
+       Just ask me: 'what can you do?'");
 }
 
 let delayedAction;
