@@ -299,10 +299,10 @@ function showWhatICanDo() {
   let examples = [
     "how do i get to the nearest hotel",
     "where are the closest restaurants",
-    "where is there tim hortons in toronto",
     "how's the weather today",
-    "what's today's temperature",
+    "where is there tim hortons in toronto",
     "how do i learn to learn",
+    "what's today's temperature",
     "what is special relativity",
     "who was albert einstein",
     "who are you",
@@ -312,8 +312,8 @@ function showWhatICanDo() {
     "explain philosophy",
     "open gmail.com, facebook.com, and habitica.com",
     "find analogies for an atom",
-    "remind me to take a break in 30 minutes",
     "schedule a meeting",
+    "remind me to take a break in 30 minutes",
   ];
 
   // set up what to say aloud
