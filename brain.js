@@ -122,7 +122,7 @@ function listen() {
   let heard = document.getElementById("input").value;
   // remove trailing/leading spaces, set to lowercase, and remove punctuation
   heard = heard.trim().toLowerCase();
-  heard = heard.replace(/[,\/#!?$%\^&\*;:{}<>+=_`"~()]/g,''); // make safer
+  heard = heard.replace(/[,\\\/#!?$%\^&\*;:{}<>+=_`"~()]/g,''); // make safer
   heard = removeOKLouis(heard);
   // TODO: ? make heard into an object indicating which topic to speak about?
   return heard;
@@ -262,7 +262,21 @@ function heardPleasantries(heard) {
     say('Yes.');
     return true;
   } else if (didHear(heard,['what can you do','what can i ask you','how can you help me','what can you do for me'])) {
-    say('You can ask me things like: "Where are the closest restaurants?"');
+    say('You can ask me things like: \
+         "how do i get to the nearest hotel". \
+         "where are the closest restaurants". \
+         "where is there tim hortons in toronto". \
+         "how\'s the weather today". \
+         "how do i learn to learn". \
+         "what is special relativity". \
+         "who was albert einstein". \
+         "where are we". \
+         "what time is it". \
+         "show me how to draw". \
+         "open gmail.com, facebook.com, and habitica.com". \
+         "find analogies for an atom". \
+         "remind me to take a break in 30 minutes". \
+         "schedule a meeting".');
     // TODO: add buttons of more showcase example questions
     return true;
   } else if (didHear(heard,['how are you',"how's it going"])) {
@@ -755,7 +769,7 @@ function searchLocation(heard) {
 
 function askingMath(heard) {
   let possibleExpression = heard.replace('what is ').replace("what's ");
-  possibleExpression = possibleExpression.replace(/[,\/#!?$%\^&\*;:{}<>+=_`"~()]/g,''); // make safer
+  possibleExpression = possibleExpression.replace(/[,\\\/#!?$%\^&\*;:{}<>+=_`"~()]/g,''); // make safer
   const mathWords = {'one':'1','two':'2','three':'3','four':'4','five':'5',
                     'six':'6','seven':'7','eight':'8','nine':'9','zero':'0',
                     'ten':'10',
