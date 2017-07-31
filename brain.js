@@ -358,18 +358,20 @@ function heardScheduler(heard) { // https://doodle.com/create?title=
 
 function heardOpen(heard) {
   // example: "open up google.com, gmail.com, and wikipedia.org"
+  // example: "open up google dot COM and gmail dot COM and wikipedia dot ORG"
   let regex = new RegExp('^open( up)? (.+)');
-  let matches = heard.match(regex);
+  let matches = heard.replace(/ dot /g,'.').match(regex);
   if (matches) {
-    let what = matches[2].replace(' and ',' ').split(' ');
+    let what = matches[2];
+    let websites = what.replace(/ and /g,' ').split(' ');
     // refuse if user tries to open too many at a time
-    if (what.length > 5) {
+    if (websites.length > 5) {
       say("Sorry, that's a little too many websites to open at the same time. Please open at most 5 at a time.");
-      return true;
+      return true; // avoid opening windows
     }
     say("I'm now trying to open those websites.");
-    for (var i in what) {
-      tryOpeningWindow('https://' + what[i]);
+    for (var i in websites) {
+      tryOpeningWindow('https://' + websites[i]);
     }
     return true;
   }
