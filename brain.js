@@ -121,6 +121,8 @@ function say(sentence) {
 
 function listen() {
   let heard = document.getElementById("input").value;
+  // shortcut for showWhatICanDo():
+  if (heard === '?') showWhatICanDo();
   // remove trailing/leading spaces, set to lowercase, and remove punctuation
   heard = heard.trim().toLowerCase();
   heard = heard.replace(/[,\\\/#!?$%\^&\*;:{}<>+=_`"~()]/g,''); // make safer
