@@ -340,6 +340,7 @@ function heardSearch(heard) {
   // otherwise prolly not a question
   return false;
 }
+
 function askingWhoAreYou(heard) {
   if (didHear(heard,['who are you','what are you'])) {
     say("My name is LUI. That's short for Language User Interface.");
