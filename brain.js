@@ -896,7 +896,8 @@ function searchDefinition(words) {
         say(summary); // alert(Object.values(data.query.pages)[0].extract)
       }
     } catch(err) { // data.query, i.e. ['query'] not found
-      say("Sorry, I couldn't find anything on " + words);
+      // say("Sorry, I couldn't find anything on " + words);
+      searchQuestion(words); // can't find definition --> generic search instead
     }
   });
 }
