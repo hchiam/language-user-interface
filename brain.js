@@ -262,24 +262,8 @@ function heardPleasantries(heard) {
     say('Yes.');
     return true;
   } else if (didHear(heard,['what can you do','what can i ask you','how can you help me','what can you do for me'])) {
-    say('You can ask me things like: \
-         "how do i get to the nearest hotel". \
-         "where are the closest restaurants". \
-         "where is there tim hortons in toronto". \
-         "how\'s the weather today". \
-         "how do i learn to learn". \
-         "what is special relativity". \
-         "who was albert einstein". \
-         "who are you". \
-         "where are we". \
-         "what time is it". \
-         "show me how to draw". \
-         "explain philosophy". \
-         "open gmail.com, facebook.com, and habitica.com". \
-         "find analogies for an atom". \
-         "remind me to take a break in 30 minutes". \
-         "schedule a meeting".');
-    // TODO: add buttons of more showcase example questions
+    // add custom message with buttons of showcase example questions
+    showWhatICanDo();
     return true;
   } else if (didHear(heard,['how are you',"how's it going"])) {
     say("I'm doing good, thanks.");
@@ -303,6 +287,57 @@ function heardPleasantries(heard) {
 
 function capitalizeFirstLetter(sentence) {
   return sentence.charAt(0).toUpperCase() + sentence.slice(1);
+}
+
+function showWhatICanDo() {
+  // make custom message log with buttons for quick use
+
+  // set up examples to both say aloud and show buttons for
+  let examples = [
+    "how do i get to the nearest hotel",
+    "where are the closest restaurants",
+    "where is there tim hortons in toronto",
+    "how\'s the weather today",
+    "how do i learn to learn",
+    "what is special relativity",
+    "who was albert einstein",
+    "who are you",
+    "where are we",
+    "what time is it",
+    "show me how to draw",
+    "explain philosophy",
+    "open gmail.com, facebook.com, and habitica.com",
+    "find analogies for an atom",
+    "remind me to take a break in 30 minutes",
+    "schedule a meeting",
+  ];
+
+  // set up what to say aloud
+  let sentenceToSay = 'You can ask me things like: ' + examples.join('. ');
+
+  // set up what buttons to show
+  let sentenceToShow = 'You can ask me things like: ';
+  for (var i in examples) {
+    sentenceToShow += '<button onclick="useExample(\'' + examples[i] + '\')">' + examples[i] + '</button>';
+  }
+
+  // say aloud
+  responsiveVoice.speak(sentenceToSay, 'UK English Male');
+
+  // set up style for LUI speaking
+  let id = ' id="log-LUI"';
+  let idTimeStamp = ' id="log-time-stamp"';
+  // create message with buttons
+  let timeStamp = '<br><small' + idTimeStamp + '>' + ' - ' + getTime() + '</small>';
+  let nextMessage = '<p' + id + '>' + sentenceToShow + timeStamp + '</p>';
+  let logSoFar = document.getElementById('messageLog').innerHTML;
+  // show message with buttons
+  document.getElementById('messageLog').innerHTML = nextMessage + logSoFar;
+}
+
+function useExample(whatToSay) {
+  document.getElementById("input").value = whatToSay;
+  document.getElementById('countDownWaiting').value = 100;
 }
 
 function heardScheduler(heard) { // https://doodle.com/create?title=
