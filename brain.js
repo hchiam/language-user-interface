@@ -31,13 +31,14 @@ let unfamiliarUser = setTimeout(function(){
 }, 7000);
 
 function introSelf() {
-  say("You seem unfamiliar with this interface. \
-       You can type a question in the textbox. \
-       For example, you can ask me: 'Where are the closest restaurants?' \
-       Alternatively, if you have speech recognition software, \
-       such as Mac Dictation, \
-       you can enter text verbally into the textbox. \
-       Just ask me: 'what can you do?'");
+  say('You seem unfamiliar with this interface. \
+       You can type a question in the textbox, like: "what can you do?" \
+       Or use speech recognition software, such as Mac Dictation, \
+       to enter text verbally into the textbox.');
+  // delay re-prompt
+  setTimeout(function(){
+    say('Still unsure? Just ask me: "what can you do".');
+  }, 20000);
 }
 
 let delayedAction;
