@@ -35,7 +35,7 @@ function introSelf() {
        You can type a question in the textbox, like: "what can you do?" \
        Or use speech recognition software, such as Mac Dictation, \
        to enter text verbally into the textbox.');
-  // delay re-prompt with unfamiliarUser too so it can be cancelled too
+  // delay re-prompt with unfamiliarUser timer too so it can be cancelled too
   unfamiliarUser = setTimeout(function() {
     say('Still unsure? Just ask me: "what can you do".');
   }, 20000);
