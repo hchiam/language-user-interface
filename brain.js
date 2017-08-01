@@ -905,7 +905,7 @@ function searchPictures(what) { // https://www.google.com/search?tbm=isch&safe=a
 function askingDefinition(heard) {
   const signalPhrases = ["what's ", 'whats', 'what is ', 'what are ', 'what was ', 'what were ',
                         "who's ", 'whos', 'who is ', 'who are ', 'who was ', 'who were ',
-                        'search for ', 'tell me about ', 'define '];
+                        'tell me about ', 'define '];
   if (didHear(heard, signalPhrases, 'starts with')) {
     let words = removeSignalPhrases(heard,signalPhrases);
     // special case for name
@@ -956,7 +956,7 @@ function isSubstring(string, substring) {
 }
 
 function askingQuestion(heard) {
-  const signalGenericQuestion = ['what ', 'who ', 'where ', 'when ', 'why ', 'how ', 'which ', 'show me '];
+  const signalGenericQuestion = ['what ', 'who ', 'where ', 'when ', 'why ', 'how ', 'which ', 'search for '];
   if (didHear(heard, signalGenericQuestion, 'starts with')) {
     currentConversationType = 'question';
     currentConversationTopic = heard;
