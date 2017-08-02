@@ -1,5 +1,5 @@
 # Language User Interface
-LUI runs in your browser. Think JARVIS.
+LUI runs in your browser. Think [JARVIS](http://marvel-movies.wikia.com/wiki/J.A.R.V.I.S.).
 
 ## Try it out:
 https://codepen.io/hchiam/pen/WOLOJG
