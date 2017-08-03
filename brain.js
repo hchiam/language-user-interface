@@ -316,7 +316,7 @@ function showWhatICanDo() {
     "find analogies for an atom",
     "schedule a meeting",
     "remind me to take a break in 30 minutes",
-    'what does an axolotl look like',
+    'what does business casual look like',
   ];
 
   // set up what to say aloud
