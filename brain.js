@@ -864,7 +864,7 @@ function safeForMath(expression) {
 }
 
 function askingShowMePicture(heard) { // make sure to check this AFTER checking "show me how"
-  const signalPhrases = ['show ', 'what does '];
+  const signalPhrases = ['show ', 'what does ', 'what do '];
   if (didHear(heard,signalPhrases,'starts with')) {
     let regex, matches, what;
 
