@@ -897,7 +897,7 @@ function askingShowMePicture(heard) { // make sure to check this AFTER checking 
 }
 
 function searchPictures(what) { // https://www.google.com/search?tbm=isch&safe=active&q=
-  say("Here are pictures of " + what);
+  say("Here are some " + what.replace(/^the /,'') + " pictures.");
   let url = 'https://www.google.com/search?tbm=isch&safe=active&q=' + what;
   tryOpeningWindow(url);
 }
