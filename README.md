@@ -1,5 +1,5 @@
 # Language User Interface
-LUI runs in your browser. Think: a simple version of [JARVIS](http://marvel-movies.wikia.com/wiki/J.A.R.V.I.S.).
+LUI runs in your browser, so you can use it on both laptops and mobile devices. Think: a simple version of [JARVIS](http://marvel-movies.wikia.com/wiki/J.A.R.V.I.S.).
 
 ## Try it out:
 https://codepen.io/hchiam/pen/WOLOJG
