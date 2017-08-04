@@ -1,4 +1,4 @@
-ne/*
+/*
 Trying to understand this code?
 The function converse() would be a good place to start.
 */
