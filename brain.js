@@ -266,7 +266,7 @@ function heardPleasantries(heard) {
   } else if (didHear(heard,["is this thing on",'can you hear me',"does this thing work",'are you on right now'],'starts with')) {
     say('Yes.');
     return true;
-  } else if (didHear(heard,['what can you do','what can i ask you','how can you help me','what can you do for me'])) {
+  } else if (didHear(heard,['what can you do','what can i ask','what can i ask you','how can you help me','what can you do for me','what can i do'])) {
     // add custom message with buttons of showcase example questions
     showWhatICanDo();
     return true;
