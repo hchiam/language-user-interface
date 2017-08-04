@@ -1,4 +1,4 @@
-/*
+ne/*
 Trying to understand this code?
 The function converse() would be a good place to start.
 */
@@ -177,7 +177,6 @@ function reply(heard) {
 
 function notUnderstood() {
   let sentence = "Sorry, I didn't understand that. Would you like to suggest a feature or comment on a bug?";
-  // need '...' to make an audible pause
   say(sentence);
   currentConversationType = 'feedback';
   currentConversationTopic = 'feedback';
