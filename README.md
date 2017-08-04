@@ -4,6 +4,9 @@ LUI runs in your browser. Think: a simple version of [JARVIS](http://marvel-movi
 ## Try it out:
 https://codepen.io/hchiam/pen/WOLOJG
 
+## More info:
+https://hchiam.blogspot.ca/2017/08/lui.html
+
 ## Inspirations:
 https://github.com/hchiam/please
 
