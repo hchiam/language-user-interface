@@ -180,9 +180,6 @@ function notUnderstood() {
   say(sentence);
   currentConversationType = 'feedback';
   currentConversationTopic = 'feedback';
-  // setTimeout(function(){
-  //   giveFeedback();
-  // },2000);
 }
 
 function giveFeedback() {
