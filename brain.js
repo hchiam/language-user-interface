@@ -223,6 +223,7 @@ function heardConfirm(heard) {
   } else if (didHear(heard,no)) {
     if (currentConversationType === 'feedback') {
       currentConversationTopic = 'no feedback';
+      say('Okay.');
     }
     return true;
   } else {
