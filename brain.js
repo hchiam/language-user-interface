@@ -322,7 +322,7 @@ function showWhatICanDo() {
   // set up what buttons to show
   let sentenceToShow = 'You can ask me things like: ';
   for (var i in examples) {
-    sentenceToShow += '<button onclick="useExample(\'' + examples[i].replace(/\'/g,'') + '\')">' + examples[i] + '</button>';
+    sentenceToShow += '<button class="w3-card w3-hover-shadow" onclick="useExample(\'' + examples[i].replace(/\'/g,'') + '\')">' + examples[i] + '</button>';
   }
 
   // say aloud
