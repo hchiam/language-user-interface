@@ -296,24 +296,24 @@ function showWhatICanDo() {
 
   // set up examples to both say aloud and show buttons for
   let examples = [
-    "how do i get to the nearest hotel",
-    "where are the closest restaurants",
-    "how's the weather today",
-    "where is there tim hortons in toronto",
-    "how do i learn to learn",
-    "what's today's temperature",
-    "what is special relativity",
-    "who was albert einstein",
     "who are you",
-    "where are we",
+    "who was albert einstein",
+    "what is special relativity",
     "what time is it",
-    "show me how to draw",
-    "explain philosophy",
-    "open gmail.com, facebook.com, and habitica.com",
-    "find analogies for an atom",
-    "schedule a meeting",
     "remind me to take a break in 30 minutes",
     'what does business casual look like',
+    "where are we",
+    "how's the weather today",
+    "what's today's temperature",
+    "find analogies for an atom",
+    "how do i get to the nearest hotel",
+    "where are the closest restaurants",
+    "where is there tim hortons in toronto",
+    "open gmail.com, facebook.com, and habitica.com",
+    "how do i learn to learn",
+    "show me how to draw",
+    "explain philosophy",
+    "schedule a meeting",
   ];
 
   // set up what to say aloud
