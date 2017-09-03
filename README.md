@@ -13,3 +13,6 @@ https://github.com/hchiam/please
 https://github.com/hchiam/programmingByVoice
 
 ![screenshot](https://github.com/hchiam/language-user-interface/blob/master/screenshot.png)
+
+## Further Reading:
+Something I found and forked: https://github.com/hchiam/Api-AI-Personal-Assistant-Demo
