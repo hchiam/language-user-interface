@@ -543,11 +543,21 @@ function getDate() {
 }
 
 function askingWeather(heard) {
-  // general weather description
-  let regexHow = new RegExp("^how('?s| is)? (the |today'?s )?(weather|forecast)( like)?( today)?( like)?");
-  let regexWhat = new RegExp("^what('?s| is)? (the |today'?s )?(weather|forecast)( like( today)?| today( like)?)");
+
+  // contextual weather description
+  let regexWeatherC = new RegExp("^(how|what)('?s| is)? (the |today'?s )?(weather|forecast)( like( today)?| today( like)?)? (over )?there");
   // TODO: add "^(.+) at (.+) (o'clock)?$"
-  matches = regexHow.test(heard) || regexWhat.test(heard);
+  matches = regexWeatherC.test(heard);
+  if (matches) {
+    currentConversationType = 'weather';
+    getWeather(currentConversationTopic);
+    return true;
+  }
+
+  // general weather description
+  let regexWeather = new RegExp("^(how|what)('?s| is)? (the |today'?s )?(weather|forecast)( like( today)?| today( like)?)?( here)?");
+  // TODO: add "^(.+) at (.+) (o'clock)?$"
+  matches = regexWeather.test(heard);
   if (matches) {
     currentConversationType = 'weather';
     // getLocation will pass myLocation to the function getWeather(myLocation)
@@ -555,8 +565,18 @@ function askingWeather(heard) {
     return true;
   }
 
+  // contextual temperature
+  let regexTempC = new RegExp("^(how|what)('?s| is) (the |today'?s )?temperature( like( today)?| today( like)?)? (over )?there");
+  // TODO: add "^(.+) at (.+) (o'clock)?$"
+  matches = regexTempC.test(heard);
+  if (matches) {
+    currentConversationType = 'temperature';
+    getTemperature(currentConversationTopic);
+    return true;
+  }
+
   // temperature
-  let regexTemp = new RegExp("^(how|what)('?s| is) (the |today'?s )?temperature( like)?( today)?( like)?");
+  let regexTemp = new RegExp("^(how|what)('?s| is) (the |today'?s )?temperature( like( today)?| today( like)?)?( here)?");
   // TODO: add "^(.+) at (.+) (o'clock)?$"
   matches = regexTemp.test(heard);
   if (matches) {
