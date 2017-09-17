@@ -85,10 +85,8 @@ function toggleStart_webkitSpeechRecognition() {
 function say(sentence) {
   if (sentence != '') {
 
-    if (recognizing) {
-      clicked();
-      recognition.stop();
-    }
+    clicked();
+    recognition.stop();
     responsiveVoice.speak(sentence, 'UK English Male', {onend: listenAgain});
 
     updateMessageLog(sentence, 'LUI');
