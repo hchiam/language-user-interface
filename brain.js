@@ -547,7 +547,7 @@ function askingWeather(heard) {
   let regexTemp = "^(how|what)('?s| is) (the |today'?s )?temperature( like( today)?| today( like)?)?";
   let regexContext = " (over )?there"; // currentConversationTopic
   let regexHere = " (over )?(here)?";
-  let regexSpecific = " in (.+)"; // match = heard.match(regexSpecific); match[match.length-1]
+  let regexSpecific = " in (.+)"; // match = heard.match(regex... + regexSpecific); match[match.length-1]
 
   // contextual weather description
   let regexWC = new RegExp(regexWeather + regexContext);
