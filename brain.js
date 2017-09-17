@@ -543,47 +543,74 @@ function getDate() {
 }
 
 function askingWeather(heard) {
+  let regexWeather = "^(how|what)('?s| is)? (the |today'?s )?(weather|forecast)( like( today)?| today( like)?)?";
+  let regexTemp = "^(how|what)('?s| is) (the |today'?s )?temperature( like( today)?| today( like)?)?";
+  let regexContext = " (over )?there"; // currentConversationTopic
+  let regexHere = " (over )?(here)?";
+  let regexSpecific = " in (.+)"; // match = heard.match(regexSpecific); match[match.length-1]
 
   // contextual weather description
-  let regexWeatherC = new RegExp("^(how|what)('?s| is)? (the |today'?s )?(weather|forecast)( like( today)?| today( like)?)? (over )?there");
-  // TODO: add "^(.+) at (.+) (o'clock)?$"
-  matches = regexWeatherC.test(heard);
-  if (matches) {
-    currentConversationType = 'weather';
-    getWeather(currentConversationTopic);
-    return true;
-  }
-
-  // general weather description
-  let regexWeather = new RegExp("^(how|what)('?s| is)? (the |today'?s )?(weather|forecast)( like( today)?| today( like)?)?( here)?");
-  // TODO: add "^(.+) at (.+) (o'clock)?$"
-  matches = regexWeather.test(heard);
-  if (matches) {
-    currentConversationType = 'weather';
-    // getLocation will pass myLocation to the function getWeather(myLocation)
-    getLocation(getWeather); // see getWeather(myLocation)
-    return true;
-  }
+  let regexWC = new RegExp(regexWeather + regexContext);
+  // this location's weather description
+  let regexWH = new RegExp(regexWeather + regexHere);
+  // get specific location's weather description
+  let regexWS = new RegExp(regexWeather + regexSpecific);
 
   // contextual temperature
-  let regexTempC = new RegExp("^(how|what)('?s| is) (the |today'?s )?temperature( like( today)?| today( like)?)? (over )?there");
+  let regexTC = new RegExp(regexTemp + regexContext);
+  // this location's temperature
+  let regexTH = new RegExp(regexTemp + regexHere);
+  // get specific location's weather description
+  let regexTS = new RegExp(regexTemp + regexSpecific);
+
   // TODO: add "^(.+) at (.+) (o'clock)?$"
-  matches = regexTempC.test(heard);
-  if (matches) {
+  let matchesWC = regexWC.test(heard);
+  let matchesWH = regexWH.test(heard);
+  let matchesWS = regexWS.test(heard);
+  let matchesTC = regexTC.test(heard);
+  let matchesTH = regexTH.test(heard);
+  let matchesTS = regexTS.test(heard);
+
+  let matchesWeather = matchesWC || matchesWH || matchesWS;
+  let matchesTemp = matchesTC || matchesTH || matchesTS;
+
+  if (matchesWeather) {
+
+    currentConversationType = 'weather';
+
+    if (matchesWS) {
+      match = heard.match(regexWS);
+      var location = match[match.length-1];
+      currentConversationTopic = location;
+      getWeather(location);
+    } else if (matchesWC) {
+      getWeather(currentConversationTopic);
+    } else if (matchesWH) { // put least restrictive check last
+      // the following line: getLocation(getWeather) --(myLocation)--> getWeather(myLocation)
+      getLocation(getWeather); // see getWeather(myLocation)
+    }
+
+  } else if (matchesTemp) {
+
     currentConversationType = 'temperature';
-    getTemperature(currentConversationTopic);
-    return true;
+
+    if (matchesTS) {
+      match = heard.match(regexTS);
+      var location = match[match.length-1];
+      currentConversationTopic = location;
+      getTemperature(location);
+    } else if (matchesTC) {
+      getTemperature(currentConversationTopic);
+    } else if (matchesTH) { // put least restrictive check last
+      // the following line: getLocation(getTemperature) --(myLocation)--> getTemperature(myLocation)
+      getLocation(getTemperature); // see getTemperature(myLocation)
+    }
+
   }
 
-  // temperature
-  let regexTemp = new RegExp("^(how|what)('?s| is) (the |today'?s )?temperature( like( today)?| today( like)?)?( here)?");
-  // TODO: add "^(.+) at (.+) (o'clock)?$"
-  matches = regexTemp.test(heard);
-  if (matches) {
-    currentConversationType = 'temperature';
-    // getLocation will pass myLocation to the function getTemperature(myLocation)
-    getLocation(getTemperature); // see getTemperature(myLocation)
+  if (matchesWeather || matchesTemp) {
     return true;
+    alert('hi')
   }
 
   return false;
