@@ -955,7 +955,7 @@ function askingShowMePicture(heard) { // make sure to check this AFTER checking 
     // example: show me ... pictures
     // example: show me what a ... looks like
     // example: what does the ... look like
-    regex = new RegExp('^(show (me )?(what )?|what (do |does )?)(an? |the )?(.+)( pictures?| images?| looks? like)$');
+    regex = new RegExp('^(show (me )?(what )?|what (do |does )?)(an? |some |the )?(.+)( pictures?| images?| looks? like)$');
     // need $ to detect "show me pictures OF ..."
     matches = heard.match(regex);
     if (matches) {
@@ -966,7 +966,7 @@ function askingShowMePicture(heard) { // make sure to check this AFTER checking 
 
       // example: show me pictures of ...
       // example: show an example of ...
-      regex = new RegExp('^show (me )?(an? )?((example|picture|image)s? )(of )?(.+)');
+      regex = new RegExp('^show (me )?(an? |some )?((example|picture|image)s? )(of )?(.+)');
       matches = heard.match(regex);
       if (matches) {
         what = mayReplaceWithTopic(matches[matches.length-1]); // get last 'bracketed' item
