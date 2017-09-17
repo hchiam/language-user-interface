@@ -369,7 +369,11 @@ function heardOpen(heard) {
       say("Sorry, that's a little too many websites to open at the same time. Please open at most 5 at a time.");
       return true; // avoid opening windows
     }
-    say("I'm now trying to open those websites.");
+    if (websites.length === 1) {
+      say("I'm now trying to open that website.");
+    } else {
+      say("I'm now trying to open those websites.");
+    }
     for (var i in websites) {
       tryOpeningWindow('https://' + websites[i]);
     }
