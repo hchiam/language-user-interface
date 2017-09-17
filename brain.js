@@ -309,7 +309,7 @@ function showWhatICanDo() {
     "how do i get to the nearest hotel",
     "where are the closest restaurants",
     "where is there tim hortons in toronto",
-    "open gmail.com, facebook.com, and habitica.com",
+    "open gmail dot com, facebook dot com, and habitica dot com",
     "how do i learn to learn",
     "show me how to draw",
     "explain philosophy",
