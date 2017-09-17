@@ -788,25 +788,39 @@ function searchLocation(heard) {
 
   // note: TRICKY!: check more restrictive first! (otherwise capture too much)
 
-  // where is/are (there) ... in ...
-  // https://www.google.com/maps/search/?api=1&query=pizza+seattle
-  regex = new RegExp("^where (is|are) (there )?(.+) in (.+)");
+  // check if searching using currentConversationTopic
+  regex = new RegExp("^where (is|are) (it|that|those|they)");
   matches = heard.match(regex);
   if (matches) {
-    searchFor = matches[3];
-    searchIn = matches[4];
+
     // going to put this into the url:
-    searchWords = searchFor + ' ' + searchIn;
+    searchFor = currentConversationTopic;
+    currentConversationType = 'location';
+    searchWords = searchFor;
+
   } else {
 
-    // where is/are (the nearest) ...
-    // https://www.google.com/maps/search/?api=1&query=seattle
-    regex = new RegExp('^(find|where (is|are))( a|the nearest|the closest)? (.+)');
+    // where is/are (there) ... in ...
+    // https://www.google.com/maps/search/?api=1&query=pizza+seattle
+    regex = new RegExp("^where (is|are) (there )?(.+) in (.+)");
     matches = heard.match(regex);
     if (matches) {
-      searchFor = matches[4];
+      searchFor = matches[3];
+      searchIn = matches[4];
       // going to put this into the url:
-      searchWords = searchFor;
+      searchWords = searchFor + ' ' + searchIn;
+    } else {
+
+      // where is/are (the nearest) ...
+      // https://www.google.com/maps/search/?api=1&query=seattle
+      regex = new RegExp('^(find|where (is|are))( a|the nearest|the closest)? (.+)');
+      matches = heard.match(regex);
+      if (matches) {
+        searchFor = matches[4];
+        // going to put this into the url:
+        searchWords = searchFor;
+      }
+
     }
 
   }
@@ -821,6 +835,7 @@ function searchLocation(heard) {
     tryOpeningWindow(urlAPICall);
     return true;
   }
+
   // otherwise
   return false;
 }
