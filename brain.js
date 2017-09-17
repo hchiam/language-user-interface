@@ -959,7 +959,7 @@ function askingShowMePicture(heard) { // make sure to check this AFTER checking 
     // need $ to detect "show me pictures OF ..."
     matches = heard.match(regex);
     if (matches) {
-      what = matches[6];
+      what = mayReplaceWithTopic(matches[6]);
       searchPictures(what);
       return true;
     } else { // otherwise check more alternate phrasings
@@ -969,7 +969,7 @@ function askingShowMePicture(heard) { // make sure to check this AFTER checking 
       regex = new RegExp('^show (me )?(an? )?((example|picture|image)s? )(of )?(.+)');
       matches = heard.match(regex);
       if (matches) {
-        what = matches[matches.length-1]; // get last 'bracketed' item
+        what = mayReplaceWithTopic(matches[matches.length-1]); // get last 'bracketed' item
         searchPictures(what);
         return true;
       }
@@ -978,6 +978,17 @@ function askingShowMePicture(heard) { // make sure to check this AFTER checking 
     return false;
   }
   return false;
+}
+
+function mayReplaceWithTopic(s) {
+  if (currentConversationTopic) {
+    if (s === 'that' || s === 'it' || s === 'this'
+    || s === 'they' || s === 'them' || s === 'those'
+    || s === 'he' || s === 'she' || s === 'him' || s === 'her') {
+      return currentConversationTopic;
+    }
+  }
+  return s;
 }
 
 function searchPictures(what) { // https://www.google.com/search?tbm=isch&safe=active&q=
