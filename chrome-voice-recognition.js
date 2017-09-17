@@ -85,9 +85,14 @@ function toggleStart_webkitSpeechRecognition() {
 function say(sentence) {
   if (sentence != '') {
 
-    clicked();
-    recognition.stop();
-    responsiveVoice.speak(sentence, 'UK English Male', {onend: listenAgain});
+    if (!('webkitSpeechRecognition' in window)) {
+      // in case not using chrome
+      responsiveVoice.speak(sentence, 'UK English Male');
+    } else {
+      clicked();
+      recognition.stop();
+      responsiveVoice.speak(sentence, 'UK English Male', {onend: listenAgain});
+    }
 
     updateMessageLog(sentence, 'LUI');
     document.getElementById("input").focus(); // put cursor back
