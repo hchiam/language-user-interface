@@ -649,6 +649,11 @@ function askingReminder(heard) {
                           'myself':'yourself', 'yourself':'myself'};
     heard = swapWords(heard, pronounSwaps);
 
+    // swap words for for '1' and '0.5'
+    const numberSwaps = {' an ':' 1 ', ' a ':' 1 ', ' one ':' 1 ',
+                         ' half an ':' 0.5 ', ' half a ':' 0.5 '};
+    heard = swapWords(heard, numberSwaps);
+
     // get what and when to remind
     let regex = new RegExp("^(.+) (in|after) (.+) (minutes?|hours?|seconds?)$");
     // TODO: add "^(.+) at (.+) (o'clock)?$"
