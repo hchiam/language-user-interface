@@ -251,7 +251,7 @@ function heardInterrupt(heard) {
 }
 
 function heardPleasantries(heard) {
-  if (didHear(heard,['hi','hey','hello'])) {
+  if (didHear(heard,['hi','hey','hello','good morning','good afternoon','good evening','good night','good day'])) {
     say(capitalizeFirstLetter(heard) + '.');
     return true;
   } else if (heard === 'hi there') {
