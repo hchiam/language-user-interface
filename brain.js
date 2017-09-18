@@ -165,10 +165,9 @@ function reply(heard) {
     return;
   }
 
+  // check different cases and if match recognized then return to escape function early:
   heardRecognized |= heardConfirm(heard); if (heardRecognized) return;
   heardRecognized |= heardComplaint(heard); if (heardRecognized) return;
-
-  // check different cases and if match recognized then return to escape function early:
   heardRecognized |= heardInterrupt(heard); if (heardRecognized) return;
   heardRecognized |= heardPleasantries(heard); if (heardRecognized) return;
   heardRecognized |= heardScheduler(heard); if (heardRecognized) return;
