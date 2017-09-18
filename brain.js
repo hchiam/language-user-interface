@@ -198,9 +198,13 @@ function askForFeedback() {
 function getFeedback(heard) {
   let suggestFeature = "Thanks for your thoughts on how I can improve your experience!";
   say(suggestFeature);
+
+  // open prefilled google form
   let urlStem = 'https://docs.google.com/forms/d/e/1FAIpQLSej9MK4f43UIV2Jj5hnuKLOe11lxw1HrgtnBeUtuaT3HiIcOw/viewform?usp=pp_url&entry.326955045=';
+  heard = heard.replace(/[,\\\/#!?$%\^&\*;:{}<>+=_`"~()]/g,''); // make safer
   let prefilledFeedbackForm = urlStem + heard;
   tryOpeningWindow(prefilledFeedbackForm);
+
   // reset to avoid looping
   currentConversationType = '';
 }
