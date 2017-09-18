@@ -159,11 +159,13 @@ function reply(heard) {
 
   let heardRecognized = false;
 
-  heardRecognized |= heardConfirm(heard);
+  heardRecognized |= heardFeedback(heard);
   if (heardRecognized) {
-    handleConfirm();
+    getFeedback(heard);
     return;
   }
+
+  heardRecognized |= heardConfirm(heard); if (heardRecognized) return;
 
   // check different cases and if match recognized then return to escape function early:
   heardRecognized |= heardInterrupt(heard); if (heardRecognized) return;
@@ -182,11 +184,25 @@ function notUnderstood() {
   currentConversationTopic = 'feedback';
 }
 
-function giveFeedback() {
-  let suggestFeature = "Alright. Here's a page to suggest features or to comment on bugs. \
-                        Click on the \"new issue\" button.";
+function heardFeedback() {
+  return (currentConversationType === 'feedback response');
+}
+
+function askForFeedback() {
+  let suggestFeature = "Alright. What are your thoughts?";
   say(suggestFeature);
-  tryOpeningWindow('https://github.com/hchiam/language-user-interface/issues');
+  currentConversationType = 'feedback response'
+  // tryOpeningWindow('https://github.com/hchiam/language-user-interface/issues');
+}
+
+function getFeedback(heard) {
+  let suggestFeature = "Thanks for your thoughts on how I can improve your experience!";
+  say(suggestFeature);
+  let urlStem = 'https://docs.google.com/forms/d/e/1FAIpQLSej9MK4f43UIV2Jj5hnuKLOe11lxw1HrgtnBeUtuaT3HiIcOw/viewform?usp=pp_url&entry.326955045=';
+  let prefilledFeedbackForm = urlStem + heard;
+  tryOpeningWindow(prefilledFeedbackForm);
+  // reset to avoid looping
+  currentConversationType = '';
 }
 
 function didHear(heard, listOfChecks=[], checkType='exact match') {
@@ -219,12 +235,15 @@ function heardConfirm(heard) {
     if (currentConversationType === 'feedback') {
       currentConversationTopic = 'give feedback';
     }
+    handleConfirm();
     return true;
   } else if (didHear(heard,no)) {
     if (currentConversationType === 'feedback') {
-      currentConversationTopic = 'no feedback';
+      currentConversationType = '';
+      currentConversationTopic = '';
       say("Okay. Maybe try rephrasing your question. If you're wondering what I can do, just ask me.");
     }
+    handleConfirm();
     return true;
   } else {
     return false;
@@ -234,7 +253,7 @@ function heardConfirm(heard) {
 function handleConfirm() {
   if (currentConversationType === 'feedback') {
     if (currentConversationTopic === 'give feedback') {
-      giveFeedback();
+      askForFeedback();
     }
   }
   // // reset // TODO: maybe not for more complex conversations
