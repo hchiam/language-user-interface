@@ -159,13 +159,14 @@ function reply(heard) {
 
   let heardRecognized = false;
 
-  heardRecognized |= heardFeedback(heard);
+  heardRecognized |= redirectToFeedback();
   if (heardRecognized) {
     getFeedback(heard);
     return;
   }
 
   heardRecognized |= heardConfirm(heard); if (heardRecognized) return;
+  heardRecognized |= heardComplaint(heard); if (heardRecognized) return;
 
   // check different cases and if match recognized then return to escape function early:
   heardRecognized |= heardInterrupt(heard); if (heardRecognized) return;
@@ -184,7 +185,25 @@ function notUnderstood() {
   currentConversationTopic = 'feedback';
 }
 
-function heardFeedback() {
+function heardComplaint(heard) {
+  let complaintStarters = [
+    "this doesn't work", "this does not work",
+    "this isn't working", "this is not working",
+    "that's not what i", "that is not what i",
+    "that doesn't work", "that does not work",
+    "that isn't working", "that is not working", "that's not working",
+  ];
+  if (didHear(heard,complaintStarters,'starts with')) {
+    let sentence = "Would you like to suggest a feature or comment on a bug?";
+     say(sentence);
+     currentConversationType = 'feedback';
+     currentConversationTopic = 'feedback';
+     return true;
+   }
+   return false;
+}
+
+function redirectToFeedback() {
   return (currentConversationType === 'feedback response');
 }
 
