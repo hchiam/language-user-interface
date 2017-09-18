@@ -14,7 +14,8 @@ https://github.com/hchiam/please
 
 https://github.com/hchiam/programmingByVoice
 
-## Similar Project:
-Something I found and forked: https://github.com/hchiam/Api-AI-Personal-Assistant-Demo
+## Google Assistant App Project:
+
+https://github.com/hchiam/mental-temperature-converter
 
 ![screenshot](https://github.com/hchiam/language-user-interface/blob/master/screenshot.png)
