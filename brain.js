@@ -251,7 +251,7 @@ function heardConfirm(heard) {
   // immediately escape if no topic yet // TODO: maybe not for more complex conversations, but leave this for now
   if (currentConversationTopic === '' || currentConversationType === '') return false;
 
-  let yes = ['y','yes','ok','okay','k','yeah','yep','yap','yup','ya','yah','aye','ahunh','affirmative','correct','positive'];
+  let yes = ['y','yes','ok','okay','k','yeah','sure','yep','yap','yup','ya','yah','aye','ahunh','affirmative','correct','positive'];
   let no = ['n','no','nah','nope','na','nay','negative','incorrect'];
 
   if (didHear(heard,yes)) {
