@@ -108,7 +108,6 @@ function tryOpeningWindow(url) { // notice and tell user to unblock if can't ope
   } else {
     try {
       newWindow.focus();
-      say("Don't worry, I'm in another browser tab, but I can still hear you.");
     } catch (e) {
       say('Sorry... Please authorize me to open new windows for you... You may be using an ad blocker.');
     }
@@ -399,7 +398,7 @@ function heardScheduler(heard) { // https://doodle.com/create?title=
   let matches = heard.match(regex);
   if (matches) {
     let title = matches[4];
-    say("I'm starting a scheduler for you on Doodle.com.");
+    say("I'm starting a scheduler for you on Doodle.com. Don't worry, I'm in another browser tab, but I can still hear you.");
     tryOpeningWindow('https://doodle.com/create?title=' + title);
     return true;
   }
@@ -420,9 +419,9 @@ function heardOpen(heard) {
       return true; // avoid opening windows
     }
     if (websites.length === 1) {
-      say("I'm now trying to open that website.");
+      say("I'm now trying to open that website. Don't worry, I'm in another browser tab, but I can still hear you.");
     } else {
-      say("I'm now trying to open those websites.");
+      say("I'm now trying to open those websites. Don't worry, I'm in another browser tab, but I can still hear you.");
     }
     for (var i in websites) {
       tryOpeningWindow('https://' + websites[i]);
@@ -738,7 +737,7 @@ function askingDirections(heard) {
       // https://www.google.com/maps/dir/here/{searchFor}
       let urlAPICall = 'https://www.google.com/maps/dir/here/';
       urlAPICall += searchFor.replace(/ /g,'+');
-      say("I'm now opening a Google maps results page for the closest " + searchFor + '.');
+      say("I'm now opening a Google maps results page for the closest " + searchFor + ". Don't worry, I'm in another browser tab, but I can still hear you.");
       createSuggestionMessage(["How's the weather over there?"]);
       tryOpeningWindow(urlAPICall);
       return true;
@@ -755,7 +754,7 @@ function askingDirections(heard) {
     // https://www.google.com/maps/dir/here/{searchFor}
     let urlAPICall = 'https://www.google.com/maps/dir/here/';
     urlAPICall += searchFor.replace(/ /g,'+');
-    say("I'm now opening a Google maps results page for the closest " + searchFor + '.');
+    say("I'm now opening a Google maps results page for the closest " + searchFor + ". Don't worry, I'm in another browser tab, but I can still hear you.");
     createSuggestionMessage(["How's the weather over there?"]);
     tryOpeningWindow(urlAPICall);
     return true;
@@ -881,7 +880,7 @@ function askingAnalogy(heard) {
 }
 
 function searchAnalogy(words) {
-  say("I'm opening metamia.com for " + words + ' analogies.');
+  say("I'm opening metamia.com for " + words + " analogies. Don't worry, I'm in another browser tab, but I can still hear you.");
   tryOpeningWindow('http://www.metamia.com/analogize.php?q=' + words);
 }
 
@@ -890,7 +889,7 @@ function askingHowDoI(heard) {
     topic = heard.replace(/^show me (a (youtube )?video (for|of) )?/,'');
     currentConversationTopic = topic;
     currentConversationType = 'how do i';
-    say("I'm opening youtube for " + topic);
+    say("I'm opening youtube for " + topic + ". Don't worry, I'm in another browser tab, but I can still hear you.");
     tryOpeningWindow('https://www.youtube.com/results?search_query=' + topic);
     return true;
   }
@@ -955,7 +954,7 @@ function searchLocation(heard) {
     // https://www.google.com/maps/search/?api=1&query={searchWords}
     let urlAPICall = 'https://www.google.com/maps/search/?api=1&query=';
     urlAPICall += searchWords;
-    say("I'm now opening a Google maps results page for: " + searchFor + '.');
+    say("I'm now opening a Google maps results page for: " + searchFor + ". Don't worry, I'm in another browser tab, but I can still hear you.");
     createSuggestionMessage(["How's the weather over there?", "What's the temperature over there?"]);
     tryOpeningWindow(urlAPICall);
     return true;
@@ -1058,7 +1057,7 @@ function mayReplaceWithTopic(s) {
 }
 
 function searchPictures(what) { // https://www.google.com/search?tbm=isch&safe=active&q=
-  say("Here are some " + what.replace(/^the /,'') + " pictures.");
+  say("Here are some " + what.replace(/^the /,'') + " pictures. Don't worry, I'm in another browser tab, but I can still hear you.");
   let url = 'https://www.google.com/search?tbm=isch&safe=active&q=' + what;
   tryOpeningWindow(url);
 }
@@ -1102,7 +1101,7 @@ function searchDefinition(words) {
       let title = pageInfo.title;
       summary = summary.match(/\w.*? [a-z]+[.?!]/g)[0]; // get first sentence, but ignore abbreviation periods
       if (isSubstring(summary,'may refer to')) {
-        say('"' + capitalizeFirstLetter(words) + '"' + " can mean a few different things. I'm opening the Wikipedia disambiguation page.")
+        say('"' + capitalizeFirstLetter(words) + '"' + " can mean a few different things. I'm opening the Wikipedia disambiguation page. Don't worry, I'm in another browser tab, but I can still hear you.")
         createSuggestionMessage(["What does that look like?", "Where is that?"]);
         tryOpeningWindow('https://www.wikipedia.org/wiki/' + words);
       } else if (summary) {
@@ -1140,7 +1139,7 @@ function searchQuestion(heard) {
   // let urlAPICall = 'https://api.duckduckgo.com/?format=json&pretty=1&q=';
   let urlAPICall = 'https://api.duckduckgo.com/?q=';
   urlAPICall += heard;
-  say("I'm now opening a search results page.");
+  say("I'm now opening a search results page. Don't worry, I'm in another browser tab, but I can still hear you.");
   createSuggestionMessage(["I'd like to give feedback."]);
   tryOpeningWindow(urlAPICall);
 
