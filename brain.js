@@ -1,6 +1,7 @@
 /*
 Trying to understand this code?
-The function converse() would be a good place to start.
+A good starting point: converse()
+Follow the function calls.
 */
 
 // TODO: track conversation topic and type to make things more two-way conversational
@@ -48,7 +49,7 @@ function converse() {
   say(' '); // let user interrupt
   clearTimeout(delayedAction); // let user continue what they're saying
   resetCountDownWaiting(); // let user continue what they're saying
-  delayedAction = setInterval(countDownWaiting, 1000);
+  delayedAction = setInterval(countDownWaiting, 1000); // -> countDownWaiting()
 }
 
 function resetCountDownWaiting() {
