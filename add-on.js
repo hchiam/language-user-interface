@@ -1,12 +1,58 @@
 function heardAddOns(heard) {
   // should overwrite the function in brain.js
-  let regex = new RegExp("^(let'?s )?(plan|schedule) (a )?(.+)");
-  let matches = heard.match(regex);
-  if (matches) {
-    let title = matches[4];
-    say("I'm starting a scheduler for you on Doodle.com.");
-    tryOpeningWindow('https://doodle.com/create?title=' + title);
-    return true;
+  if (heard.startsWith('translate ')) {
+    let english = heard.replace('translate ', '');
+    conversationType = "translate";
+    conversationTopic = english;
+    let url = "https://coglang-translator.glitch.me/" + english;
+    $.getJSON(url, function(translations) {
+      if (translations.long) {
+        var long = translations.long;
+        var short = translations.short;
+        sayWithEsp(short);
+      } else {
+        say("Sorry, I couldn't find a translation for that.");
+      }
+      return true;
+    });
+    return false;
   }
   return false;
+}
+
+function spellLikeEsp(sentence) {
+  let converted = '';
+  let letter = '';
+  for (var i in sentence) {
+    letter = sentence[i];
+    if (letter === 'c') {
+      converted += 'sx';
+    } else if (letter === 'j') {
+      converted += 'jx';
+    } else if (letter === 'y') {
+      converted += 'j';
+    } else if (letter === 'h') {
+      converted += 'hx';
+    } else {
+      converted += letter;
+    }
+  }
+  return converted;
+}
+
+function sayWithEsp(sentence) {
+  if (sentence != '') {
+
+    if (!('webkitSpeechRecognition' in window)) {
+      // in case not using chrome
+      responsiveVoice.speak(spellLikeEsp(sentence), 'Esperanto Male');
+    } else {
+      clicked();
+      recognition.stop();
+      responsiveVoice.speak(spellLikeEsp(sentence), 'Esperanto Male', {onend: listenAgain});
+    }
+
+    updateMessageLog(sentence, 'LUI');
+    document.getElementById("input").focus(); // put cursor back
+  }
 }
