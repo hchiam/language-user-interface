@@ -180,6 +180,7 @@ function reply(heard) {
 function notUnderstood() {
   let sentence = "Sorry, I didn't understand that. Would you like to suggest a feature or comment on a bug?";
   say(sentence);
+  createSuggestionMessage(["Yes.", "No."]);
   currentConversationType = 'feedback';
   currentConversationTopic = 'feedback';
 }
@@ -191,15 +192,17 @@ function heardComplaint(heard) {
     "that's not what i", "that is not what i",
     "that doesn't work", "that does not work",
     "that isn't working", "that is not working", "that's not working",
+    "i'd like to give feedback", "i would like to give feedback",
   ];
   if (didHear(heard,complaintStarters,'starts with')) {
     let sentence = "Would you like to suggest a feature or comment on a bug?";
-     say(sentence);
-     currentConversationType = 'feedback';
-     currentConversationTopic = 'feedback';
-     return true;
-   }
-   return false;
+    say(sentence);
+    createSuggestionMessage(["Yes.", "No."]);
+    currentConversationType = 'feedback';
+    currentConversationTopic = 'feedback';
+    return true;
+  }
+  return false;
 }
 
 function redirectToFeedback() {
@@ -452,19 +455,19 @@ function heardSearch(heard) {
 function askingWhoAreYou(heard) {
   if (didHear(heard,['who are you','what are you'])) {
     say("My name is LUI. That's short for Language User Interface.");
-    createSuggestionMessage(["what can you do"]);
+    createSuggestionMessage(["What can you do?"]);
     currentConversationTopic = '';
     currentConversationType = '';
     return true;
   } else if (heard === 'are you jarvis') {
     say("Not exactly. My name is LUI. But I am a Language User Interface.");
-    createSuggestionMessage(["what can you do"]);
+    createSuggestionMessage(["What can you do?"]);
     currentConversationTopic = '';
     currentConversationType = '';
     return true;
   } else if (heard === 'are you like jarvis') {
     say("Sort of. My name is LUI. A Language User Interface.");
-    createSuggestionMessage(["what can you do"]);
+    createSuggestionMessage(["What can you do?"]);
     currentConversationTopic = '';
     currentConversationType = '';
     return true;
@@ -540,6 +543,7 @@ function getLocation(func) { // e.g.: getLocation passes myLocation to getWeathe
                 } else {
                   say("We're in " + myLocation + '.');
                   // say("we're at " + locationFull);
+                  createSuggestionMessage(["How's the weather here?", "What is the temperature over here?"]);
                 }
 
             }
@@ -670,6 +674,7 @@ function getWeather(myLocation) {
     // text
     let weatherInfo = data.query.results.channel.item.condition.text;
     say("It's " + weatherInfo.toLowerCase() + ' around ' + myLocation + '.');
+    createSuggestionMessage(["What's the temperature over there?"]);
     currentConversationTopic = myLocation;
     // let wind = data.query.results.channel.wind;
     // alert(data.query);
@@ -685,6 +690,7 @@ function getTemperature(myLocation) {
     let temp = data.query.results.channel.item.condition.temp;
     let tempRefPt = getTemperatureRefPt(temp);
     say("It's " + temp + ' degrees Celsius around ' + myLocation + '. ' + tempRefPt);
+    createSuggestionMessage(["How's the weather over there?"]);
     currentConversationTopic = myLocation;
   });
 }
@@ -727,6 +733,7 @@ function askingDirections(heard) {
       let urlAPICall = 'https://www.google.com/maps/dir/here/';
       urlAPICall += searchFor.replace(/ /g,'+');
       say("I'm now opening a Google maps results page for the closest " + searchFor + '.');
+      createSuggestionMessage(["How's the weather over there?"]);
       tryOpeningWindow(urlAPICall);
       return true;
     }
@@ -743,6 +750,7 @@ function askingDirections(heard) {
     let urlAPICall = 'https://www.google.com/maps/dir/here/';
     urlAPICall += searchFor.replace(/ /g,'+');
     say("I'm now opening a Google maps results page for the closest " + searchFor + '.');
+    createSuggestionMessage(["How's the weather over there?"]);
     tryOpeningWindow(urlAPICall);
     return true;
   }
@@ -942,6 +950,7 @@ function searchLocation(heard) {
     let urlAPICall = 'https://www.google.com/maps/search/?api=1&query=';
     urlAPICall += searchWords;
     say("I'm now opening a Google maps results page for: " + searchFor + '.');
+    createSuggestionMessage(["How's the weather over there?", "What's the temperature over there?"]);
     tryOpeningWindow(urlAPICall);
     return true;
   }
@@ -1053,6 +1062,7 @@ function askingDefinition(heard) {
     // special case for name
     if (words === 'lui') {
       say("I am LUI. That's short for Language User Interface.");
+      createSuggestionMessage(["What can you do?"]);
       return true;
     }
     currentConversationType = 'definition';
@@ -1079,12 +1089,14 @@ function searchDefinition(words) {
       summary = summary.match(/\w.*? [a-z]+[.?!]/g)[0]; // get first sentence, but ignore abbreviation periods
       if (isSubstring(summary,'may refer to')) {
         say('"' + capitalizeFirstLetter(words) + '"' + " can mean a few different things. I'm opening the Wikipedia disambiguation page.")
+        createSuggestionMessage(["What does that look like?", "Where is that?"]);
         tryOpeningWindow('https://www.wikipedia.org/wiki/' + words);
       } else if (summary) {
         if (title.toLowerCase() != words) {
           summary = "I'm not sure if you're looking for this, but here's what I found: " + summary;
         }
         say(summary); // alert(Object.values(data.query.pages)[0].extract)
+        createSuggestionMessage(["What does that look like?", "Where is that?"]);
       }
     } catch(err) { // data.query, i.e. ['query'] not found
       // say("Sorry, I couldn't find anything on " + words);
@@ -1115,6 +1127,7 @@ function searchQuestion(heard) {
   let urlAPICall = 'https://api.duckduckgo.com/?q=';
   urlAPICall += heard;
   say("I'm now opening a search results page.");
+  createSuggestionMessage(["I'd like to give feedback."]);
   tryOpeningWindow(urlAPICall);
 
   // let urlAPICall = 'https://api.duckduckgo.com/?format=jsonp&pretty=1&q=';
@@ -1145,7 +1158,7 @@ function createSuggestionMessage(suggestions) { // "...", ["...", "...", ...]
   }
   let buttonsToShow = '';
   for (var i in suggestions) {
-    sentenceToShow += '<button class="w3-card w3-hover-shadow" onclick="useSuggestionButton(\'' + suggestions[i].replace(/\'/g,'') + '\')">' + suggestions[i] + '</button>';
+    sentenceToShow += '<button class="w3-card w3-hover-shadow" onclick="useSuggestionButton(\'' + suggestions[i].toLowerCase().replace(/[\'.?!]/g,'') + '\')">' + suggestions[i] + '</button>';
   }
 
   // set up style for LUI speaking
