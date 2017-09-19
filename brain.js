@@ -177,7 +177,7 @@ function reply(heard) {
   heardRecognized |= heardOpen(heard); if (heardRecognized) return;
   heardRecognized |= heardSearch(heard); if (heardRecognized) return;
   heardRecognized |= heardAddOns(heard); if (heardRecognized) return;
-  heardRecognized |= heardStopListening(heard); if (heardRecognized) return;
+  // heardRecognized |= heardStopListening(heard); if (heardRecognized) return; // TODO: not working and being called at wrong times
   // otherwise
   if (!heardRecognized) notUnderstood();
 }
