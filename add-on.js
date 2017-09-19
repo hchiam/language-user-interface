@@ -1,7 +1,40 @@
 function heardAddOns(heard) {
   // this should overwrite the function in brain.js
   let heardRecognized = false;
+  heardRecognized |= heardNumberGuessGame(heard); if (heardRecognized) return true;
   heardRecognized |= heardTranslator(heard); if (heardRecognized) return true;
+  return false;
+}
+
+let numberToGuess;
+function heardNumberGuessGame(heard) {
+  if (heard.includes("number guessing game")) {
+    currentConversationTopic = "number guessing game";
+    numberToGuess = Math.floor(Math.random()*100 + 1);
+    say("I'm thinking of a number between 1 and 100. Guess my number.");
+    return true;
+  } else if (currentConversationTopic === "number guessing game") {
+    if (heard === 'no') {
+      say('Okay. What would you like to do instead?');
+      // "turn off" the game
+      currentConversationTopic = '';
+    } else if (isNaN(heard)) {
+      say('Please give me a number.');
+    } else {
+      if (parseInt(heard) === numberToGuess) {
+        say("You got it! My number was " + numberToGuess);
+        // "turn off" the game
+        currentConversationTopic = '';
+        say("What would you like to do now?");
+      } else if (parseInt(heard) < numberToGuess) {
+        say("It's higher than " + heard + '.');
+      } else if (parseInt(heard) > numberToGuess) {
+        say("It's lower than " + heard + '.');
+      }
+    }
+    return true;
+  }
+  // otherwise
   return false;
 }
 
@@ -27,6 +60,7 @@ function heardTranslator(heard) {
     });
     return false;
   }
+  // otherwise
   return false;
 }
 

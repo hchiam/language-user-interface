@@ -966,35 +966,39 @@ function searchLocation(heard) {
 }
 
 function askingMath(heard) {
-  let possibleExpression = heard.replace('what is ').replace("what's ").replace('whats');
-  possibleExpression = possibleExpression.replace(/[,\\\/#!?$%\^&\*;:{}<>+=_`"~()]/g,''); // make safer
-  const mathWords = {'one':'1','two':'2','three':'3','four':'4','five':'5',
-                    'six':'6','seven':'7','eight':'8','nine':'9','zero':'0',
-                    'ten':'10',
-                    'eleven':'11','twelve':'12','thirteen':'13','fourteen':'14',
-                    'fifteen':'15','sixteen':'16','seventeen':'17','eighteen':'18',
-                    'nineteen':'19','twenty':'20','thirty':'30','fourty':'40',
-                    'fifty':'50','sixty':'60','eighty':'80','ninety':'90',
-                    //'hundred':'00','thousand':'000','million':'000000',
-                    'and':'',
-                    'point':'.','decimal':'.',
-                    'plus':'+', 'minus':'-', 'divided by':'/', 'times':'*', 'multiplied by':'*', 'to the power of':'^'};
-  for (let key in mathWords) {
-    let toReplaceAllInstances = new RegExp(key, "g");
-    possibleExpression = possibleExpression.replace(toReplaceAllInstances, mathWords[key]);
-  }
-  // TODO: split by spaces and check if pairs of current-adjacent words are integers or one of them equals 'and', then combine
-  // TODO: if the second of the adjacent words is 'and', then add if the one after 'and' is also integer
-  // TODO: if '#0' numbers then check if next word is also integer, then add values
-  possibleExpression = possibleExpression.replace(/ /g,'');
-  if (safeForMath(possibleExpression)) {
-    currentConversationTopic = possibleExpression;
-    currentConversationType = 'math';
+  if (didHear(heard,['what is ',"what's ",'whats '],'starts with')) {
+    let possibleExpression = heard.replace('what is ').replace("what's ").replace('whats');
+    possibleExpression = possibleExpression.replace(/[,\\\/#!?$%\^&\*;:{}<>+=_`"~()]/g,''); // make safer
+    const mathWords = {'one':'1','two':'2','three':'3','four':'4','five':'5',
+                      'six':'6','seven':'7','eight':'8','nine':'9','zero':'0',
+                      'ten':'10',
+                      'eleven':'11','twelve':'12','thirteen':'13','fourteen':'14',
+                      'fifteen':'15','sixteen':'16','seventeen':'17','eighteen':'18',
+                      'nineteen':'19','twenty':'20','thirty':'30','fourty':'40',
+                      'fifty':'50','sixty':'60','eighty':'80','ninety':'90',
+                      //'hundred':'00','thousand':'000','million':'000000',
+                      'and':'',
+                      'point':'.','decimal':'.',
+                      'plus':'+', 'minus':'-', 'divided by':'/', 'times':'*', 'multiplied by':'*', 'to the power of':'^'};
+    for (let key in mathWords) {
+      let toReplaceAllInstances = new RegExp(key, "g");
+      possibleExpression = possibleExpression.replace(toReplaceAllInstances, mathWords[key]);
+    }
+    // TODO: split by spaces and check if pairs of current-adjacent words are integers or one of them equals 'and', then combine
+    // TODO: if the second of the adjacent words is 'and', then add if the one after 'and' is also integer
+    // TODO: if '#0' numbers then check if next word is also integer, then add values
+    possibleExpression = possibleExpression.replace(/ /g,'');
+    if (safeForMath(possibleExpression)) {
+      currentConversationTopic = possibleExpression;
+      currentConversationType = 'math';
 
-    possibleExpression = eval(possibleExpression);
-    say('The answer is: ' + possibleExpression.toString());
-    return true;
+      possibleExpression = eval(possibleExpression);
+      say('The answer is: ' + possibleExpression.toString());
+      return true;
+    }
+    return false;
   }
+  // otherwise
   return false;
 }
 
