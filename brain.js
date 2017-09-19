@@ -367,7 +367,7 @@ function showWhatICanDo() {
   ];
 
   // set up what to say aloud
-  let sentenceToSay = 'You can ask me things like: ' + examples.join('. ');
+  let sentenceToSay = 'You can ask me things like: ' + examples.slice(0,5).join('?... ');
 
   // set up what buttons to show
   let sentenceToShow = 'You can ask me things like: ';
