@@ -366,7 +366,7 @@ function showWhatICanDo() {
     sentenceToShow += '<button class="w3-card w3-hover-shadow" onclick="useExample(\'' + examples[i].replace(/\'/g,'') + '\')">' + examples[i] + '</button>';
   }
 
-  // say aloud
+  // say aloud but not as a separate message log
   responsiveVoice.speak(sentenceToSay, 'UK English Male');
 
   // set up style for LUI speaking
@@ -452,16 +452,19 @@ function heardSearch(heard) {
 function askingWhoAreYou(heard) {
   if (didHear(heard,['who are you','what are you'])) {
     say("My name is LUI. That's short for Language User Interface.");
+    createSuggestionMessage(["what can you do"]);
     currentConversationTopic = '';
     currentConversationType = '';
     return true;
   } else if (heard === 'are you jarvis') {
     say("Not exactly. My name is LUI. But I am a Language User Interface.");
+    createSuggestionMessage(["what can you do"]);
     currentConversationTopic = '';
     currentConversationType = '';
     return true;
   } else if (heard === 'are you like jarvis') {
     say("Sort of. My name is LUI. A Language User Interface.");
+    createSuggestionMessage(["what can you do"]);
     currentConversationTopic = '';
     currentConversationType = '';
     return true;
@@ -1128,4 +1131,33 @@ function searchQuestion(heard) {
   //   // if (title.toLowerCase() != words) say("I'm not sure this is what you're looking for, but here's what I found.")
   //   // say("duck duck go says: " + summary); // alert(Object.values(data.query.pages)[0].extract)
   // });
+}
+
+function createSuggestionMessage(suggestions) { // "...", ["...", "...", ...]
+  // make custom message log with buttons for quick use
+
+  // set up what to show
+  let sentenceToShow = 'Suggestion';
+  if (suggestions.length > 1) {
+    sentenceToShow += 's: ';
+  } else {
+    sentenceToShow += ': ';
+  }
+  let buttonsToShow = '';
+  for (var i in suggestions) {
+    sentenceToShow += '<button class="w3-card w3-hover-shadow" onclick="useSuggestionButton(\'' + suggestions[i].replace(/\'/g,'') + '\')">' + suggestions[i] + '</button>';
+  }
+
+  // set up style for LUI speaking
+  let id = ' id="log-LUI-suggestion"';
+  // create message with buttons
+  let nextMessage = '<p' + id + '>' + sentenceToShow + '</p>';
+  let logSoFar = document.getElementById('messageLog').innerHTML;
+  // show message with buttons
+  document.getElementById('messageLog').innerHTML = nextMessage + logSoFar;
+}
+
+function useSuggestionButton(suggestion) {
+  document.getElementById("input").value = suggestion;
+  document.getElementById('countDownWaiting').value = 100;
 }

@@ -15,7 +15,7 @@
   /*margin: 20%;*/
 }
 
-#log-LUI, #log-user {
+#log-LUI, #log-user, #log-LUI-suggestion {
   padding: 5px;
   font-weight: bold;
 
@@ -28,6 +28,12 @@
   color: blue;
   border: solid lightblue;
   background: lightblue;
+}
+
+#log-LUI-suggestion {
+  text-align: left;
+  margin-right: 25%;
+  color: blue;
 }
 
 #log-user {
