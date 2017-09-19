@@ -8,8 +8,8 @@ function heardAddOns(heard) {
 function heardTranslator(heard) {
   if (heard.startsWith('translate ')) {
     let english = heard.replace('translate ', '');
-    conversationType = "translate";
-    conversationTopic = english;
+    currentConversationType = "translate";
+    currentConversationTopic = english;
     let url = "https://coglang-translator.glitch.me/" + english;
     $.getJSON(url, function(translations) {
       if (translations.long) {
