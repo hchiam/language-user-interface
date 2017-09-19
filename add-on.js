@@ -22,10 +22,9 @@ function heardNumberGuessGame(heard) {
       say('Please give me a number.');
     } else {
       if (parseInt(heard) === numberToGuess) {
-        say("You got it! My number was " + numberToGuess + '.');
+        say("You got it! My number was " + numberToGuess + '. What would you like to do now?');
         // "turn off" the game
         currentConversationTopic = '';
-        say("What would you like to do now?");
       } else if (parseInt(heard) < numberToGuess) {
         say("It's higher than " + heard + '.');
       } else if (parseInt(heard) > numberToGuess) {
