@@ -1,5 +1,11 @@
 function heardAddOns(heard) {
-  // should overwrite the function in brain.js
+  // this should overwrite the function in brain.js
+  let heardRecognized = false;
+  heardRecognized |= heardTranslator(heard); if (heardRecognized) return true;
+  return false;
+}
+
+function heardTranslator(heard) {
   if (heard.startsWith('translate ')) {
     let english = heard.replace('translate ', '');
     conversationType = "translate";
