@@ -1,12 +1,11 @@
-// ----------------------------
-
-////////// WEBKIT SPEECH RECOGNITION API:
+// Use Webkit Speech Recognition API
 
 /* for reference:
  * https://codepen.io/hchiam/pen/gGamzv
  */
 
-// set up
+
+// ---------- set up: ----------
 
 var language = 'en-US';
 
@@ -17,6 +16,12 @@ var ignore_onend;
 var recognition;
 
 setUp_webkitSpeechRecognition();
+
+// start listening right away, so it's completely hands-free
+toggleStart_webkitSpeechRecognition();
+
+
+// ---------- functions: ----------
 
 function setUp_webkitSpeechRecognition() {
   if (!('webkitSpeechRecognition' in window)) {
@@ -65,9 +70,6 @@ function setUp_webkitSpeechRecognition() {
     };
   }
 }
-
-// start listening right away, so it's completely hands-free
-toggleStart_webkitSpeechRecognition();
 
 function toggleStart_webkitSpeechRecognition() {
   if (recognizing) {
