@@ -177,7 +177,7 @@ function reply(heard) {
   heardRecognized |= heardOpen(heard); if (heardRecognized) return;
   heardRecognized |= heardSearch(heard); if (heardRecognized) return;
   heardRecognized |= heardAddOns(heard); if (heardRecognized) return;
-  // heardRecognized |= heardStopListening(heard); if (heardRecognized) return; // TODO: not working and being called at wrong times
+  heardRecognized |= heardStopListening(heard); if (heardRecognized) return;
   // otherwise
   if (!heardRecognized) notUnderstood();
 }
@@ -1161,7 +1161,7 @@ function searchQuestion(heard) {
 }
 
 function heardStopListening(heard) {
-  if (didHear(heard,'stop listening','starts with')) {
+  if (didHear(heard,['stop listening'],'starts with')) {
     if (!('webkitSpeechRecognition' in window)) {
     } else {
       say("Okay. Turning off voice recognition.");
