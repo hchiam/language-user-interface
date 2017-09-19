@@ -102,11 +102,13 @@ function clearMessageHeardAlready() {
 
 function tryOpeningWindow(url) { // notice and tell user to unblock if can't open window
   let newWindow = window.open(url);
+  // notify user
   if(!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
     say('Sorry... Please authorize me to open new windows for you... You may be using an ad blocker.');
   } else {
     try {
       newWindow.focus();
+      say("Don't worry, I'm in another browser tab, but I can still hear you.");
     } catch (e) {
       say('Sorry... Please authorize me to open new windows for you... You may be using an ad blocker.');
     }
