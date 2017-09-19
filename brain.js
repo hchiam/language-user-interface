@@ -173,6 +173,7 @@ function reply(heard) {
   heardRecognized |= heardScheduler(heard); if (heardRecognized) return;
   heardRecognized |= heardOpen(heard); if (heardRecognized) return;
   heardRecognized |= heardSearch(heard); if (heardRecognized) return;
+  heardRecognized |= heardAddOns(heard); if (heardRecognized) return;
   // otherwise
   if (!heardRecognized) notUnderstood();
 }
@@ -1144,6 +1145,13 @@ function searchQuestion(heard) {
   //   // if (title.toLowerCase() != words) say("I'm not sure this is what you're looking for, but here's what I found.")
   //   // say("duck duck go says: " + summary); // alert(Object.values(data.query.pages)[0].extract)
   // });
+}
+
+function heardAddOns(heard) {
+  // overwrite this function in add-on.js
+  // you can use this as an access point for multiple alternate actions
+  // just make sure to return true/false whether match found
+  return false;
 }
 
 function createSuggestionMessage(suggestions) { // "...", ["...", "...", ...]
