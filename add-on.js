@@ -8,6 +8,10 @@ function heardAddOns(heard) {
 function heardTranslator(heard) {
   if (heard.startsWith('translate ')) {
     let english = heard.replace('translate ', '');
+    // allow for context
+    if (currentConversationTopic !== '' && english === "that") {
+      english = currentConversationTopic;
+    }
     currentConversationType = "translate";
     currentConversationTopic = english;
     let url = "https://coglang-translator.glitch.me/" + english;
