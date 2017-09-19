@@ -173,6 +173,7 @@ function reply(heard) {
   heardRecognized |= heardScheduler(heard); if (heardRecognized) return;
   heardRecognized |= heardOpen(heard); if (heardRecognized) return;
   heardRecognized |= heardSearch(heard); if (heardRecognized) return;
+  heardRecognized |= heardStopListening(heard); if (heardRecognized) return;
   heardRecognized |= heardAddOns(heard); if (heardRecognized) return;
   // otherwise
   if (!heardRecognized) notUnderstood();
@@ -1146,6 +1147,18 @@ function searchQuestion(heard) {
   //   // if (title.toLowerCase() != words) say("I'm not sure this is what you're looking for, but here's what I found.")
   //   // say("duck duck go says: " + summary); // alert(Object.values(data.query.pages)[0].extract)
   // });
+}
+
+function heardStopListening(heard) {
+  if (didHear(heard,'stop listening','starts with')) {
+    if (!('webkitSpeechRecognition' in window)) {
+    } else {
+      say("Okay. Turning off voice recognition.");
+      recognition.stop();
+    }
+    return true;
+  }
+  return false;
 }
 
 function heardAddOns(heard) {
