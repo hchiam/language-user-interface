@@ -325,7 +325,7 @@ function heardPleasantries(heard) {
   } else if (didHear(heard,['thank you so much','thank you very much'])) {
     say("You're very welcome.");
     return true;
-  } else if (didHear(heard,['goodbye','bye','byebye','see you','see you later'])) {
+  } else if (didHear(heard,['goodbye','bye','byebye','bye bye','see you','see you later','good bye','farewell'])) {
     say('Farewell.'); //  + '...Would you like me to shut down?'
     return true;
   }
