@@ -92,6 +92,7 @@ function say(sentence) {
       responsiveVoice.speak(sentence, 'UK English Male');
     } else {
       clicked();
+      // stop listening
       recognition.stop();
       responsiveVoice.speak(sentence, 'UK English Male', {onend: listenAgain});
     }
@@ -102,6 +103,7 @@ function say(sentence) {
 }
 
 function listenAgain() {
+  // start listening
   recognition.start();
   final_transcript = '';
 }
