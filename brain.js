@@ -173,8 +173,8 @@ function reply(heard) {
   heardRecognized |= heardScheduler(heard); if (heardRecognized) return;
   heardRecognized |= heardOpen(heard); if (heardRecognized) return;
   heardRecognized |= heardSearch(heard); if (heardRecognized) return;
-  heardRecognized |= heardStopListening(heard); if (heardRecognized) return;
   heardRecognized |= heardAddOns(heard); if (heardRecognized) return;
+  heardRecognized |= heardStopListening(heard); if (heardRecognized) return;
   // otherwise
   if (!heardRecognized) notUnderstood();
 }
