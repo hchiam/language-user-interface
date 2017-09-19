@@ -22,7 +22,7 @@ function heardNumberGuessGame(heard) {
       say('Please give me a number.');
     } else {
       if (parseInt(heard) === numberToGuess) {
-        say("You got it! My number was " + numberToGuess);
+        say("You got it! My number was " + numberToGuess + '.');
         // "turn off" the game
         currentConversationTopic = '';
         say("What would you like to do now?");
