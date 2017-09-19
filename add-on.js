@@ -57,10 +57,9 @@ function heardTranslator(heard) {
       }
       return true;
     });
-    return false;
   }
   // otherwise
-  return false;
+  return true;
 }
 
 function spellLikeEsp(sentence) {
