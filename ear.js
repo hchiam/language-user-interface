@@ -104,5 +104,4 @@ function say(sentence) {
 function listenAgain() {
   recognition.start();
   final_transcript = '';
-  document.getElementById("input").value = '';
 }
