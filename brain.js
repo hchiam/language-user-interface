@@ -1068,6 +1068,10 @@ function askingDefinition(heard) {
       createSuggestionMessage(["What can you do?"]);
       return true;
     }
+    // allow for context
+    if (currentConversationTopic !== '' && didHear(words,["that","this","it","he","she","they","those"])) {
+      words = currentConversationTopic;
+    }
     currentConversationType = 'definition';
     currentConversationTopic = words;
     searchDefinition(words);
