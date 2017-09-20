@@ -15,9 +15,9 @@ function heardNumberGuessGame(heard) {
     return true;
   } else if (currentConversationType === "number guessing game") {
     if (didHear(heard,['no',"let's stop playing","never mind"])) {
-      say('Okay. What would you like to do instead?');
       // "turn off" the game
       currentConversationType = '';
+      say('Okay. What would you like to do instead?');
     } else if (isNaN(heard)) {
       say('Please give me a number.');
     } else {
