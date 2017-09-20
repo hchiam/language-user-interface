@@ -130,16 +130,24 @@ function program(heard) {
   let regex = new RegExp("loop through (.+)");
   let matches = heard.match(regex);
   if (matches) {
-    var loop = "for (var i in " + matches[1] + ") {<br /><br />}";
+    var loop = "for (var i in " + matches[1] + ") {<br/><br/>}";
     programAppend(loop);
     // say("What are we looping through?");
   }
 }
 
 function programAppend(what) {
-  $('#programming-area').html($('#programming-area').html() + what);
+  if ($('#programming-area').html() === '') {
+    $('#programming-area').html(what);
+  } else {
+    $('#programming-area').html($('#programming-area').html() + "<br/><br/>" + what);
+  }
 }
 
 function programPrepend(what) {
-  $('#programming-area').html(what + $('#programming-area').html());
+  if ($('#programming-area').html() === '') {
+    $('#programming-area').html(what);
+  } else {
+    $('#programming-area').html(what + "<br/><br/>" + $('#programming-area').html());
+  }
 }
