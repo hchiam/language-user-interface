@@ -292,7 +292,7 @@ function handleConfirm() {
 }
 
 function heardInterrupt(heard) {
-  if (didHear(heard,['okay','ok','stop',"that's enough",'enough','alright','thats enough',''])) { // '' in case just spaces entered
+  if (didHear(heard,['okay','ok','wait',"that's enough",'enough','alright','thats enough',''])) { // '' in case just spaces entered
     say(' ');
     return true;
   }
