@@ -124,16 +124,8 @@ function heardProgram(heard) {
   return false;
 }
 
-// affect interface.html and
-// say('...');
-function program(heard) {
-  let matches = heard.match(RegExp("loop through (.+)"));
-  if (matches) {
-    currentConversationTopic = matches[0];
-    var loop = "for (var i in " + makeSafer(matches[1]) + ") {<br/><br/>}";
-    programAppend(loop);
-    // say("What are we looping through?");
-  }
+function makeSaferForHTML(string) {
+  return string.replace(/[,\\\/#!?$%\^&\*;:{}<>=_`"~()]/g,'');
 }
 
 function programAppend(what) {
@@ -152,6 +144,15 @@ function programPrepend(what) {
   }
 }
 
-function makeSafer(string) {
-  return string.replace(/[,\\\/#!?$%\^&\*;:{}<>=_`"~()]/g,'');
+
+// affect interface.html and
+// say('...');
+function program(heard) {
+  let matches = heard.match(RegExp("loop through (.+)"));
+  if (matches) {
+    currentConversationTopic = matches[0];
+    var loop = "for (var i in " + makeSaferForHTML(matches[1]) + ") {<br/><br/>}";
+    programAppend(loop);
+    // say("What are we looping through?");
+  }
 }
