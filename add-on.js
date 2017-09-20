@@ -3,6 +3,7 @@ function heardAddOns(heard) {
   let heardRecognized = false;
   heardRecognized |= heardNumberGuessGame(heard); if (heardRecognized) return true;
   heardRecognized |= heardTranslator(heard); if (heardRecognized) return true;
+  heardRecognized |= heardProgram(heard); if (heardRecognized) return true;
   return false;
 }
 
@@ -98,4 +99,31 @@ function sayWithEsp(sentence) {
     updateMessageLog(sentence, 'LUI');
     document.getElementById("input").focus(); // put cursor back
   }
+}
+
+function heardProgram(heard) {
+  if (didHear(heard,["let's program",'program'],'starts with')) {
+    currentConversationType = 'program';
+    say('What would you like to program?');
+    return true;
+  } else if (currentConversationType === 'program') {
+    if (didHear(heard,['stop',"let's stop","never mind"],'starts with')) {
+      // exit from programming
+      currentConversationType = '';
+      say('Okay. What would you like to do instead?');
+      createSuggestionMessage(["What can you do?"]);
+    } else {
+      // TODO: program different things
+      program(heard);
+    }
+    return true;
+  }
+  // otherwise
+  return false;
+}
+
+// affect interface.html and
+// say('...');
+function program(heard) {
+  //
 }
