@@ -55,11 +55,11 @@ function heardTranslator(heard) {
       } else {
         say("Sorry, I couldn't find a translation for that.");
       }
-      return true;
     });
+    return true; // did hear, just need to wait for web API response
   }
   // otherwise
-  return true;
+  return false;
 }
 
 function spellLikeEsp(sentence) {
