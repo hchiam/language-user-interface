@@ -131,7 +131,7 @@ function program(heard) {
   let matches = heard.match(regex);
   if (matches) {
     currentConversationTopic = matches[0];
-    var loop = "for (var i in " + matches[1] + ") {<br/><br/>}";
+    var loop = "for (var i in " + makeSafer(matches[1]) + ") {<br/><br/>}";
     programAppend(loop);
     // say("What are we looping through?");
   }
@@ -139,17 +139,17 @@ function program(heard) {
 
 function programAppend(what) {
   if ($('#programming-area').html() === '') {
-    $('#programming-area').html(makeSafer(what));
+    $('#programming-area').html(what);
   } else {
-    $('#programming-area').html($('#programming-area').html() + "<br/><br/>" + makeSafer(what));
+    $('#programming-area').html($('#programming-area').html() + "<br/><br/>" + what);
   }
 }
 
 function programPrepend(what) {
   if ($('#programming-area').html() === '') {
-    $('#programming-area').html(makeSafer(what));
+    $('#programming-area').html(what);
   } else {
-    $('#programming-area').html(makeSafer(what) + "<br/><br/>" + $('#programming-area').html());
+    $('#programming-area').html(what + "<br/><br/>" + $('#programming-area').html());
   }
 }
 
