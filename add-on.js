@@ -127,8 +127,7 @@ function heardProgram(heard) {
 // affect interface.html and
 // say('...');
 function program(heard) {
-  let regex = new RegExp("loop through (.+)");
-  let matches = heard.match(regex);
+  let matches = heard.match(RegExp("loop through (.+)"));
   if (matches) {
     currentConversationTopic = matches[0];
     var loop = "for (var i in " + makeSafer(matches[1]) + ") {<br/><br/>}";
