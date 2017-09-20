@@ -104,12 +104,14 @@ function sayWithEsp(sentence) {
 function heardProgram(heard) {
   if (didHear(heard,["let's program",'program'],'starts with')) {
     currentConversationType = 'program';
+    $('#programming-area').css('visibility','visible');
     say('What would you like to program?');
     return true;
   } else if (currentConversationType === 'program') {
     if (didHear(heard,['stop',"let's stop","never mind"],'starts with')) {
       // exit from programming
       currentConversationType = '';
+      $('#programming-area').css('visibility','collapse');
       say('Okay. What would you like to do instead?');
       createSuggestionMessage(["What can you do?"]);
     } else {

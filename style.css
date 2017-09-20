@@ -48,6 +48,14 @@
   font-size: 30%;
 }
 
+#programming-area {
+  padding: 5px;
+  margin-bottom: 20px;
+  background: black;
+  color: lime;
+  visibility: collapse;
+}
+
 body {
   background: lightblue; /* For browsers that do not support gradients */
   background: -webkit-linear-gradient(right top, lightblue, white); /* For Safari 5.1 to 6.0 */
