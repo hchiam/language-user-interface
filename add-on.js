@@ -150,6 +150,11 @@ function program(heard) {
   loop(heard);
   comment(heard);
   notify(heard);
+  variable(heard);
+  assign(heard);
+  // if
+  // define function
+  // use function
 }
 
 function loop(heard) {
@@ -159,13 +164,14 @@ function loop(heard) {
     var loop = "for (var i in " + makeSaferForHTML(matches[1].replace(' ','_')) + ") {<br/><br/>}";
     programAppend(loop);
     // say("What are we looping through?");
+    // say("What are we doing with that?");
   }
 }
 
 function comment(heard) {
   let matches = heard.match(RegExp("comment (.+)"));
   if (matches) {
-    currentConversationTopic = matches[0];
+    currentConversationTopic = 'comment';
     var comment = "// " + makeSaferForHTML(matches[1]);
     programAppend(comment);
   }
@@ -177,5 +183,25 @@ function notify(heard) {
     currentConversationTopic = matches[0];
     var alert = "alert(" + makeSaferForHTML(matches[1]) + ");";
     programAppend(alert);
+  }
+}
+
+function variable(heard) {
+  let matches = heard.match(RegExp("variable (.+)"));
+  if (matches) {
+    currentConversationTopic = matches[0];
+    var variable = "let " + makeSaferForHTML(matches[1].replace(' ','_')) + ";";
+    programAppend(variable);
+  }
+}
+
+function assign(heard) {
+  let matches = heard.match(RegExp("(assign|let)( to)? (.+) (equals?|the value( of)?) (.+)"));
+  if (matches) {
+    var assignTo = makeSaferForHTML(matches[3].replace(' ','_'));
+    var assignWhat = makeSaferForHTML(matches[matches.length-1].replace(' ','_'));
+    currentConversationTopic = 'assign ' + assignTo;
+    var assign = "let " + assignTo + " = " + assignWhat + ";";
+    programAppend(assign);
   }
 }
