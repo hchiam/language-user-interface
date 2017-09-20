@@ -18,6 +18,7 @@ function heardNumberGuessGame(heard) {
       // "turn off" the game
       currentConversationType = '';
       say('Okay. What would you like to do instead?');
+      createSuggestionMessage(["What can you do?"]);
     } else if (isNaN(heard)) {
       say('Please give me a number.');
     } else {
