@@ -149,7 +149,7 @@ function programPrepend(what) {
 function program(heard) {
   loop(heard);
   comment(heard);
-  notify(heard);
+  notify(heard); // -> alert(...)
   variable(heard);
   assign(heard);
   // if
@@ -183,6 +183,7 @@ function notify(heard) {
     currentConversationTopic = matches[0];
     var alert = "alert(" + makeSaferForHTML(matches[1]) + ");";
     programAppend(alert);
+    // TODO: string? variables?
   }
 }
 
