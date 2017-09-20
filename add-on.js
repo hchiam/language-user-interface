@@ -9,22 +9,22 @@ function heardAddOns(heard) {
 let numberToGuess;
 function heardNumberGuessGame(heard) {
   if (heard.includes("number guessing game")) {
-    currentConversationTopic = "number guessing game";
+    currentConversationType = "number guessing game";
     numberToGuess = Math.floor(Math.random()*100 + 1);
     say("I'm thinking of a number between 1 and 100. Guess my number.");
     return true;
-  } else if (currentConversationTopic === "number guessing game") {
-    if (heard === 'no') {
+  } else if (currentConversationType === "number guessing game") {
+    if (didHear(heard,['no',"let's stop playing","never mind"])) {
       say('Okay. What would you like to do instead?');
       // "turn off" the game
-      currentConversationTopic = '';
+      currentConversationType = '';
     } else if (isNaN(heard)) {
       say('Please give me a number.');
     } else {
       if (parseInt(heard) === numberToGuess) {
         say("You got it! My number was " + numberToGuess + '. What would you like to do now?');
         // "turn off" the game
-        currentConversationTopic = '';
+        currentConversationType = '';
       } else if (parseInt(heard) < numberToGuess) {
         say("It's higher than " + heard + '.');
       } else if (parseInt(heard) > numberToGuess) {
