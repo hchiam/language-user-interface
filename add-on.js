@@ -187,7 +187,7 @@ function notify(heard) {
 }
 
 function variable(heard) {
-  let matches = heard.match(RegExp("variable (.+)"));
+  let matches = heard.match(RegExp("(variable|let) (.+)"));
   if (matches) {
     currentConversationTopic = matches[0];
     var variable = "let " + makeSaferForHTML(matches[1].replace(' ','_')) + ";";
