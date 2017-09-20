@@ -363,6 +363,8 @@ function showWhatICanDo() {
     "show me how to draw",
     "explain philosophy",
     "schedule a meeting",
+    "play number guessing game",
+    "let's program",
   ];
 
   // set up what to say aloud
