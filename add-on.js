@@ -139,16 +139,20 @@ function program(heard) {
 
 function programAppend(what) {
   if ($('#programming-area').html() === '') {
-    $('#programming-area').html(what);
+    $('#programming-area').html(makeSafer(what));
   } else {
-    $('#programming-area').html($('#programming-area').html() + "<br/><br/>" + what);
+    $('#programming-area').html($('#programming-area').html() + "<br/><br/>" + makeSafer(what));
   }
 }
 
 function programPrepend(what) {
   if ($('#programming-area').html() === '') {
-    $('#programming-area').html(what);
+    $('#programming-area').html(makeSafer(what));
   } else {
-    $('#programming-area').html(what + "<br/><br/>" + $('#programming-area').html());
+    $('#programming-area').html(makeSafer(what) + "<br/><br/>" + $('#programming-area').html());
   }
+}
+
+function makeSafer(string) {
+  return string.replace(/[,\\\/#!?$%\^&\*;:{}<>=_`"~()]/g,'');
 }
