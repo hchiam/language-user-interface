@@ -50,6 +50,7 @@
 
 #programming-area {
   padding: 5px;
+  width: 50%;
   background: black;
   color: lime;
   visibility: collapse;
