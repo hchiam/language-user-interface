@@ -125,7 +125,7 @@ function heardProgram(heard) {
 }
 
 function makeSaferForHTML(string) {
-  return string.replace(/[,\\\/#!?$%\^&\*;:{}<>=_`"~()]/g,'');
+  return string.replace(/[,\\\/#!?$%\^&\*;:{}<>=`"~()]/g,'');
 }
 
 function programAppend(what) {
@@ -156,7 +156,7 @@ function loop(heard) {
   let matches = heard.match(RegExp("loop through (.+)"));
   if (matches) {
     currentConversationTopic = matches[0];
-    var loop = "for (var i in " + makeSaferForHTML(matches[1]) + ") {<br/><br/>}";
+    var loop = "for (var i in " + makeSaferForHTML(matches[1].replace(' ','_')) + ") {<br/><br/>}";
     programAppend(loop);
     // say("What are we looping through?");
   }
