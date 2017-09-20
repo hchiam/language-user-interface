@@ -130,6 +130,7 @@ function program(heard) {
   let regex = new RegExp("loop through (.+)");
   let matches = heard.match(regex);
   if (matches) {
+    currentConversationTopic = matches[0];
     var loop = "for (var i in " + matches[1] + ") {<br/><br/>}";
     programAppend(loop);
     // say("What are we looping through?");
