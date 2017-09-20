@@ -132,7 +132,7 @@ function programAppend(what) {
   if ($('#programming-area').html() === '') {
     $('#programming-area').html(what);
   } else {
-    $('#programming-area').html($('#programming-area').html() + "<br/><br/>" + what);
+    $('#programming-area').html($('#programming-area').html() + "<br/>" + what);
   }
 }
 
@@ -140,19 +140,42 @@ function programPrepend(what) {
   if ($('#programming-area').html() === '') {
     $('#programming-area').html(what);
   } else {
-    $('#programming-area').html(what + "<br/><br/>" + $('#programming-area').html());
+    $('#programming-area').html(what + "<br/>" + $('#programming-area').html());
   }
 }
-
 
 // affect interface.html and
 // say('...');
 function program(heard) {
+  loop(heard);
+  comment(heard);
+  notify(heard);
+}
+
+function loop(heard) {
   let matches = heard.match(RegExp("loop through (.+)"));
   if (matches) {
     currentConversationTopic = matches[0];
     var loop = "for (var i in " + makeSaferForHTML(matches[1]) + ") {<br/><br/>}";
     programAppend(loop);
     // say("What are we looping through?");
+  }
+}
+
+function comment(heard) {
+  let matches = heard.match(RegExp("comment (.+)"));
+  if (matches) {
+    currentConversationTopic = matches[0];
+    var comment = "// " + makeSaferForHTML(matches[1]);
+    programAppend(comment);
+  }
+}
+
+function notify(heard) {
+  let matches = heard.match(RegExp("alert (.+)"));
+  if (matches) {
+    currentConversationTopic = matches[0];
+    var alert = "alert(" + makeSaferForHTML(matches[1]) + ");";
+    programAppend(alert);
   }
 }
