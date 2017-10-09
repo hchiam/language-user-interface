@@ -333,6 +333,8 @@ function handleMathOperators(str) {
                      .replace(/_minus_/g,' - ')
                      .replace(/_divided_by_/g,' / ')
                      .replace(/_multiplied_by_/g,' * ')
-                     .replace(/_modulus_/g,' % ');
+                     .replace(/_modulus_/g,' % ')
+                     .replace(/_and_/g,' && ')
+                     .replace(/_or_/g,' || ');
   return modified;
 }
