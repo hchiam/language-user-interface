@@ -335,6 +335,7 @@ function handleMathOperators(str) {
                      .replace(/_multiplied_by_/g,' * ')
                      .replace(/_modulus_/g,' % ')
                      .replace(/_and_/g,' && ')
-                     .replace(/_or_/g,' || ');
+                     .replace(/_or_/g,' || ')
+                     .replace(/_not_/g,' ~');
   return modified;
 }
