@@ -105,7 +105,7 @@ let pointer = 0;
 let programString = "";
 let variableList = {};
 function heardProgram(heard) {
-  if (didHear(heard,["let's program",'program'],'starts with')) {
+  if (didHear(heard,["let's program",'program',"let's code",'code'],'starts with')) {
     currentConversationType = 'program';
     $('#programming-area').css('visibility','visible');
     say('What would you like to program in JavaScript?');
@@ -342,7 +342,7 @@ function escapeNextBrace(heard) {
 }
 
 function runProgram(heard) {
-  if (heard === 'run program') {
+  if (heard === 'run program' || heard === 'run code') {
     say("Running program.");
     eval(programString);
   }
