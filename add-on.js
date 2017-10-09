@@ -109,6 +109,12 @@ function heardProgram(heard) {
     $('#programming-area').css('visibility','visible');
     say('What would you like to program in JavaScript?');
     return true;
+  } else if (heard.includes("edit your code") || heard.includes("modify your code")) {
+    currentConversationType = 'program';
+    showAddOnCode();
+    $('#programming-area').css('visibility','visible');
+    say("Here you go.");
+    return true;
   } else if (currentConversationType === 'program') {
     if (didHear(heard,['stop',"let's stop","never mind"],'starts with')) {
       // exit from programming
@@ -135,13 +141,23 @@ function heardProgram(heard) {
   return false;
 }
 
+function showAddOnCode() {
+  var client = new XMLHttpRequest();
+  client.open('GET', 'add-on.js');
+  client.onreadystatechange = function() {
+    programString = client.responseText;
+    updateProgrammingAreaDisplay();
+  }
+  client.send();
+}
+
 function makeSaferForHTML(string) {
   return string.replace(/[,\\\/#!?$%\^&\*;:{}<>=`"~()]/g,'');
 }
 
 function updateProgrammingAreaDisplay() {
   // to avoid managing <br/> in strings and for easier use of a pointer
-  $('#programming-area').html(programString.replace(/\n/g,"<br/>"));
+  $('#programming-area').html(programString.replace(/\n/g, "<br/>"));
 }
 
 function programInsert(what, where) {
