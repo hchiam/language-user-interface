@@ -364,7 +364,9 @@ function showWhatICanDo() {
     "explain philosophy",
     "schedule a meeting",
     "play number guessing game",
+    "translate hi",
     "let's program",
+    "edit your code"
   ];
 
   // set up what to say aloud
