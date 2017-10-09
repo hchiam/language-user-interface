@@ -184,7 +184,7 @@ function program(heard) {
   // TODO: functionCreate(heard); // create function ... --> "function ...(*) {\n\n}" (* = pointer)
   // TODO: functionUse(heard); // function ... --> "...(" (for composing statements)
   newLine(heard);
-  semicolon(heard);
+  specialCharacters(heard);
   escapeNextBrace(heard);
   runProgram(heard);
 }
@@ -270,12 +270,37 @@ function newLine(heard) {
   }
 }
 
-function semicolon(heard) {
+function specialCharacters(heard) {
+  let s = '';
   if (heard === 'semicolon') {
-    let s = '; ';
-    programInsert('; ',pointer);
-    pointer += s.length;
+    s = '; ';
+  } else if (heard === 'colon') {
+    s = ': ';
+  } else if (heard === 'dot' || heard === 'period') {
+    s = '.';
+  } else if (heard === 'dash') {
+    s = '-';
+  } else if (heard === 'underscore') {
+    s = '_';
+  } else if (heard === 'apostrophe') {
+    s = "'";
+  } else if (heard === 'double apostrophe') {
+    s = '""';
+  } else if (heard === 'bracket' || heard === 'opening bracket') {
+    s = '(';
+  } else if (heard === 'closing bracket') {
+    s = ')';
+  } else if (heard === 'curly bracket' || heard === 'opening brace' || heard === 'opening curly bracket') {
+    s = '{';
+  } else if (heard === 'closing curly bracket' || heard === 'closing brace') {
+    s = '}';
+  } else if (heard === 'square bracket' || heard === 'opening square bracket') {
+    s = '[';
+  } else if (heard === 'closing square bracket') {
+    s = ']';
   }
+  programInsert(s,pointer);
+  pointer += s.length;
 }
 
 function escapeNextBrace(heard) {
