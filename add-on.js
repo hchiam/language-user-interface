@@ -173,6 +173,8 @@ function loop(heard) {
     programAppend(loop);
     // say("What are we looping through?");
     // say("What are we doing with that?");
+  } else if (heard.includes('loop')) {
+    say("Please say something like: 'loop through object'.");
   }
 }
 
