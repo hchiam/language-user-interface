@@ -161,7 +161,7 @@ function loop(heard) {
   let matches = heard.match(RegExp("loop through (.+)"));
   if (matches) {
     currentConversationTopic = matches[0];
-    var loop = "for (var i in " + makeSaferForHTML(matches[1].replace(' ','_')) + ") {<br/><br/>}";
+    var loop = "for (let i=0; i&lt;" + makeSaferForHTML(matches[1].replace(' ','_')) + ".length; i++) {<br/><br/>}";
     programAppend(loop);
     // say("What are we looping through?");
     // say("What are we doing with that?");
