@@ -114,6 +114,14 @@ function heardProgram(heard) {
       $('#programming-area').css('visibility','collapse');
       say('Okay. What would you like to do instead?');
       createSuggestionMessage(["What can you do?"]);
+    } else if (didHear(heard,['clear everything','delete everything'])) {
+      // clear and
+      // exit from programming
+      currentConversationType = '';
+      $('#programming-area').text('');
+      $('#programming-area').css('visibility','collapse');
+      say('Okay. What would you like to do instead?');
+      createSuggestionMessage(["What can you do?"]);
     } else {
       // TODO: program different things
       program(heard);
