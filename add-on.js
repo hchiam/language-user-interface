@@ -299,6 +299,7 @@ function handleMathOperators(str) {
                      .replace(/_less_than_or_equal_to_/g,' <= ')
                      .replace(/_equals_/g,' = ')
                      .replace(/_equal_to_/g,' = ')
+                     .replace(/_equal_/g,' = ')
                      .replace(/_greater_than_/g,' > ')
                      .replace(/_less_than_/g,' < ')
                      .replace(/_plus_plus/g,'++ ')
