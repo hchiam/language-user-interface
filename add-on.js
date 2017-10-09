@@ -170,7 +170,11 @@ function programInsert(what, where) {
 }
 
 function userEditedCode() {
-  programString = $('#programming-area').text();
+  // .text() removes new lines, so have to do this instead:
+  programString = $('#programming-area').html()
+    .replace("<br>", '\n')
+    .replace('<span id="programming-area" style="visibility: visible;" contenteditable="true">')
+    .replace("<br></span>");
 }
 
 // affect interface.html and
