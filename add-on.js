@@ -227,11 +227,13 @@ function variable(heard) {
 function escapeNextBrace(heard) {
   if (heard.startsWith('escape brace')) {
     pointer = programString.substring(0,pointer).length + programString.substring(pointer).indexOf("}\n") + 2;
+    say("Escaped a brace.");
   }
 }
 
 function runProgram(heard) {
   if (heard === 'run program') {
+    say("Running program.");
     eval(programString);
   }
 }
