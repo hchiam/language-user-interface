@@ -184,6 +184,7 @@ function program(heard) {
   // TODO: functionCreate(heard); // create function ... --> "function ...(*) {\n\n}" (* = pointer)
   // TODO: functionUse(heard); // function ... --> "...(" (for composing statements)
   newLine(heard);
+  semicolon(heard);
   escapeNextBrace(heard);
   runProgram(heard);
 }
@@ -232,24 +233,24 @@ function notify(heard) {
   }
 }
 
-function variable(heard) {
-  let matches = heard.match(RegExp("(assign|let)( to)? (.+) (equals?|the value( of)?) (.+)"));
+function variableCreate(heard) {
+  let matches = heard.match(RegExp("^create variable (.+)")); // ^ to disambiguate from use
   if (matches) {
-    var assignTo = makeSaferForHTML(matches[3].replace(/ /g,'_'));
-    var assignWhat = makeSaferForHTML(matches[matches.length-1].replace(/ /g,'_'));
-    currentConversationTopic = 'assign ' + assignTo;
-    var assign = "let " + assignTo + " = " + assignWhat + ";";
-    programInsert(assign,pointer);
-    pointer += assign.length;
-  } else {
-    // did not pass previous check
-    let matches = heard.match(RegExp("(variable|let) (.+)$"));
-    if (matches) {
-      currentConversationTopic = matches[0];
-      var variable = "let " + makeSaferForHTML(matches[2].replace(/ /g,'_')) + ' ';
-      programInsert(variable,pointer);
-      pointer += variable.length;
-    }
+    let variable = makeSaferForHTML(matches[1].replace(/ /g,'_')).replace('_equals_',' = ');
+    currentConversationTopic = 'create variable ' + variable;
+    let letVariable = "let " + variable;
+    programInsert(letVariable,pointer);
+    pointer += letVariable.length;
+  }
+}
+
+function variableUse(heard) {
+  let matches = heard.match(RegExp("^(variable|let) (.+)")); // ^ to disambiguate from create
+  if (matches) {
+    let variable = makeSaferForHTML(matches[2].replace(/ /g,'_'));
+    currentConversationTopic = 'variable ' + variable;
+    programInsert(variable,pointer);
+    pointer += variable.length;
   }
 }
 
@@ -257,7 +258,14 @@ function newLine(heard) {
   if (heard === 'new line' || heard === 'carriage return') {
     programInsert('\n',pointer);
     pointer += 1;
-    say('ok')
+  }
+}
+
+function semicolon(heard) {
+  if (heard === 'semicolon') {
+    let s = '; ';
+    programInsert('; ',pointer);
+    pointer += s.length;
   }
 }
 
