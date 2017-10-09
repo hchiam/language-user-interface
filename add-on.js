@@ -152,6 +152,10 @@ function programInsert(what, where) {
   updateProgrammingAreaDisplay();
 }
 
+function userEditedCode() {
+  programString = $('#programming-area').text();
+}
+
 // affect interface.html and
 // say('...');
 function program(heard) {
