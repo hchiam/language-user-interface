@@ -101,6 +101,8 @@ function sayWithEsp(sentence) {
   }
 }
 
+let pointer = 0;
+let programString = "";
 function heardProgram(heard) {
   if (didHear(heard,["let's program",'program'],'starts with')) {
     currentConversationType = 'program';
@@ -136,20 +138,17 @@ function makeSaferForHTML(string) {
   return string.replace(/[,\\\/#!?$%\^&\*;:{}<>=`"~()]/g,'');
 }
 
-function programAppend(what) {
-  if ($('#programming-area').html() === '') {
-    $('#programming-area').html(what);
-  } else {
-    $('#programming-area').html($('#programming-area').html() + "<br/>" + what);
-  }
+function updateProgrammingAreaDisplay() {
+  // to avoid managing <br/> in strings and for easier use of a pointer
+  $('#programming-area').html(programString.replace(/\n/g,"<br/>"));
 }
 
-function programPrepend(what) {
-  if ($('#programming-area').html() === '') {
-    $('#programming-area').html(what);
-  } else {
-    $('#programming-area').html(what + "<br/>" + $('#programming-area').html());
-  }
+function programInsert(what, where) {
+  // for easier use of a pointer
+  let before = programString.substr(0,where);
+  let after = programString.substr(where);
+  programString = before + what + after;
+  updateProgrammingAreaDisplay();
 }
 
 // affect interface.html and
@@ -169,10 +168,11 @@ function loop(heard) {
   let matches = heard.match(RegExp("loop through (.+)"));
   if (matches) {
     currentConversationTopic = matches[0];
-    var loop = "for (let i=0; i&lt;" + makeSaferForHTML(matches[1].replace(' ','_')) + ".length; i++) {<br/><br/>}";
-    programAppend(loop);
-    // say("What are we looping through?");
-    // say("What are we doing with that?");
+    var loop = "for (let i=0; i&lt;" + makeSaferForHTML(matches[1].replace(/ /g,'_')) + ".length; i++) {\n\n}\n";
+    programInsert(loop,pointer);
+    pointer += loop.length - 3; // stay inside braces
+  } else if (heard.startsWith('and then ')) {
+    pointer += 3; // get out of braces
   } else if (heard.includes('loop')) {
     say("Please say something like: 'loop through object'.");
   }
@@ -182,8 +182,9 @@ function comment(heard) {
   let matches = heard.match(RegExp("comment (.+)"));
   if (matches) {
     currentConversationTopic = 'comment';
-    var comment = "// " + makeSaferForHTML(matches[1]);
-    programAppend(comment);
+    var comment = "// " + makeSaferForHTML(matches[1]) + "\n";
+    programInsert(comment,pointer);
+    pointer += comment.length;
   }
 }
 
@@ -191,8 +192,9 @@ function notify(heard) {
   let matches = heard.match(RegExp("alert (.+)"));
   if (matches) {
     currentConversationTopic = matches[0];
-    var alert = "alert(" + makeSaferForHTML(matches[1]) + ");";
-    programAppend(alert);
+    var alert = "alert(" + makeSaferForHTML(matches[1]) + ");\n";
+    programInsert(alert,pointer);
+    pointer += alert.length;
     // TODO: string? variables?
   }
 }
@@ -201,18 +203,20 @@ function variable(heard) {
   let matches = heard.match(RegExp("(variable|let) (.+)"));
   if (matches) {
     currentConversationTopic = matches[0];
-    var variable = "let " + makeSaferForHTML(matches[1].replace(' ','_')) + ";";
-    programAppend(variable);
+    var variable = "let " + makeSaferForHTML(matches[2].replace(/ /g,'_')) + ";\n";
+    programInsert(variable,pointer);
+    pointer += variable.length;
   }
 }
 
 function assign(heard) {
   let matches = heard.match(RegExp("(assign|let)( to)? (.+) (equals?|the value( of)?) (.+)"));
   if (matches) {
-    var assignTo = makeSaferForHTML(matches[3].replace(' ','_'));
-    var assignWhat = makeSaferForHTML(matches[matches.length-1].replace(' ','_'));
+    var assignTo = makeSaferForHTML(matches[3].replace(/ /g,'_'));
+    var assignWhat = makeSaferForHTML(matches[matches.length-1].replace(/ /g,'_'));
     currentConversationTopic = 'assign ' + assignTo;
-    var assign = "let " + assignTo + " = " + assignWhat + ";";
-    programAppend(assign);
+    var assign = "let " + assignTo + " = " + assignWhat + ";\n";
+    programInsert(assign,pointer);
+    pointer += assign.length;
   }
 }
