@@ -158,10 +158,11 @@ function program(heard) {
   comment(heard);
   notify(heard); // -> alert(...)
   variable(heard);
-  escapeNextBrace(heard);
   // if
   // define function
   // use function
+  escapeNextBrace(heard);
+  runProgram(heard);
 }
 
 function loop(heard) {
@@ -221,5 +222,11 @@ function variable(heard) {
 function escapeNextBrace(heard) {
   if (heard.startsWith('escape brace')) {
     pointer = programString.substring(0,pointer).length + programString.substring(pointer).indexOf("}\n") + 2;
+  }
+}
+
+function runProgram(heard) {
+  if (heard === 'run program') {
+    eval(programString);
   }
 }
