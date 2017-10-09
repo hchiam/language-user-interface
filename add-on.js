@@ -190,10 +190,19 @@ function program(heard) {
 }
 
 function loop(heard) {
-  let matches = heard.match(RegExp("loop through (.+)"));
+  let matches = heard.match(RegExp("loop( backwards?)? through (.+)( backwards?)?"));
   if (matches) {
     currentConversationTopic = matches[0];
-    let loop = "for (let i=0; i&lt;" + makeSaferForHTML(matches[1].replace(/ /g,'_')) + ".length; i++) {\n\n}";
+    let what = matches[2];
+    let loop = "for (";
+    // check if looping backwards/forwards
+    if (matches[1] || matches[3]) {
+      // backwards
+      loop += "let i=" + makeSaferForHTML(what.replace(/ /g,'_')) + ".length-1; i&gt;=0; i++) {\n\n}";
+    } else {
+      // forwards
+      loop += "let i=0; i&lt;" + makeSaferForHTML(what.replace(/ /g,'_')) + ".length; i++) {\n\n}";
+    }
     programInsert(loop,pointer);
     pointer += loop.length - 2; // stay a line inside last brace
   } else if (heard.includes('loop')) {
