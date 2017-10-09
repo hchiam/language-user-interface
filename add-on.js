@@ -39,12 +39,18 @@ function heardNumberGuessGame(heard) {
   return false;
 }
 
+let firstTranslation = true;
 function heardTranslator(heard) {
   if (heard.startsWith('translate ')) {
     let english = heard.replace('translate ', '');
     // allow for context
     if (currentConversationTopic !== '' && english === "that") {
       english = currentConversationTopic;
+    }
+    // allow for delay
+    if (firstTranslation) {
+      firstTranslation = false;
+      say("Please wait for the API to respond.");
     }
     currentConversationType = "translate";
     currentConversationTopic = english;
