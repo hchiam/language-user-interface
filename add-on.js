@@ -158,7 +158,6 @@ function program(heard) {
   comment(heard);
   notify(heard); // -> alert(...)
   variable(heard);
-  assign(heard);
   escapeNextBrace(heard);
   // if
   // define function
@@ -199,16 +198,6 @@ function notify(heard) {
 }
 
 function variable(heard) {
-  let matches = heard.match(RegExp("(variable|let) (.+)"));
-  if (matches) {
-    currentConversationTopic = matches[0];
-    var variable = "let " + makeSaferForHTML(matches[2].replace(/ /g,'_')) + ";\n";
-    programInsert(variable,pointer);
-    pointer += variable.length;
-  }
-}
-
-function assign(heard) {
   let matches = heard.match(RegExp("(assign|let)( to)? (.+) (equals?|the value( of)?) (.+)"));
   if (matches) {
     var assignTo = makeSaferForHTML(matches[3].replace(/ /g,'_'));
@@ -217,6 +206,15 @@ function assign(heard) {
     var assign = "let " + assignTo + " = " + assignWhat + ";\n";
     programInsert(assign,pointer);
     pointer += assign.length;
+  } else {
+    // did not pass previous check
+    let matches = heard.match(RegExp("(variable|let) (.+)$"));
+    if (matches) {
+      currentConversationTopic = matches[0];
+      var variable = "let " + makeSaferForHTML(matches[2].replace(/ /g,'_')) + ";\n";
+      programInsert(variable,pointer);
+      pointer += variable.length;
+    }
   }
 }
 
