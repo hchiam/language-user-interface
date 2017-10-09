@@ -178,11 +178,12 @@ function program(heard) {
   loop(heard);
   comment(heard);
   notify(heard); // -> alert(...)
-  variable(heard);
+  variableCreate(heard); // create variable --> "let "
+  variableUse(heard); // variable ... ... --> "..._... "
+  // TODO: ifStatement(heard); // if --> "if(" (for composing statements)
+  // TODO: functionCreate(heard); // create function ... --> "function ...(*) {\n\n}" (* = pointer)
+  // TODO: functionUse(heard); // function ... --> "...(" (for composing statements)
   newLine(heard);
-  // if
-  // define function
-  // use function
   escapeNextBrace(heard);
   runProgram(heard);
 }
