@@ -103,6 +103,7 @@ function sayWithEsp(sentence) {
 
 let pointer = 0;
 let programString = "";
+let variableList = {};
 function heardProgram(heard) {
   if (didHear(heard,["let's program",'program'],'starts with')) {
     currentConversationType = 'program';
@@ -250,17 +251,34 @@ function variableCreate(heard) {
     let letVariable = "let " + variable;
     programInsert(letVariable,pointer);
     pointer += letVariable.length;
+    trackVariable(variable);
   }
 }
 
 function variableUse(heard) {
   let matches = heard.match(RegExp("^(variable|let) (.+)")); // ^ to disambiguate from create
   if (matches) {
-    let variable = handleMathOperators(makeSaferForHTML(matches[2].replace(/ /g,'_')));
-    currentConversationTopic = 'variable ' + variable;
-    programInsert(variable,pointer);
-    pointer += variable.length;
+    let variableExpression = handleMathOperators(makeSaferForHTML(matches[2].replace(/ /g,'_')));
+    currentConversationTopic = 'variable ' + variableExpression;
+    // get just the variable name
+    let variableName = variableExpression.replace('variable ','');
+    if (variableName.includes(' ')) variableName = variableName.substring(0,variableName.indexOf(' '));
+    // check if did not create/initialize variable name
+    if (!variableExistsAlready(variableName)) {
+      say("Create that variable first: say 'create variable ...'.");
+    } else {
+      programInsert(variableExpression,pointer);
+      pointer += variableExpression.length;
+    }
   }
+}
+
+function trackVariable(varName) {
+	variableList[varName] = true; // TODO: future: = line number, to check scope
+}
+
+function variableExistsAlready(varName) {
+	return varName in variableList;
 }
 
 function newLine(heard) {
