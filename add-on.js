@@ -102,7 +102,7 @@ function sayWithEsp(sentence) {
 }
 
 let pointer = 0;
-let programString = "";
+let programString = "\n"; // so always responds to "new line"
 let variableList = {};
 function heardProgram(heard) {
   if (didHear(heard,["let's program",'program',"let's code",'code'],'starts with')) {
