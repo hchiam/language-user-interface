@@ -290,9 +290,9 @@ function specialCharacters(heard) {
     s = '(';
   } else if (heard === 'closing bracket') {
     s = ')';
-  } else if (heard === 'curly bracket' || heard === 'opening brace' || heard === 'opening curly bracket') {
+  } else if (heard === 'curly brace' || heard === 'curly bracket' || heard === 'opening brace' || heard === 'opening curly bracket') {
     s = '{';
-  } else if (heard === 'closing curly bracket' || heard === 'closing brace') {
+  } else if (heard === 'closing curly brace' || heard === 'closing curly bracket' || heard === 'closing brace') {
     s = '}';
   } else if (heard === 'square bracket' || heard === 'opening square bracket') {
     s = '[';
