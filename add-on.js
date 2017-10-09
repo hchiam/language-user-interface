@@ -236,7 +236,7 @@ function notify(heard) {
 function variableCreate(heard) {
   let matches = heard.match(RegExp("^create variable (.+)")); // ^ to disambiguate from use
   if (matches) {
-    let variable = makeSaferForHTML(matches[1].replace(/ /g,'_')).replace('_equals_',' = ');
+    let variable = handleMathOperators(makeSaferForHTML(matches[1].replace(/ /g,'_')));
     currentConversationTopic = 'create variable ' + variable;
     let letVariable = "let " + variable;
     programInsert(letVariable,pointer);
@@ -247,7 +247,7 @@ function variableCreate(heard) {
 function variableUse(heard) {
   let matches = heard.match(RegExp("^(variable|let) (.+)")); // ^ to disambiguate from create
   if (matches) {
-    let variable = makeSaferForHTML(matches[2].replace(/ /g,'_'));
+    let variable = handleMathOperators(makeSaferForHTML(matches[2].replace(/ /g,'_')));
     currentConversationTopic = 'variable ' + variable;
     programInsert(variable,pointer);
     pointer += variable.length;
@@ -281,4 +281,23 @@ function runProgram(heard) {
     say("Running program.");
     eval(programString);
   }
+}
+
+function handleMathOperators(str) {
+  // '_' because must handle after makeSaferForHTML()
+  let modified = str;
+  modified = modified.replace(/_greater_than_or_equal_to_/g,' >= ')
+                     .replace(/_less_than_or_equal_to_/g,' <= ')
+                     .replace(/_equals_/g,' = ')
+                     .replace(/_equal_to_/g,' = ')
+                     .replace(/_greater_than_/g,' > ')
+                     .replace(/_less_than_/g,' < ')
+                     .replace(/_plus_plus/g,'++ ')
+                     .replace(/_plus/g,' + ')
+                     .replace(/_minus_minus_/g,'-- ')
+                     .replace(/_minus_/g,' - ')
+                     .replace(/_divided_by_/g,' / ')
+                     .replace(/_multiplied_by_/g,' * ')
+                     .replace(/_modulus_/g,' % ');
+  return modified;
 }
