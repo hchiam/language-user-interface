@@ -159,6 +159,7 @@ function program(heard) {
   notify(heard); // -> alert(...)
   variable(heard);
   assign(heard);
+  escapeNextBrace(heard);
   // if
   // define function
   // use function
@@ -171,8 +172,6 @@ function loop(heard) {
     var loop = "for (let i=0; i&lt;" + makeSaferForHTML(matches[1].replace(/ /g,'_')) + ".length; i++) {\n\n}\n";
     programInsert(loop,pointer);
     pointer += loop.length - 3; // stay inside braces
-  } else if (heard.startsWith('and then ')) {
-    pointer += 3; // get out of braces
   } else if (heard.includes('loop')) {
     say("Please say something like: 'loop through object'.");
   }
@@ -218,5 +217,11 @@ function assign(heard) {
     var assign = "let " + assignTo + " = " + assignWhat + ";\n";
     programInsert(assign,pointer);
     pointer += assign.length;
+  }
+}
+
+function escapeNextBrace(heard) {
+  if (heard.startsWith('escape brace')) {
+    pointer = programString.substring(0,pointer).length + programString.substring(pointer).indexOf("}\n") + 2;
   }
 }
