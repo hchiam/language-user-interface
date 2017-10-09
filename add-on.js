@@ -244,33 +244,42 @@ function notify(heard) {
 }
 
 function variableCreate(heard) {
-  let matches = heard.match(RegExp("^create variable (.+)")); // ^ to disambiguate from use
+  let matches = heard.match(RegExp("^(create variable|let) (.+)")); // ^ to disambiguate from variableUse(heard)
   if (matches) {
-    let variable = handleMathOperators(makeSaferForHTML(matches[1].replace(/ /g,'_')));
-    currentConversationTopic = 'create variable ' + variable;
-    let letVariable = "let " + variable;
+    let variable_Expression = handleMathOperators(makeSaferForHTML(matches[2].replace(/ /g,'_')));
+    currentConversationTopic = 'create variable ' + variable_Expression;
+    let letVariable = "let " + variable_Expression;
     programInsert(letVariable,pointer);
     pointer += letVariable.length;
-    trackVariable(variable);
+    // get and track variable name
+    let variableName = getJustVariableName(variable_Expression);
+    trackVariable(variableName);
   }
 }
 
 function variableUse(heard) {
-  let matches = heard.match(RegExp("^(variable|let) (.+)")); // ^ to disambiguate from create
+  let matches = heard.match(RegExp("^variable (.+)")); // ^ to disambiguate from variableCreate(heard)
   if (matches) {
-    let variableExpression = handleMathOperators(makeSaferForHTML(matches[2].replace(/ /g,'_')));
-    currentConversationTopic = 'variable ' + variableExpression;
+    let variable_Expression = handleMathOperators(makeSaferForHTML(matches[1].replace(/ /g,'_')));
+    currentConversationTopic = 'variable ' + variable_Expression;
     // get just the variable name
-    let variableName = variableExpression.replace('variable ','');
-    if (variableName.includes(' ')) variableName = variableName.substring(0,variableName.indexOf(' '));
-    // check if did not create/initialize variable name
+    let variableName = getJustVariableName(variable_Expression);
+    // check if did not create/initialize variable name already
     if (!variableExistsAlready(variableName)) {
       say("Create that variable first: say 'create variable ...'.");
     } else {
-      programInsert(variableExpression,pointer);
-      pointer += variableExpression.length;
+      programInsert(variable_Expression,pointer);
+      pointer += variable_Expression.length;
     }
   }
+}
+
+function getJustVariableName(letVar) {
+  // to ensure put name (not expression) in variableList
+  // e.g.: "create variable a b c equals 1 plus 2" --> "a_b_c"" (not "a_b_c = 1 + 2")
+  let variableName = letVar.replace(/^variable /,'').replace(/^let /,'');
+  if (variableName.includes(' ')) variableName = variableName.substring(0,variableName.indexOf(' '));
+  return variableName;
 }
 
 function trackVariable(varName) {
