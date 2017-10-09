@@ -295,6 +295,29 @@ function variableUse(heard) {
   }
 }
 
+function handleMathOperators(str) {
+  // '_' because must handle after makeSaferForHTML()
+  let modified = str;
+  modified = modified.replace(/_greater_than_or_equal_to_/g,' >= ')
+                     .replace(/_less_than_or_equal_to_/g,' <= ')
+                     .replace(/_equals_/g,' = ')
+                     .replace(/_equal_to_/g,' = ')
+                     .replace(/_equal_/g,' = ')
+                     .replace(/_greater_than_/g,' > ')
+                     .replace(/_less_than_/g,' < ')
+                     .replace(/_plus_plus_/g,'++ ')
+                     .replace(/_plus_/g,' + ')
+                     .replace(/_minus_minus_/g,'-- ')
+                     .replace(/_minus_/g,' - ')
+                     .replace(/_divided_by_/g,' / ')
+                     .replace(/_multiplied_by_/g,' * ')
+                     .replace(/_modulus_/g,' % ')
+                     .replace(/_and_/g,' && ')
+                     .replace(/_or_/g,' || ')
+                     .replace(/_not_/g,' ~');
+  return modified;
+}
+
 function getJustVariableName(letVar) {
   // to ensure put name (not expression) in variableList
   // e.g.: "create variable a b c equals 1 plus 2" --> "a_b_c"" (not "a_b_c = 1 + 2")
@@ -387,27 +410,4 @@ function undo(heard) {
     programStringPrev = programString;
     programInterfaceToString();
   }
-}
-
-function handleMathOperators(str) {
-  // '_' because must handle after makeSaferForHTML()
-  let modified = str;
-  modified = modified.replace(/_greater_than_or_equal_to_/g,' >= ')
-                     .replace(/_less_than_or_equal_to_/g,' <= ')
-                     .replace(/_equals_/g,' = ')
-                     .replace(/_equal_to_/g,' = ')
-                     .replace(/_equal_/g,' = ')
-                     .replace(/_greater_than_/g,' > ')
-                     .replace(/_less_than_/g,' < ')
-                     .replace(/_plus_plus_/g,'++ ')
-                     .replace(/_plus_/g,' + ')
-                     .replace(/_minus_minus_/g,'-- ')
-                     .replace(/_minus_/g,' - ')
-                     .replace(/_divided_by_/g,' / ')
-                     .replace(/_multiplied_by_/g,' * ')
-                     .replace(/_modulus_/g,' % ')
-                     .replace(/_and_/g,' && ')
-                     .replace(/_or_/g,' || ')
-                     .replace(/_not_/g,' ~');
-  return modified;
 }
