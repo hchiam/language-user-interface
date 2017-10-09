@@ -197,7 +197,7 @@ function loop(heard) {
     programInsert(loop,pointer);
     pointer += loop.length - 2; // stay a line inside last brace
   } else if (heard.includes('loop')) {
-    say("Please say something like: 'loop through object'.");
+    say("Please say something like: 'loop through object', or simply 'for'.");
   } else if (heard === 'for') {
     let forStart = "for (";
     programInsert(forStart,pointer);
