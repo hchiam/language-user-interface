@@ -154,7 +154,7 @@ function showAddOnCode() {
   prepForUndo();
   // get add-on.js text
   var client = new XMLHttpRequest();
-  client.open('GET', 'add-on.js');
+  client.open('GET', 'https://rawgit.com/hchiam/language-user-interface/master/add-on.js');
   client.onreadystatechange = function() {
     programString = client.responseText;
     updateProgrammingAreaDisplay();
