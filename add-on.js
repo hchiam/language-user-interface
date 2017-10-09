@@ -315,15 +315,15 @@ function specialCharacters(heard) {
     s = '""';
   } else if (heard === 'bracket' || heard === 'opening bracket') {
     s = '(';
-  } else if (heard === 'closing bracket') {
+  } else if (heard === 'close bracket' || heard === 'closing bracket') {
     s = ')';
   } else if (heard === 'curly brace' || heard === 'curly bracket' || heard === 'opening brace' || heard === 'opening curly bracket') {
     s = '{';
-  } else if (heard === 'closing curly brace' || heard === 'closing curly bracket' || heard === 'closing brace') {
+  } else if (heard === 'close curly brace' || heard === 'closing curly brace' || heard === 'closing curly bracket' || heard === 'closing brace') {
     s = '}';
   } else if (heard === 'square bracket' || heard === 'opening square bracket') {
     s = '[';
-  } else if (heard === 'closing square bracket') {
+  } else if (heard === 'close square bracket' || heard === 'closing square bracket') {
     s = ']';
   }
   programInsert(s,pointer);
