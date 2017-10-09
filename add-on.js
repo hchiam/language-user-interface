@@ -102,8 +102,11 @@ function sayWithEsp(sentence) {
 }
 
 let pointer = 0;
+let pointerPrev = 0;
 let programString = "\n"; // so always responds to "new line"
-let variableList = {};
+let programStringPrev = "\n";
+let variableList = {}; // so can notify user to initialize or create
+
 function heardProgram(heard) {
   if (didHear(heard,["let's program",'program',"let's code",'code'],'starts with')) {
     currentConversationType = 'program';
@@ -127,14 +130,19 @@ function heardProgram(heard) {
       // clear and
       // exit from programming
       currentConversationType = '';
+      programStringPrev = "";
+      pointerPrev = 0;
       programString = "";
+      pointer = 0;
       $('#programming-area').text('');
       $('#programming-area').css('visibility','collapse');
       say('Okay. What would you like to do instead?');
       createSuggestionMessage(["What can you do?"]);
     } else {
-      // TODO: program different things
+
+      // ******* TODO: program different things *******
       program(heard);
+
     }
     return true;
   }
@@ -143,6 +151,8 @@ function heardProgram(heard) {
 }
 
 function showAddOnCode() {
+  prepForUndo();
+  // get add-on.js text
   var client = new XMLHttpRequest();
   client.open('GET', 'add-on.js');
   client.onreadystatechange = function() {
@@ -162,6 +172,7 @@ function updateProgrammingAreaDisplay() {
 }
 
 function programInsert(what, where) {
+  prepForUndo();
   // for easier use of a pointer
   let before = programString.substr(0,where);
   let after = programString.substr(where);
@@ -170,6 +181,11 @@ function programInsert(what, where) {
 }
 
 function userEditedCode() {
+  programInterfaceToString();
+}
+
+function programInterfaceToString() {
+  prepForUndo();
   // .text() removes new lines, so have to do this instead:
   programString = $('#programming-area').html()
     .replace("<br>", '\n')
@@ -192,6 +208,7 @@ function program(heard) {
   specialCharacters(heard);
   escapeNextBrace(heard);
   runProgram(heard);
+  undo(heard);
 }
 
 function loop(heard) {
@@ -330,7 +347,8 @@ function specialCharacters(heard) {
   } else if (heard === 'close square bracket' || heard === 'closing square bracket') {
     s = ']';
   }
-  programInsert(s,pointer);
+  // check condition to avoid double-updating and affecting undo
+  if (s !== '') programInsert(s,pointer);
   pointer += s.length;
 }
 
@@ -345,6 +363,29 @@ function runProgram(heard) {
   if (heard === 'run program' || heard === 'run code') {
     say("Running program.");
     eval(programString);
+  }
+}
+
+function prepForUndo() {
+  // for easy undo:
+  programStringPrev = programString;
+  pointerPrev = pointer;
+}
+
+function undo(heard) {
+  if (heard === 'undo') {
+
+    // swap pointers
+    let temp = pointer;
+    pointer = pointerPrev;
+    pointerPrev = temp;
+
+    // (to avoid managing <br/> in strings and for easier use of a pointer)
+    $('#programming-area').html(programStringPrev.replace(/\n/g, "<br/>"));
+
+    // swap program strings
+    programStringPrev = programString;
+    programInterfaceToString();
   }
 }
 
