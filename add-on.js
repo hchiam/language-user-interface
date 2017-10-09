@@ -179,6 +179,7 @@ function program(heard) {
   comment(heard);
   notify(heard); // -> alert(...)
   variable(heard);
+  newLine(heard);
   // if
   // define function
   // use function
@@ -190,11 +191,15 @@ function loop(heard) {
   let matches = heard.match(RegExp("loop through (.+)"));
   if (matches) {
     currentConversationTopic = matches[0];
-    var loop = "for (let i=0; i&lt;" + makeSaferForHTML(matches[1].replace(/ /g,'_')) + ".length; i++) {\n\n}\n";
+    let loop = "for (let i=0; i&lt;" + makeSaferForHTML(matches[1].replace(/ /g,'_')) + ".length; i++) {\n\n}";
     programInsert(loop,pointer);
-    pointer += loop.length - 3; // stay inside braces
+    pointer += loop.length - 2; // stay a line inside last brace
   } else if (heard.includes('loop')) {
     say("Please say something like: 'loop through object'.");
+  } else if (heard === 'for') {
+    let forStart = "for (";
+    programInsert(forStart,pointer);
+    pointer += forStart.length;
   }
 }
 
@@ -202,7 +207,11 @@ function comment(heard) {
   let matches = heard.match(RegExp("comment (.+)"));
   if (matches) {
     currentConversationTopic = 'comment';
-    var comment = "// " + makeSaferForHTML(matches[1]) + "\n";
+    let comment = "// " + makeSaferForHTML(matches[1]);
+    programInsert(comment,pointer);
+    pointer += comment.length;
+  } else if (heard === 'comment') {
+    let comment = "// ";
     programInsert(comment,pointer);
     pointer += comment.length;
   }
@@ -212,10 +221,13 @@ function notify(heard) {
   let matches = heard.match(RegExp("alert (.+)"));
   if (matches) {
     currentConversationTopic = matches[0];
-    var alert = "alert(" + makeSaferForHTML(matches[1]) + ");\n";
+    let alert = "alert(" + makeSaferForHTML(matches[1]) + ");";
     programInsert(alert,pointer);
     pointer += alert.length;
-    // TODO: string? variables?
+  } else if (heard === 'alert') {
+    let alert = "alert(";
+    programInsert(alert,pointer);
+    pointer += alert.length;
   }
 }
 
@@ -225,7 +237,7 @@ function variable(heard) {
     var assignTo = makeSaferForHTML(matches[3].replace(/ /g,'_'));
     var assignWhat = makeSaferForHTML(matches[matches.length-1].replace(/ /g,'_'));
     currentConversationTopic = 'assign ' + assignTo;
-    var assign = "let " + assignTo + " = " + assignWhat + ";\n";
+    var assign = "let " + assignTo + " = " + assignWhat + ";";
     programInsert(assign,pointer);
     pointer += assign.length;
   } else {
@@ -233,10 +245,18 @@ function variable(heard) {
     let matches = heard.match(RegExp("(variable|let) (.+)$"));
     if (matches) {
       currentConversationTopic = matches[0];
-      var variable = "let " + makeSaferForHTML(matches[2].replace(/ /g,'_')) + ";\n";
+      var variable = "let " + makeSaferForHTML(matches[2].replace(/ /g,'_')) + ' ';
       programInsert(variable,pointer);
       pointer += variable.length;
     }
+  }
+}
+
+function newLine(heard) {
+  if (heard === 'new line' || heard === 'carriage return') {
+    programInsert('\n',pointer);
+    pointer += 1;
+    say('ok')
   }
 }
 
