@@ -120,6 +120,7 @@ function heardProgram(heard) {
       // clear and
       // exit from programming
       currentConversationType = '';
+      programString = "";
       $('#programming-area').text('');
       $('#programming-area').css('visibility','collapse');
       say('Okay. What would you like to do instead?');
