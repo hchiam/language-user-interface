@@ -4,6 +4,8 @@ A good starting point: converse()
 Follow the function calls.
 */
 
+"use strict"; // for added security
+
 // TODO: track conversation topic and type to make things more two-way conversational
 let currentConversationTopic = ''; // example: location (weather at a location)
 let currentConversationType = ''; // example: weather, time, reminders related to that location

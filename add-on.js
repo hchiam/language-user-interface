@@ -1,3 +1,5 @@
+"use strict"; // for added security
+
 function heardAddOns(heard) {
   // this should overwrite the function in brain.js
   let heardRecognized = false;

@@ -4,6 +4,7 @@
  * https://codepen.io/hchiam/pen/gGamzv
  */
 
+ "use strict"; // for added security
 
 // ---------- set up: ----------
 
