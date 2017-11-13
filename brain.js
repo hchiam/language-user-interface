@@ -268,7 +268,7 @@ function heardConfirm(heard) {
     if (currentConversationType === 'feedback') {
       currentConversationType = '';
       currentConversationTopic = '';
-      say("Okay. Maybe try rephrasing your question. If you're wondering what I can do, just ask me.");
+      say("Okay.");
       createSuggestionMessage(['What can you do?']);
     }
     handleConfirm();
