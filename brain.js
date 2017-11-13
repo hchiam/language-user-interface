@@ -34,13 +34,11 @@ let unfamiliarUser = setTimeout(function(){
 }, 7000);
 
 function introSelf() {
-  say('You seem unfamiliar with this interface. \
-       You can type a question in the textbox, like: "what can you do?" \
-       Or use speech recognition software, such as Mac Dictation, \
-       to enter text verbally into the textbox.');
+  say('Unsure what to do? Ask me a question.');
   // delay re-prompt with unfamiliarUser timer too so it can be cancelled too
   unfamiliarUser = setTimeout(function() {
-    say('Still unsure? Just ask me: "what can you do".');
+    say("Here's a suggestion.");
+    createSuggestionMessage(["What can you do?"]);
   }, 20000);
 }
 
