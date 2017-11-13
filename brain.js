@@ -36,6 +36,8 @@ let unfamiliarUser = setTimeout(function(){
 function introSelf() {
   say("Don't know what to do? Ask me a question.");
   createSuggestionMessage(["What can you do?"]);
+  // and so that if user clicks on that suggestion, it works:
+  delayedAction = setInterval(countDownWaiting, 1000); // -> countDownWaiting()
 }
 
 let delayedAction;
