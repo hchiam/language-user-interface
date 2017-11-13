@@ -404,7 +404,7 @@ function heardScheduler(heard) { // https://doodle.com/create?title=
   let matches = heard.match(regex);
   if (matches) {
     let title = matches[4];
-    say("I'm starting a scheduler for you on Doodle.com." + remindDontWorryTabAddOn());
+    say("I'm starting a scheduler for you on Doodle dot com." + remindDontWorryTabAddOn());
     tryOpeningWindow('https://doodle.com/create?title=' + title);
     return true;
   }
@@ -886,7 +886,7 @@ function askingAnalogy(heard) {
 }
 
 function searchAnalogy(words) {
-  say("I'm opening metamia.com for " + words + " analogies." + remindDontWorryTabAddOn());
+  say("I'm opening metamia dot com for " + words + " analogies." + remindDontWorryTabAddOn());
   tryOpeningWindow('http://www.metamia.com/analogize.php?q=' + words);
 }
 
