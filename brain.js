@@ -133,7 +133,9 @@ function listen() {
 
 function removeOKLouis(heard) {
   heard = heard.replace(' louis ', ' lui ');
-  const toReplace = ['okay lui ', 'ok lui ', 'hi lui ', 'hey lui ', 'hello lui ', 'alright lui '];
+  let toReplace = ['okay ', 'ok ', 'hi ', 'hey ' , 'hello ', 'alright '];
+  heard = removeSignalPhrases(heard, toReplace);
+  toReplace = ['lui ', 'louis ', 'louie ', 'lewey ', 'looey ', 'lee ', 'luis ', 'lois '];
   heard = removeSignalPhrases(heard, toReplace);
   return heard;
 }
