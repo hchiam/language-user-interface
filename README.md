@@ -4,7 +4,7 @@ LUI runs in your browser, so you can use it on both laptops and mobile devices. 
 LUI works completely hands-free in Chrome (versions 25+).
 
 ## Try it out:
-https://codepen.io/hchiam/pen/WOLOJG
+https://codepen.io/hchiam/full/WOLOJG (for best results, open in Chrome)
 
 ## To understand the code:
 
