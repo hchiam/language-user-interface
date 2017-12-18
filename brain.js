@@ -1,6 +1,6 @@
 /*
 Trying to understand this code?
-A good starting point: converse()
+A good starting point: converse() or reply(heard)
 Follow the function calls.
 */
 
