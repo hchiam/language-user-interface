@@ -209,7 +209,7 @@ function reply(heard) {
 }
 
 function notUnderstood() {
-  let sentence = "Sorry, I don't understand. Want to suggest a feature or bug fix?";
+  let sentence = "Sorry, I don't understand. Would you like to provide feedback?";
   say(sentence);
   createSuggestionMessage(["Yes.", "No."]);
   currentConversationType = 'feedback';
