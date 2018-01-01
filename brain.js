@@ -126,8 +126,8 @@ function listen() {
   heard = heard.trim().toLowerCase();
   heard = heard.replace(/[,\\\/#!?$%\^&\*;:{}<>+=_`"~()]/g,''); // make safer
   heard = heard.replace(/  +/g,' '); // remove multiple consecutive spaces in typing
-  // only do further processing if heard wakeup word
-  heard = heardAfterWakeupWord(heard);
+  // only do further processing if heard initial signal phrase
+  heard = heardAfterSignalPhrase(heard);
   if (heard !== '') {
       return heard;
   }
@@ -137,7 +137,7 @@ function listen() {
 let wakeupOK = ['okay ', 'ok ', 'hi ', 'hey ' , 'hello ', 'alright '];
 let wakeupLUI = ['lui ', 'louis ', 'louie ', 'lewey ', 'looey ', 'lee ', 'luis ', 'lois '];
 
-function heardAfterWakeupWord(heard) {
+function heardAfterSignalPhrase(heard) {
     let detected_ok = false, detected_lui = false;
     // check for "OK"
     for (let i=0; i<wakeupOK.length; i++) {
