@@ -126,18 +126,47 @@ function listen() {
   heard = heard.trim().toLowerCase();
   heard = heard.replace(/[,\\\/#!?$%\^&\*;:{}<>+=_`"~()]/g,''); // make safer
   heard = heard.replace(/  +/g,' '); // remove multiple consecutive spaces in typing
-  heard = removeOKLouis(heard);
-  // TODO: ? make heard into an object indicating which topic to speak about?
-  return heard;
+  // only do further processing if heard wakeup word
+  heard = heardAfterWakeupWord(heard);
+  if (heard !== '') {
+      return heard;
+  }
+  return '';
 }
 
-function removeOKLouis(heard) {
-  heard = heard.replace(' louis ', ' lui ');
-  let toReplace = ['okay ', 'ok ', 'hi ', 'hey ' , 'hello ', 'alright '];
-  heard = removeSignalPhrases(heard, toReplace);
-  toReplace = ['lui ', 'louis ', 'louie ', 'lewey ', 'looey ', 'lee ', 'luis ', 'lois '];
-  heard = removeSignalPhrases(heard, toReplace);
-  return heard;
+let wakeupOK = ['okay ', 'ok ', 'hi ', 'hey ' , 'hello ', 'alright '];
+let wakeupLUI = ['lui ', 'louis ', 'louie ', 'lewey ', 'looey ', 'lee ', 'luis ', 'lois '];
+
+function heardAfterWakeupWord(heard) {
+    let detected_ok = false, detected_lui = false;
+    // check for "OK"
+    for (let i=0; i<wakeupOK.length; i++) {
+        let word = wakeupOK[i];
+        if (heard.startsWith(word)) {
+            // detected "OK"
+            detected_ok = true
+            let pattern = new RegExp('^' + word, 'i');
+            heard = heard.replace(pattern, '');
+            break;
+        }
+    }
+    // if didn't hear "OK", then don't bother listening to the rest
+    if (!detected_ok) return '';
+    // check for "LUI"
+    for (let i=0; i<wakeupLUI.length; i++) {
+        let word = wakeupLUI[i];
+        if (heard.startsWith(word)) {
+            // detected "LUI"
+            detected_lui = true
+            let pattern = new RegExp('^' + word, 'i');
+            heard = heard.replace(pattern, '');
+            break;
+        }
+    }
+    // if didn't hear "LUI", then don't bother listening to the rest
+    if (!detected_lui) return '';
+    // if heard "OK LUI", then process to the rest of the input string
+    return heard;
 }
 
 function removeSignalPhrases(heard, signalPhrases) {
