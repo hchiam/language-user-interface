@@ -63,3 +63,7 @@ body {
   background: -moz-linear-gradient(bottom left, lightblue, white); /* For Firefox 3.6 to 15 */
   background: linear-gradient(to bottom left, lightblue, white); /* Standard syntax */
 }
+
+input {
+  text-align: center;
+}
