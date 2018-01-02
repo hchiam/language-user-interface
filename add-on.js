@@ -125,7 +125,7 @@ function heardProgram(heard) {
     currentConversationType = 'program';
     showAddOnCode();
     $('#programming-area').css('visibility','visible');
-    say("Here you go.");
+    say("Here you go. Displaying add-on code.");
     return true;
   } else if (currentConversationType === 'program') {
     if (didHear(heard,['stop',"let's stop","never mind"],'starts with')) {
