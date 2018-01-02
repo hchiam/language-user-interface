@@ -121,7 +121,7 @@ function heardProgram(heard) {
     $('#programming-area').css('visibility','visible');
     say('What would you like to program in JavaScript?');
     return true;
-  } else if (heard.includes("edit your code") || heard.includes("modify your code") || heard.includes("see your code")) {
+  } else if (heard.includes("your code")) {
     currentConversationType = 'program';
     showAddOnCode();
     $('#programming-area').css('visibility','visible');
