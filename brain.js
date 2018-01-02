@@ -628,12 +628,12 @@ function getDate() {
 
 function askingWeather(heard) {
   // base regexes:
-  let regexWeather = "^(how|what)('?s| is)? (the |today'?s )?(weather|forecast)( like( today)?| today( like)?)?";
-  let regexTemp = "^(how|what)('?s| is) (the |today'?s )?temperature( like( today)?| today( like)?)?";
+  let regexWeather = "^(how|what)('?s| is)? (the |today'?s )?(weather|forecast)( like)?( today)?( like)?";
+  let regexTemp = "^(how|what)('?s| is) (the |today'?s )?temperature( like)?( today)?( like)?";
 
   // modifiers:
-  let regexContext = " (over )?there"; // currentConversationTopic
-  let regexHere = " (over )?(here)?";
+  let regexContext = "( over)? there"; // currentConversationTopic
+  let regexHere = "( over)?( here)?";
   let regexSpecific = " in (.+)"; // match = heard.match(regex... + regexSpecific); match[match.length-1]
 
   // contextual weather description
