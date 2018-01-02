@@ -248,7 +248,7 @@ function askForFeedback() {
 }
 
 function getFeedback(heard) {
-  let suggestFeature = "Thanks for your thoughts on how I can improve your experience!";
+  let suggestFeature = "Thanks!";
   say(suggestFeature);
 
   // open prefilled google form
