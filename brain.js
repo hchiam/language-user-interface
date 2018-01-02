@@ -135,7 +135,7 @@ function listen() {
 }
 
 let wakeupOK = ['okay ', 'ok ', 'hi ', 'hey ' , 'hello ', 'alright '];
-let wakeupLUI = ['lui ', 'louis ', 'louie ', 'louise ', 'lewey ', 'looey ', 'lee ', 'luis ', 'lois '];
+let wakeupLUI = ['lui ', 'louis ', 'louie ', 'louise ', 'lewis ', 'lewey ', 'looey ', 'lee ', 'luis ', 'lois '];
 
 function heardAfterSignalPhrase(heard) {
     let detected_ok = false, detected_lui = false;
