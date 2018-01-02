@@ -402,7 +402,7 @@ function showWhatICanDo() {
   // set up what buttons to show
   let sentenceToShow = 'You can ask me things like: ';
   for (var i in examples) {
-    sentenceToShow += '<button class="w3-card w3-hover-shadow" onclick="useExample(\'' + examples[i].replace(/\'/g,'') + '\')">' + examples[i] + '</button>';
+    sentenceToShow += '<button class="w3-card w3-hover-shadow" onclick="useExample(\'ok lui ' + examples[i].replace(/\'/g,'') + '\')">' + examples[i] + '</button>';
   }
 
   // say aloud but not as a separate message log
@@ -1221,7 +1221,7 @@ function createSuggestionMessage(suggestions) { // "...", ["...", "...", ...]
   }
   let buttonsToShow = '';
   for (var i in suggestions) {
-    sentenceToShow += '<button class="w3-card w3-hover-shadow" onclick="useSuggestionButton(\'' + suggestions[i].toLowerCase().replace(/[\'.?!]/g,'') + '\')">' + suggestions[i] + '</button>';
+    sentenceToShow += '<button class="w3-card w3-hover-shadow" onclick="useSuggestionButton(\'ok lui ' + suggestions[i].toLowerCase().replace(/[\'.?!]/g,'') + '\')">' + suggestions[i] + '</button>';
   }
 
   // set up style for LUI speaking
