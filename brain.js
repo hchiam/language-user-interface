@@ -12,6 +12,8 @@ let currentConversationType = ''; // example: weather, time, reminders related t
 window.addEventListener('offline', function(e) { say("You've lost your internet connection."); });
 window.addEventListener('online', function(e) { say("We're back online now."); });
 
+let listening = true;
+
 function welcome() {
   let today = new Date()
   let currentHour = today.getHours()
@@ -194,6 +196,11 @@ function reply(heard) {
     return;
   }
 
+  heardRecognized |= heardStartListening(heard); if (heardRecognized) return;
+  // short circuit listening if told to not listen
+  if (!listening) {
+    return '';
+  }
   // check different cases and if match recognized then return to escape function early:
   heardRecognized |= heardConfirm(heard); if (heardRecognized) return;
   heardRecognized |= heardComplaint(heard); if (heardRecognized) return;
@@ -1192,11 +1199,21 @@ function searchQuestion(heard) {
 
 function heardStopListening(heard) {
   if (didHear(heard,['stop listening'],'starts with')) {
+    listening = false;
+    say("Okay. To reactivate me, say 'Okay LUI start listening'.");
     if (!('webkitSpeechRecognition' in window)) {
     } else {
-      say("Okay. Turning off voice recognition.");
       recognition.stop();
     }
+    return true;
+  }
+  return false;
+}
+
+function heardStartListening(heard) {
+  if (didHear(heard,['start listening'],'starts with')) {
+    listening = true;
+    welcome();
     return true;
   }
   return false;
