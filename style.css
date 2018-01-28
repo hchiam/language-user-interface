@@ -13,6 +13,7 @@
 
 #messageLog {
   /*margin: 20%;*/
+  white-space: pre-wrap; // to preserve spaces and newlines
 }
 
 #log-LUI, #log-user, #log-LUI-suggestion {

@@ -6,6 +6,7 @@ function heardAddOns(heard) {
   heardRecognized |= heardNumberGuessGame(heard); if (heardRecognized) return true;
   heardRecognized |= heardTranslator(heard); if (heardRecognized) return true;
   heardRecognized |= heardProgram(heard); if (heardRecognized) return true;
+  heardRecognized |= heardSnippet(heard); if (heardRecognized) return true;
   return false;
 }
 
@@ -418,4 +419,64 @@ function undo(heard) {
     programStringPrev = programString;
     programInterfaceToString();
   }
+}
+
+let codeSnippet = '';
+function heardSnippet(heard) {
+  let matches = heard.match(RegExp("i need code for (.+)"));
+  if (matches) {
+    let searchWords = matches[1];
+    currentConversationTopic = searchWords;
+    let url = "https://sourcefetch-server.glitch.me/" + searchWords;
+    $.getJSON(url, function(response) {
+      if (response.code) {
+        codeSnippet = response.code;
+        // alert(response.code);
+        say("Here's what I found.");
+        // set up style for LUI speaking
+        let id = ' id="log-LUI"';
+        let idTimeStamp = ' id="log-time-stamp"';
+        // create message with buttons
+        let timeStamp = '<br><small' + idTimeStamp + '>' + ' - ' + getTime() + '</small>';
+        let buttonCopyCode = '<button onclick="copyCode()">Copy Code</button>'
+        let sentenceToShow = codeSnippet + '<br>';
+        let nextMessage = '<p' + id + '>' + buttonCopyCode + sentenceToShow + timeStamp + '</p>';
+        let logSoFar = document.getElementById('messageLog').innerHTML;
+        // show message with buttons
+        document.getElementById('messageLog').innerHTML = nextMessage + logSoFar;
+      } else {
+        say("Sorry, I couldn't find an example code snippet for that.");
+      }
+    });
+    return true; // did hear, just need to wait for web API response
+  }
+  // otherwise
+  return false;
+}
+
+function copyCode() {
+  try {
+    var filename = 'sample_code' + ".js";
+    var temporaryElem = document.createElement("a");
+    temporaryElem.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(codeSnippet));
+    temporaryElem.setAttribute("download", filename);
+    if (document.createEvent) {
+      var event = document.createEvent("MouseEvents");
+      event.initEvent("click", true, true);
+      temporaryElem.dispatchEvent(event);
+    }
+    else {
+      temporaryElem.click();
+    }
+  } catch(err) {
+    // if the previous code returns an error or isn't supported, try using this instead:
+    var content = fullOutputString;
+    window.open('data:text/txt;charset=utf-8,' + escape(content), 'newdoc');
+  }
+}
+
+function cleanupString(name) {
+  return name
+    .replace(' ','_')
+    .replace(/[.,;:'"\/\\<>?!]/g, '');
 }
