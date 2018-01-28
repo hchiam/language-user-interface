@@ -6,7 +6,6 @@ function heardAddOns(heard) {
   heardRecognized |= heardNumberGuessGame(heard); if (heardRecognized) return true;
   heardRecognized |= heardTranslator(heard); if (heardRecognized) return true;
   heardRecognized |= heardProgram(heard); if (heardRecognized) return true;
-  heardRecognized |= heardSnippet(heard); if (heardRecognized) return true;
   return false;
 }
 
@@ -117,10 +116,11 @@ let programStringPrev = "\n";
 let variableList = {}; // so can notify user to initialize or create
 
 function heardProgram(heard) {
-  if (didHear(heard,["let's program",'program',"let's code",'code'],'starts with')) {
+  if (didHear(heard,["let's program", 'lets program', 'program', 'lets code', "let's code", 'code'],'starts with')) {
     currentConversationType = 'program';
     $('#programming-area').css('visibility','visible');
     say('What would you like to program in JavaScript?');
+    createSuggestionMessage(['I need code for quicksort.']);
     return true;
   } else if (heard.includes("your code")) {
     currentConversationType = 'program';
@@ -205,6 +205,7 @@ function programInterfaceToString() {
 // affect interface.html and
 // say('...');
 function program(heard) {
+  getSnippet(heard);
   loop(heard);
   comment(heard);
   notify(heard); // -> alert(...)
@@ -422,12 +423,13 @@ function undo(heard) {
 }
 
 let codeSnippet = '';
-function heardSnippet(heard) {
+function getSnippet(heard) {
   let matches = heard.match(RegExp("i need code for (.+)"));
   if (matches) {
     let searchWords = matches[1];
     currentConversationTopic = searchWords;
     let url = "https://sourcefetch-server.glitch.me/fetch/?q=" + searchWords;
+    say("Searching.");
     $.getJSON(url, function(response) {
       if (response.code) {
         codeSnippet = response.code;
