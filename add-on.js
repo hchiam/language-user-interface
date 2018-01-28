@@ -439,8 +439,8 @@ function heardSnippet(heard) {
         // create message with buttons
         let timeStamp = '<br><small' + idTimeStamp + '>' + ' - ' + getTime() + '</small>';
         let buttonCopyCode = '<button onclick="copyCode()">Copy Code</button>'
-        let sentenceToShow = codeSnippet + '<br>';
-        let nextMessage = '<p' + id + '>' + buttonCopyCode + sentenceToShow + timeStamp + '</p>';
+        let sentenceToShow = codeSnippet;
+        let nextMessage = '<p' + id + '>' + buttonCopyCode + '<br>' + sentenceToShow + '<br>' + timeStamp + '</p>';
         let logSoFar = document.getElementById('messageLog').innerHTML;
         // show message with buttons
         document.getElementById('messageLog').innerHTML = nextMessage + logSoFar;
