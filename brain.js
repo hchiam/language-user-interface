@@ -378,28 +378,27 @@ function showWhatICanDo() {
 
   // set up examples to both say aloud and show buttons for
   let examples = [
-    "who are you",
     "who was albert einstein",
     "what is special relativity",
+    "let's program",
     "what time is it",
+    "play number guessing game",
+    "stop listening",
     "remind me to take a break in 30 minutes",
-    'what does business casual look like',
     "where are we",
+    'what does business casual look like',
     "how's the weather today",
     "what's today's temperature",
     "find analogies for an atom",
     "how do i get to the nearest hotel",
     "where are the closest restaurants",
     "where is there tim hortons in toronto",
-    "open gmail dot com, facebook dot com, and habitica dot com",
     "how do i learn to learn",
     "show me how to draw",
     "explain philosophy",
     "schedule a meeting",
-    "play number guessing game",
+    "open gmail dot com, facebook dot com, and habitica dot com",
     "translate hi",
-    "let's program",
-    "edit your code"
   ];
 
   // set up what to say aloud
