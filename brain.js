@@ -190,29 +190,28 @@ function reply(heard) {
 
   let heardRecognized = false;
 
-  heardRecognized |= redirectToFeedback();
-  if (heardRecognized) {
+  if (redirectToFeedback()) {
     getFeedback(heard);
     return;
   }
 
-  heardRecognized |= heardStartListening(heard); if (heardRecognized) return;
+  if (heardStartListening(heard)) return;
   // short circuit listening if told to not listen
   if (!listening) {
     return '';
   }
   // check different cases and if match recognized then return to escape function early:
-  heardRecognized |= heardConfirm(heard); if (heardRecognized) return;
-  heardRecognized |= heardComplaint(heard); if (heardRecognized) return;
-  heardRecognized |= heardInterrupt(heard); if (heardRecognized) return;
-  heardRecognized |= heardPleasantries(heard); if (heardRecognized) return;
-  heardRecognized |= heardScheduler(heard); if (heardRecognized) return;
-  heardRecognized |= heardOpen(heard); if (heardRecognized) return;
-  heardRecognized |= heardSearch(heard); if (heardRecognized) return;
-  heardRecognized |= heardAddOns(heard); if (heardRecognized) return;
-  heardRecognized |= heardStopListening(heard); if (heardRecognized) return;
+  if( heardConfirm(heard)) return;
+  if( heardComplaint(heard)) return;
+  if( heardInterrupt(heard)) return;
+  if( heardPleasantries(heard)) return;
+  if( heardScheduler(heard)) return;
+  if( heardOpen(heard)) return;
+  if( heardSearch(heard)) return;
+  if( heardAddOns(heard)) return;
+  if( heardStopListening(heard)) return;
   // otherwise
-  if (!heardRecognized) notUnderstood();
+  notUnderstood();
 }
 
 function notUnderstood() {
