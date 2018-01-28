@@ -206,6 +206,7 @@ function programInterfaceToString() {
 // say('...');
 function program(heard) {
   getSnippet(heard);
+  useSnippet(heard);
   loop(heard);
   comment(heard);
   notify(heard); // -> alert(...)
@@ -424,10 +425,10 @@ function undo(heard) {
 
 let codeSnippet = '';
 function getSnippet(heard) {
-  let matches = heard.match(RegExp("i need code for (.+)"));
+  let matches = heard.match(RegExp("i need (some |a )?code (snippet )?for (.+)"));
   if (matches) {
-    let searchWords = matches[1];
-    currentConversationTopic = searchWords;
+    let searchWords = matches[3];
+    currentConversationTopic = 'get snippet';
     let url = "https://sourcefetch-server.glitch.me/fetch/?q=" + searchWords;
     say("Searching.");
     $.getJSON(url, function(response) {
@@ -440,12 +441,13 @@ function getSnippet(heard) {
         let idTimeStamp = ' id="log-time-stamp"';
         // create message with buttons
         let timeStamp = '<br><small' + idTimeStamp + '>' + ' - ' + getTime() + '</small>';
-        let buttonCopyCode = '<button onclick="copyCode()">Copy Code</button>'
+        let buttonCopyCode = '<button onclick="saveCode()">Save Code</button>'
         let sentenceToShow = codeSnippet;
         let nextMessage = '<p' + id + '>' + buttonCopyCode + '<br>' + sentenceToShow + '<br>' + timeStamp + '</p>';
         let logSoFar = document.getElementById('messageLog').innerHTML;
         // show message with buttons
         document.getElementById('messageLog').innerHTML = nextMessage + logSoFar;
+        createSuggestionMessage(["Let's use that."]);
       } else {
         say("Sorry, I couldn't find an example code snippet for that.");
       }
@@ -456,7 +458,7 @@ function getSnippet(heard) {
   return false;
 }
 
-function copyCode() {
+function saveCode() {
   try {
     var filename = 'sample_code' + ".js";
     var temporaryElem = document.createElement("a");
@@ -481,4 +483,14 @@ function cleanupString(name) {
   return name
     .replace(' ','_')
     .replace(/[.,;:'"\/\\<>?!]/g, '');
+}
+
+function useSnippet(heard) {
+  if (currentConversationTopic === 'get snippet') {
+    if (didHear(heard,["let's use that",'lets use that'])) {
+      pointer += codeSnippet.length + 2; // by default, continue after the code
+      programInsert('\n'+codeSnippet+'\n',pointer);
+      say('Done.');
+    }
+  }
 }

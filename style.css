@@ -55,6 +55,7 @@
   background: black;
   color: lime;
   visibility: collapse;
+  white-space: pre-wrap; // to preserve spaces and newlines
 }
 
 body {
