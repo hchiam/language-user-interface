@@ -17,13 +17,14 @@ function heardNumberGuessGame(heard) {
     say("I'm thinking of a number between 1 and 100. Guess my number.");
     return true;
   } else if (currentConversationType === "number guessing game") {
-    if (didHear(heard,['no',"let's stop playing","never mind"])) {
+    if (didHear(heard,['no',"lets stop playing","never mind"])) {
       // "turn off" the game
       currentConversationType = '';
       say('Okay. What would you like to do instead?');
       createSuggestionMessage(["What can you do?"]);
     } else if (isNaN(heard)) {
       say('Please give me a number.');
+      createSuggestionMessage(["Let's stop playing."]);
     } else {
       if (parseInt(heard) === numberToGuess) {
         say("You got it! My number was " + numberToGuess + '. What would you like to do now?');
