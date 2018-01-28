@@ -427,7 +427,7 @@ function heardSnippet(heard) {
   if (matches) {
     let searchWords = matches[1];
     currentConversationTopic = searchWords;
-    let url = "https://sourcefetch-server.glitch.me/" + searchWords;
+    let url = "https://sourcefetch-server.glitch.me/?q=" + searchWords;
     $.getJSON(url, function(response) {
       if (response.code) {
         codeSnippet = response.code;
