@@ -206,8 +206,6 @@ function programInterfaceToString() {
 // affect interface.html and
 // say('...');
 function program(heard) {
-  getSnippet(heard);
-  useSnippet(heard);
   loop(heard);
   comment(heard);
   notify(heard); // -> alert(...)
@@ -221,6 +219,9 @@ function program(heard) {
   escapeNextBrace(heard);
   runProgram(heard);
   undo(heard);
+  getSnippet(heard);
+  useSnippet(heard);
+  hideProgrammingArea(heard);
 }
 
 function loop(heard) {
@@ -493,5 +494,15 @@ function useSnippet(heard) {
       programInsert('\n'+codeSnippet+'\n',pointer);
       say('Done.');
     }
+  }
+}
+
+function hideProgrammingArea(heard) {
+  if (didHear(heard,['hide screen','hide programming area'])) {
+    // exit from programming
+    currentConversationType = '';
+    $('#programming-area').css('visibility','collapse');
+    say('Okay. What would you like to do instead?');
+    createSuggestionMessage(["What can you do?"]);
   }
 }
