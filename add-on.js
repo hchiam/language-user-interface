@@ -147,6 +147,7 @@ function heardProgram(heard) {
       pointer = 0;
       $('#programming-area').text('');
       $('#programming-area').css('visibility','collapse');
+      $('#programming-area').css('display','none');
       say('Okay. What would you like to do instead?');
       createSuggestionMessage(["What can you do?"]);
     } else {
