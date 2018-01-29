@@ -134,6 +134,7 @@ function heardProgram(heard) {
       // exit from programming
       currentConversationType = '';
       $('#programming-area').css('visibility','collapse');
+      $('#programming-area').css('display','none');
       say('Okay. What would you like to do instead?');
       createSuggestionMessage(["What can you do?"]);
     } else if (didHear(heard,['clear everything','delete everything'])) {
@@ -502,6 +503,7 @@ function hideProgrammingArea(heard) {
     // exit from programming
     currentConversationType = '';
     $('#programming-area').css('visibility','collapse');
+    $('#programming-area').css('display','none');
     say('Okay. What would you like to do instead?');
     createSuggestionMessage(["What can you do?"]);
   }
