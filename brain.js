@@ -379,7 +379,7 @@ function showWhatICanDo() {
   // set up examples to both say aloud and show buttons for
   let examples = [
     "who was albert einstein",
-    "what is special relativity",
+    "what is NLP",
     "let's program",
     "what time is it",
     "play number guessing game",
