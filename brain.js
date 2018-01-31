@@ -217,15 +217,15 @@ function reply(heard) {
     return '';
   }
   // check different cases and if match recognized then return to escape function early:
-  if( heardConfirm(heard)) return;
-  if( heardComplaint(heard)) return;
-  if( heardInterrupt(heard)) return;
-  if( heardPleasantries(heard)) return;
-  if( heardScheduler(heard)) return;
-  if( heardOpen(heard)) return;
-  if( heardSearch(heard)) return;
-  if( heardAddOns(heard)) return;
-  if( heardStopListening(heard)) return;
+  if (heardConfirm(heard)) return;
+  if (heardComplaint(heard)) return;
+  if (heardInterrupt(heard)) return;
+  if (heardPleasantries(heard)) return;
+  if (heardScheduler(heard)) return;
+  if (heardOpen(heard)) return;
+  if (heardSearch(heard)) return;
+  if (heardAddOns(heard)) return;
+  if (heardStopListening(heard)) return;
   // otherwise
   notUnderstood();
 }
