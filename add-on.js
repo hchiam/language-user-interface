@@ -6,6 +6,7 @@ function heardAddOns(heard) {
   heardRecognized |= heardNumberGuessGame(heard); if (heardRecognized) return true;
   heardRecognized |= heardTranslator(heard); if (heardRecognized) return true;
   heardRecognized |= heardProgram(heard); if (heardRecognized) return true;
+  heardRecognized |= heardGetSnippet(heard); if (heardRecognized) return true;
   return false;
 }
 
@@ -221,7 +222,6 @@ function program(heard) {
   escapeNextBrace(heard);
   runProgram(heard);
   undo(heard);
-  getSnippet(heard);
   useSnippet(heard);
   hideProgrammingArea(heard);
 }
@@ -428,7 +428,7 @@ function undo(heard) {
 }
 
 let codeSnippet = '';
-function getSnippet(heard) {
+function heardGetSnippet(heard) {
   let matches = heard.match(RegExp("i need (some |a )?code (snippet )?for (.+)"));
   if (matches) {
     let searchWords = matches[3];
@@ -451,7 +451,9 @@ function getSnippet(heard) {
         let logSoFar = document.getElementById('messageLog').innerHTML;
         // show message with buttons
         document.getElementById('messageLog').innerHTML = nextMessage + logSoFar;
-        createSuggestionMessage(["Let's use that."]);
+        if (currentConversationType === 'program') {
+          createSuggestionMessage(["Let's use that."]);
+        }
       } else {
         say("Sorry, I couldn't find an example code snippet for that.");
       }
