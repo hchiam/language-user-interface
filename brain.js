@@ -43,11 +43,16 @@ function introSelf() {
 let delayedAction;
 
 function converse() {
-  clearTimeout(unfamiliarUser); // user is using the interface
-  say(' '); // let user interrupt
-  clearTimeout(delayedAction); // let user continue what they're saying
-  resetCountDownWaiting(); // let user continue what they're saying
-  delayedAction = setInterval(countDownWaiting, 1000); // -> countDownWaiting()
+  let inputString = document.getElementById('input').value.toLowerCase();
+  if (inputString.startsWith('o') || inputString.startsWith('c')) {
+    clearTimeout(unfamiliarUser); // user is using the interface
+    say(' '); // let user interrupt
+    clearTimeout(delayedAction); // let user continue what they're saying
+    resetCountDownWaiting(); // let user continue what they're saying
+    delayedAction = setInterval(countDownWaiting, 1000); // -> countDownWaiting()
+  } else {
+    document.getElementById('input').value = '';
+  }
 }
 
 function resetCountDownWaiting() {
@@ -128,6 +133,12 @@ function listen() {
   heard = heard.trim().toLowerCase();
   heard = heard.replace(/[,\\\/#!?$%\^&\*;:{}<>+=_`"~()]/g,''); // make safer
   heard = heard.replace(/  +/g,' '); // remove multiple consecutive spaces in typing
+  // in case just heard "computer"
+  if (heard === 'computer') {
+    say("Hi there.");
+    createSuggestionMessage(["What can you do?"]);
+    return '';
+  }
   // only do further processing if heard initial signal phrase
   heard = heardAfterSignalPhrase(heard);
   if (heard !== '') {
@@ -137,10 +148,10 @@ function listen() {
 }
 
 let wakeupOK = ['okay ', 'ok ', 'hi ', 'hey ' , 'hello ', 'alright '];
-let wakeupLUI = ['lui ', 'louis ', 'louie ', 'louise ', 'lewis ', 'lewey ', 'looey ', 'lee ', 'luis ', 'lois '];
+let wakeupLUI = ['computer ', 'lui ', 'louis ', 'louie ', 'louise ', 'lewis ', 'lewey ', 'looey ', 'lee ', 'luis ', 'lois '];
 
 function heardAfterSignalPhrase(heard) {
-    // alternate: just start with "computer"
+    // add alternate: just start with "computer" (easier to recognize)
     if (heard.startsWith('computer ')) {
       // return early
       return heard.substring(9);
@@ -500,19 +511,19 @@ function heardSearch(heard) {
 
 function askingWhoAreYou(heard) {
   if (didHear(heard,['who are you','what are you'])) {
-    say("My name is LUI. That's short for Language User Interface.");
+    say("I am an L.U.I. That's short for Language User Interface.");
     createSuggestionMessage(["What can you do?"]);
     currentConversationTopic = '';
     currentConversationType = '';
     return true;
   } else if (heard === 'are you jarvis') {
-    say("Not exactly. My name is LUI. But I am a Language User Interface.");
+    say("Not exactly. I am an L.U.I. But I am a Language User Interface.");
     createSuggestionMessage(["What can you do?"]);
     currentConversationTopic = '';
     currentConversationType = '';
     return true;
   } else if (heard === 'are you like jarvis') {
-    say("Sort of. My name is LUI. A Language User Interface.");
+    say("Sort of. I'm an L.U.I. A Language User Interface.");
     createSuggestionMessage(["What can you do?"]);
     currentConversationTopic = '';
     currentConversationType = '';
