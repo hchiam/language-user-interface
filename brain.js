@@ -1214,7 +1214,7 @@ function searchQuestion(heard) {
 function heardStopListening(heard) {
   if (didHear(heard,['stop listening'],'starts with')) {
     listening = false;
-    say("Okay. To reactivate me, say 'Okay LUI start listening'.");
+    say("Okay. To reactivate me, say 'computer start listening'.");
     if (!('webkitSpeechRecognition' in window)) {
     } else {
       recognition.stop();
