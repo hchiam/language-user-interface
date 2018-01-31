@@ -2,11 +2,10 @@
 
 function heardAddOns(heard) {
   // this should overwrite the function in brain.js
-  let heardRecognized = false;
-  heardRecognized |= heardNumberGuessGame(heard); if (heardRecognized) return true;
-  heardRecognized |= heardTranslator(heard); if (heardRecognized) return true;
-  heardRecognized |= heardProgram(heard); if (heardRecognized) return true;
-  heardRecognized |= heardGetSnippet(heard); if (heardRecognized) return true;
+  if (heardNumberGuessGame(heard)) return true;
+  if (heardTranslator(heard)) return true;
+  if (heardProgram(heard)) return true;
+  if (heardGetSnippet(heard)) return true;
   return false;
 }
 
