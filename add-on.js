@@ -455,6 +455,8 @@ function heardGetSnippet(heard) {
         }
       } else {
         say("Sorry, I couldn't find an example code snippet for that.");
+        // be proactive and open a search results page
+        searchQuestion(searchWords + " in javascript");
       }
     });
     return true; // did hear, just need to wait for web API response
