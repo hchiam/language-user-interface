@@ -140,6 +140,11 @@ let wakeupOK = ['okay ', 'ok ', 'hi ', 'hey ' , 'hello ', 'alright '];
 let wakeupLUI = ['lui ', 'louis ', 'louie ', 'louise ', 'lewis ', 'lewey ', 'looey ', 'lee ', 'luis ', 'lois '];
 
 function heardAfterSignalPhrase(heard) {
+    // alternate: just start with "computer"
+    if (heard.startsWith('computer ')) {
+      // return early
+      return heard.substring(9);
+    }
     let detected_ok = false, detected_lui = false;
     // check for "OK"
     for (let i=0; i<wakeupOK.length; i++) {
