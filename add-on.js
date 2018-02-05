@@ -151,10 +151,13 @@ function heardProgram(heard) {
       say('Okay. What would you like to do instead?');
       createSuggestionMessage(["What can you do?"]);
     } else {
-
+      // check if any change made in case need to do an action like heardGetSnippet
+      let tempCode = programString;
+      
       // ******* TODO: program different things *******
       program(heard);
-
+      
+      if (tempCode === programString) return false;
     }
     return true;
   }
