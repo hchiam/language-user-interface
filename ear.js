@@ -93,7 +93,7 @@ function say(sentence) {
       // in case not using chrome
       responsiveVoice.speak(sentence, 'UK English Male');
     } else {
-      clicked();
+      if (typeof clicked == 'function') clicked(); // for CodePen demo
       // stop listening
       recognition.stop();
       responsiveVoice.speak(sentence, 'UK English Male', {onend: listenAgain});

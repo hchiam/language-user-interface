@@ -100,7 +100,7 @@ function sayWithEsp(sentence) {
       // in case not using chrome
       responsiveVoice.speak(spellLikeEsp(sentence), 'Esperanto Male');
     } else {
-      clicked();
+      if (typeof clicked == 'function') clicked(); // for CodePen demo
       recognition.stop();
       responsiveVoice.speak(spellLikeEsp(sentence), 'Esperanto Male', {onend: listenAgain});
     }
