@@ -31,9 +31,9 @@ function heardNumberGuessGame(heard) {
         // "turn off" the game
         currentConversationType = '';
       } else if (parseInt(heard) < numberToGuess) {
-        say("It's higher than " + heard + '.');
+        say("It's higher than " + heard + '. Try another number.');
       } else if (parseInt(heard) > numberToGuess) {
-        say("It's lower than " + heard + '.');
+        say("It's lower than " + heard + '. Try another number.');
       }
     }
     return true;
