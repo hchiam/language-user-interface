@@ -17,6 +17,7 @@ var ignore_onend;
 var recognition;
 
 setUp_webkitSpeechRecognition();
+let timer = setInterval(setUp_webkitSpeechRecognition, 9000); // need this to be double-sure of continuous speech recognition
 
 // start listening right away, so it's completely hands-free
 toggleStart_webkitSpeechRecognition();
