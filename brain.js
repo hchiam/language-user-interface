@@ -882,7 +882,7 @@ function reminderTimer(remindWhat, remindWhen, timeUnits) {
       break;
   }
   let unfamiliarUser = setTimeout(function(){
-    say(remindWhat);
+    say("There's a reminder for you: " + remindWhat);
     // open Duck Duck Go timer (so user has to stop it)
     let duckduckgoURL = 'https://duckduckgo.com/?q=timer+1+s';
     tryOpeningWindow(duckduckgoURL);
