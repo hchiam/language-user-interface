@@ -1,5 +1,7 @@
 # Language User Interface
 
+[![HitCount](http://hits.dwyl.com/hchiam/language-user-interface.svg)](http://hits.dwyl.com/hchiam/language-user-interface)
+
 LUI runs in your browser, so you can use it on both laptops and mobile devices. Think: a simple version of [JARVIS](http://marvel-movies.wikia.com/wiki/J.A.R.V.I.S.).
 
 LUI works completely hands-free in Chrome (versions 25+).
